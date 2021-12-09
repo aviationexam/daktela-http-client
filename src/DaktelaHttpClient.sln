@@ -9,11 +9,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionFiles", "_Solution
 		..\README.md = ..\README.md
 		..\props\Daktela.props = ..\props\Daktela.props
 		WarningConfiguration.targets = WarningConfiguration.targets
+		..\.github\dependabot.yml = ..\.github\dependabot.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{4012704E-C06D-433B-9B5F-D1C681ECFEE3}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build.yml = ..\.github\workflows\build.yml
+		..\.github\workflows\nightly-release.yml = ..\.github\workflows\nightly-release.yml
+		..\.github\workflows\pr-build.yml = ..\.github\workflows\pr-build.yml
+		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4012704E-C06D-433B-9B5F-D1C681ECFEE3} = {8B091B23-F494-4969-964F-41B68F98EC49}
 	EndGlobalSection
 EndGlobal
