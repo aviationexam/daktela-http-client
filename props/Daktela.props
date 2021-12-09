@@ -1,0 +1,14 @@
+<Project>
+
+
+  <PropertyGroup Label="Package versions used in this repository">
+    <!--
+      Please sort alphabetically.
+      Refer to https://docs.microsoft.com/en-us/nuget/concepts/package-versioning for semver syntax.
+    -->
+    <CodeAnalysisCSharpPkgVer>3.11.0</CodeAnalysisCSharpPkgVer>
+    <MicrosoftPkgVer>5.0.12</MicrosoftPkgVer>
+    <MicrosoftExtensionsPkgVer>5.0.0</MicrosoftExtensionsPkgVer>
+    <SystemRuntimePkgVer>4.3.1</SystemRuntimePkgVer>
+  </PropertyGroup>
+</Project>
