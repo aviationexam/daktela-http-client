@@ -23,9 +23,9 @@ jobs:
           dotnet-version: '6.0.x'
       - uses: actions/checkout@v2
       - name: Retore
-        run: dotnet restore --nologo
+        run: dotnet restore --nologo src
       - name: Build
-        run: dotnet build --no-restore --nologo --configuration Release
+        run: dotnet build --no-restore --nologo --configuration Release src
 
   code-style:
     runs-on: ubuntu-latest

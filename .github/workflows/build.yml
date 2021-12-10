@@ -24,14 +24,14 @@ jobs:
           dotnet-version: '6.0.x'
       - uses: actions/checkout@v2
       - name: Retore
-        run: dotnet restore --nologo
+        run: dotnet restore --nologo src
       - name: Build
-        run: dotnet build --no-restore --nologo --configuration Release
+        run: dotnet build --no-restore --nologo --configuration Release src
       - name: Test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DAKTELA_ApiKey: ${{ secrets.DAKTELA_API_KEY }}
-        run: dotnet test --nologo --no-build --configuration Release
+        run: dotnet test --nologo --no-build --configuration Release src
 
   code-style:
     runs-on: ubuntu-latest
