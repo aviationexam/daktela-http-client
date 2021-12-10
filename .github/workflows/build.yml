@@ -3,7 +3,7 @@ name: CI Build
 on:
   push:
     branches:
-      - master
+      - main
       - develop
   schedule:
     - cron: "0 8 * * 1" # At 08:00 on Monday
