@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.DependencyInjection;
+using Daktela.HttpClient.DependencyInjection;
 using Daktela.HttpClient.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
