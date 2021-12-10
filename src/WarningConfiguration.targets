@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <BaseOutputPath>..\..\..\Build\$(ProjectName)\</BaseOutputPath>
+    <BaseOutputPath>..\..\Build\$(ProjectName)\</BaseOutputPath>
   </PropertyGroup>
 
 </Project>

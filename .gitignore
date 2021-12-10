@@ -363,3 +363,4 @@ ASALocalRun/
 
 /Build
 /GeneratedFiles
+**/*.appsettings.json5
