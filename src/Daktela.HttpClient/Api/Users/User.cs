@@ -47,7 +47,7 @@ public class User
     /// User rights allows you to add rights to users and queuesProfiles
     /// </summary>
     [JsonPropertyName("profile")]
-    public object Profile { get; set; } = null!;
+    public Profile Profile { get; set; } = null!;
 
     /// <summary>
     /// NPS score

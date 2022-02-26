@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Daktela.HttpClient.Api.Users;
 
 /// <summary>
-/// <a href="https://www.daktela.com/apihelp/v6/models/roles">Object</a>  accesses returns all information about user roles - name role, title and relation objects users, rights.
+/// <a href="https://www.daktela.com/apihelp/v6/models/roles">Object</a> accesses returns all information about user roles - name role, title and relation objects users, rights.
 /// </summary>
 public class Role
 {

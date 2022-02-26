@@ -65,7 +65,7 @@ public class Contact
     /// Calculated NPS score for all activities of this contact
     /// </summary>
     [JsonPropertyName("nps_score")]
-    public double NpsScore { get; set; }
+    public decimal NpsScore { get; set; }
 
     /// <summary>
     /// Created
