@@ -1,6 +1,5 @@
-namespace Daktela.HttpClient.Api.Users
+namespace Daktela.HttpClient.Api.Users;
+
+public enum ERecordAtCallStart : byte
 {
-    public enum ERecordAtCallStart : byte
-    {
-    }
 }

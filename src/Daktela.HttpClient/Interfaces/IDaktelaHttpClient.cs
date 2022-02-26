@@ -1,8 +1,7 @@
 using System;
 
-namespace Daktela.HttpClient.Interfaces
+namespace Daktela.HttpClient.Interfaces;
+
+public interface IDaktelaHttpClient : IDisposable
 {
-    public interface IDaktelaHttpClient : IDisposable
-    {
-    }
 }

@@ -1,6 +1,5 @@
-namespace Daktela.HttpClient.Api.Users
+namespace Daktela.HttpClient.Api.Users;
+
+public enum EExtensionState : byte
 {
-    public enum EExtensionState : byte
-    {
-    }
 }

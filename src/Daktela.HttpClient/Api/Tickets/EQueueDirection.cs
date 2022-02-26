@@ -1,19 +1,18 @@
 using System.Runtime.Serialization;
 
-namespace Daktela.HttpClient.Api.Tickets
-{
-    public enum EQueueDirection
-    {
-        /// <summary>
-        /// Incoming
-        /// </summary>
-        [EnumMember(Value = "in")]
-        Incoming,
+namespace Daktela.HttpClient.Api.Tickets;
 
-        /// <summary>
-        /// Outgoing
-        /// </summary>
-        [EnumMember(Value = "out")]
-        Outgoing,
-    }
+public enum EQueueDirection
+{
+    /// <summary>
+    /// Incoming
+    /// </summary>
+    [EnumMember(Value = "in")]
+    Incoming,
+
+    /// <summary>
+    /// Outgoing
+    /// </summary>
+    [EnumMember(Value = "out")]
+    Outgoing,
 }

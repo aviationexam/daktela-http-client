@@ -1,7 +1,6 @@
-namespace Daktela.HttpClient.Api.Tickets
+namespace Daktela.HttpClient.Api.Tickets;
+
+public class CustomField
 {
-    public class CustomField
-    {
-        // TODO
-    }
+    // TODO
 }
