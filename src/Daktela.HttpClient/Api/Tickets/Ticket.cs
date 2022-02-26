@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Api.Users;
+using Daktela.HttpClient.Api.Users;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -247,7 +247,7 @@ namespace Daktela.HttpClient.Api.Tickets
         /// -Tickets\Mn_tickets_followers
         /// </summary>
         [JsonPropertyName("followers")]
-        public object Followers { get; set; }
+        public object Followers { get; set; } = null!;
 
         /// <summary>
         /// Statuses
@@ -255,7 +255,7 @@ namespace Daktela.HttpClient.Api.Tickets
         /// -Statuses\Mn_statuses_tickets
         /// </summary>
         [JsonPropertyName("statuses")]
-        public object Statuses { get; set; }
+        public object Statuses { get; set; } = null!;
 
         /// <summary>
         /// Last Activity
@@ -285,6 +285,6 @@ namespace Daktela.HttpClient.Api.Tickets
         /// Custom fields
         /// </summary>
         [JsonPropertyName("customFields")]
-        public CustomField CustomFields { get; set; }
+        public CustomField CustomFields { get; set; } = null!;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Daktela.HttpClient.Api.Tickets
+namespace Daktela.HttpClient.Api.Tickets
 {
     public class CustomField
     {

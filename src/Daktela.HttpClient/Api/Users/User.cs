@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Users
@@ -36,7 +36,7 @@ namespace Daktela.HttpClient.Api.Users
         /// User accesses enable you to set rights to specific sections in control panelRoles
         /// </summary>
         [JsonPropertyName("role")]
-        public object Role { get; set; }
+        public object Role { get; set; } = null!;
 
         /// <summary>
         /// Rights
@@ -44,7 +44,7 @@ namespace Daktela.HttpClient.Api.Users
         /// User rights allows you to add rights to users and queuesProfiles
         /// </summary>
         [JsonPropertyName("profile")]
-        public object Profile { get; set; }
+        public object Profile { get; set; } = null!;
 
         /// <summary>
         /// NPS score
@@ -92,7 +92,7 @@ namespace Daktela.HttpClient.Api.Users
         /// -Rightstocall
         /// </summary>
         [JsonPropertyName("acl")]
-        public object Acl { get; set; }
+        public object Acl { get; set; } = null!;
 
         /// <summary>
         /// Extension state
@@ -140,7 +140,7 @@ namespace Daktela.HttpClient.Api.Users
         /// IntegrationsConfigs
         /// </summary>
         [JsonPropertyName("algo")]
-        public object Algo { get; set; }
+        public object Algo { get; set; } = null!;
 
         /// <summary>
         /// Notification email
