@@ -91,11 +91,9 @@ public class User
 
     /// <summary>
     /// Custom ACL
-    ///
-    /// -Rightstocall
     /// </summary>
     [JsonPropertyName("acl")]
-    public object Acl { get; set; } = null!;
+    public RightsToCall Acl { get; set; } = null!;
 
     /// <summary>
     /// Extension state
@@ -103,7 +101,7 @@ public class User
     /// State of physical devices, connected to extension
     /// </summary>
     [JsonPropertyName("extension_state")]
-    public EExtensionState ExtensionState { get; set; }
+    public EExtensionState? ExtensionState { get; set; }
 
     /// <summary>
     /// Outgoing identification
