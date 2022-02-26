@@ -34,9 +34,9 @@ namespace Daktela.HttpClient.Tests.Infrastructure
 
             using var log = Log.BeginRequestPipelineScope(_scopeLogger, request);
 
-            await log.RequestPipelineStart(_requestLogger, request);
+            await log.RequestPipelineStart(_requestLogger, request, cancellationToken);
             var response = await base.SendAsync(request, cancellationToken);
-            await log.RequestPipelineEnd(_requestLogger, response);
+            await log.RequestPipelineEnd(_requestLogger, response, cancellationToken);
 
             return response;
         }
@@ -56,13 +56,15 @@ namespace Daktela.HttpClient.Tests.Infrastructure
             private static readonly Action<ILogger, HttpMethod, Uri?, string, string?, Exception?> RequestPipelineStartDefine = LoggerMessage.Define<HttpMethod, Uri?, string, string?>(
                 LogLevel.Trace,
                 EventIds.PipelineStart,
-                "Start processing HTTP request {HttpMethod} {Uri} [Correlation: {CorrelationId}]: {HttpContent}"
+                "Start processing HTTP request {HttpMethod} {Uri} [Correlation: {CorrelationId}]: {HttpContent}",
+                options: new LogDefineOptions { SkipEnabledCheck = true }
             );
 
             private static readonly Action<ILogger, HttpStatusCode, string?, Exception?> RequestPipelineEndDefine = LoggerMessage.Define<HttpStatusCode, string?>(
                 LogLevel.Trace,
                 EventIds.PipelineEnd,
-                "End processing HTTP request - {StatusCode}: {HttpContent}"
+                "End processing HTTP request - {StatusCode}: {HttpContent}",
+                options: new LogDefineOptions { SkipEnabledCheck = true }
             );
 
             private readonly IDisposable _loggerScope;
@@ -86,23 +88,29 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                 return log;
             }
 
-            public async Task RequestPipelineStart(ILogger logger, HttpRequestMessage request)
+            public async Task RequestPipelineStart(ILogger logger, HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                var correlationId = GetCorrelationIdFromRequest(request);
-                string? content = null;
-                if (request.Content != null)
+                if (logger.IsEnabled(LogLevel.Trace))
                 {
-                    content = await GetContent(request.Content);
-                }
+                    var correlationId = GetCorrelationIdFromRequest(request);
+                    string? content = null;
+                    if (request.Content != null)
+                    {
+                        content = await GetContent(request.Content, cancellationToken);
+                    }
 
-                RequestPipelineStartDefine(logger, request.Method, request.RequestUri, correlationId, content, null);
+                    RequestPipelineStartDefine(logger, request.Method, request.RequestUri, correlationId, content, null);
+                }
             }
 
-            public async Task RequestPipelineEnd(ILogger logger, HttpResponseMessage response)
+            public async Task RequestPipelineEnd(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
             {
-                var content = await GetContent(response.Content);
+                if (logger.IsEnabled(LogLevel.Trace))
+                {
+                    var content = await GetContent(response.Content, cancellationToken);
 
-                RequestPipelineEndDefine(logger, response.StatusCode, content, null);
+                    RequestPipelineEndDefine(logger, response.StatusCode, content, null);
+                }
             }
 
             private static string GetCorrelationIdFromRequest(HttpRequestMessage request)
@@ -117,11 +125,12 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                 return correlationId;
             }
 
-            private async Task<string> GetContent(HttpContent httpContent)
+            private async Task<string> GetContent(HttpContent httpContent, CancellationToken cancellationToken)
             {
                 if (httpContent.Headers.ContentEncoding.Contains("gzip"))
                 {
-                    var stream = await httpContent.ReadAsStreamAsync();
+                    await httpContent.LoadIntoBufferAsync();
+                    var stream = await httpContent.ReadAsStreamAsync(cancellationToken);
                     if (!stream.CanSeek)
                     {
                         return "<Stream content unknown - can not seek>";
@@ -150,7 +159,7 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                         sb.Append(contentDisposition);
                         sb.Append('\t');
 
-                        var content = await GetContent(innerContent);
+                        var content = await GetContent(innerContent, cancellationToken);
 
                         if (!string.IsNullOrEmpty(contentDisposition?.FileName))
                         {
@@ -165,7 +174,8 @@ namespace Daktela.HttpClient.Tests.Infrastructure
 
                 if (httpContent is StreamContent streamHttpContent)
                 {
-                    var streamContent = await streamHttpContent.ReadAsStreamAsync();
+                    await httpContent.LoadIntoBufferAsync();
+                    var streamContent = await streamHttpContent.ReadAsStreamAsync(cancellationToken);
 
                     if (streamContent.CanSeek)
                     {
@@ -182,7 +192,7 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                     }
                 }
 
-                return await httpContent.ReadAsStringAsync();
+                return await httpContent.ReadAsStringAsync(cancellationToken);
             }
         }
     }
