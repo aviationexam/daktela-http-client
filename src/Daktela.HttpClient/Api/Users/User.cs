@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.Integrations;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -137,11 +138,9 @@ public class User
 
     /// <summary>
     /// Verify type
-    ///
-    /// IntegrationsConfigs
     /// </summary>
     [JsonPropertyName("algo")]
-    public object Algo { get; set; } = null!;
+    public Config Algo { get; set; } = null!;
 
     /// <summary>
     /// Notification email
