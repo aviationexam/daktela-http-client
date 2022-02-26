@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Contacts;
 
+/// <summary>
+/// <a href="https://www.daktela.com/apihelp/v6/models/contacts">Contacts</a> represents the person from your address book or CRM.
+/// </summary>
 public class Contact
 {
     /// <summary>
