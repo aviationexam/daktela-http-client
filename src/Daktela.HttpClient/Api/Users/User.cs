@@ -39,7 +39,7 @@ public class User
     /// User accesses enable you to set rights to specific sections in control panelRoles
     /// </summary>
     [JsonPropertyName("role")]
-    public object Role { get; set; } = null!;
+    public Role Role { get; set; } = null!;
 
     /// <summary>
     /// Rights
