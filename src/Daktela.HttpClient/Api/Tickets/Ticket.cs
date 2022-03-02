@@ -107,7 +107,7 @@ public class Ticket
     /// If ticket is answered (first answer) the close deadline is shown. Otherwise the first answer deadline is shown.
     /// </summary>
     [JsonPropertyName("sla_deadtime")]
-    public DateTime SlaDeadTime { get; set; }
+    public DateTimeOffset SlaDeadTime { get; set; }
 
     /// <summary>
     /// Ticket deadline
@@ -115,7 +115,7 @@ public class Ticket
     /// Time till when the ticket needs to be answered
     /// </summary>
     [JsonPropertyName("sla_close_deadline")]
-    public DateTime SlaCloseDeadline { get; set; }
+    public DateTimeOffset SlaCloseDeadline { get; set; }
 
     /// <summary>
     /// Sla change
@@ -123,7 +123,7 @@ public class Ticket
     /// Auxiliary data for sla calculation
     /// </summary>
     [JsonPropertyName("sla_change")]
-    public DateTime SlaChange { get; set; }
+    public DateTimeOffset SlaChange { get; set; }
 
     /// <summary>
     /// Sla duration
@@ -163,7 +163,7 @@ public class Ticket
     /// Date of creation
     /// </summary>
     [JsonPropertyName("created")]
-    public DateTime Created { get; set; }
+    public DateTimeOffset Created { get; set; }
 
     /// <summary>
     /// Created by
@@ -191,7 +191,7 @@ public class Ticket
     /// Date of first answer
     /// </summary>
     [JsonPropertyName("first_answer")]
-    public DateTime FirstAnswer { get; set; }
+    public DateTimeOffset FirstAnswer { get; set; }
 
     /// <summary>
     /// First answer duration
@@ -207,7 +207,7 @@ public class Ticket
     /// Time till when the ticket needs to be answered
     /// </summary>
     [JsonPropertyName("first_answer_deadline")]
-    public DateTime FirstAnswerDeadline { get; set; }
+    public DateTimeOffset FirstAnswerDeadline { get; set; }
 
     /// <summary>
     /// First answer deadline
@@ -223,7 +223,7 @@ public class Ticket
     /// Date when the ticket was closed
     /// </summary>
     [JsonPropertyName("closed")]
-    public DateTime Closed { get; set; }
+    public DateTimeOffset Closed { get; set; }
 
     /// <summary>
     /// Unread

@@ -73,7 +73,7 @@ public class Contact
     /// Date of creation
     /// </summary>
     [JsonPropertyName("created")]
-    public DateTime Created { get; set; }
+    public DateTimeOffset Created { get; set; }
 
     /// <summary>
     /// Edited
@@ -81,7 +81,7 @@ public class Contact
     /// Date of last modification
     /// </summary>
     [JsonPropertyName("edited")]
-    public DateTime Edited { get; set; }
+    public DateTimeOffset Edited { get; set; }
 
     /// <summary>
     /// Duplicate contacts
