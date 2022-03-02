@@ -6,6 +6,9 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Daktela.HttpClient.Tests")]
 
 namespace Daktela.HttpClient.DependencyInjection;
 
@@ -33,6 +36,10 @@ public static class DaktelaExtensions
                 AllowAutoRedirect = false,
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
             });
+
+        serviceCollection.AddSingleton<IHttpResponseParser, HttpResponseParser>();
+
+        serviceCollection.AddScoped<IContactEndpoint, ContactEndpoint>();
 
         return serviceCollection;
     }
