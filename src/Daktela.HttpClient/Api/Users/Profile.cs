@@ -42,7 +42,7 @@ public class Profile
     /// Maximum allowed number of concurrently incoming activities
     /// </summary>
     [JsonPropertyName("maxActivities")]
-    public int MaxActivities { get; set; }
+    public int? MaxActivities { get; set; }
 
     /// <summary>
     /// Max outgoing records
