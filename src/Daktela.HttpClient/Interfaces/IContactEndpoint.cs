@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.Contacts;
 using System.Threading;
 using System.Threading.Tasks;
 

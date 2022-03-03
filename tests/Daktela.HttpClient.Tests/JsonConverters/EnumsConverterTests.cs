@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Api.Users;
+using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Implementations.JsonConverters;
 using System.IO;
 using System.Text.Json;

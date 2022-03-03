@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Configuration;
+using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations.JsonConverters;
 using Microsoft.Extensions.Options;
 using System;
@@ -76,8 +76,8 @@ public class DateTimeOffsetConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(new DateTimeOffset(2022,3,4,0,0,0, timeSpan), parsedObject!.DateTime);
-        Assert.Equal(new DateTimeOffset(2022,3,4,0,0,0, timeSpan), parsedObject.NullableDateTime);
+        Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan), parsedObject!.DateTime);
+        Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan), parsedObject.NullableDateTime);
     }
 
     [Theory]
@@ -90,8 +90,8 @@ public class DateTimeOffsetConverterTests
 
         await JsonSerializer.SerializeAsync(memoryStream, new Contract
         {
-            DateTime = new DateTimeOffset(2022,3,4,0,0,0, timeSpan),
-            NullableDateTime = new DateTimeOffset(2022,3,4,0,0,0, timeSpan),
+            DateTime = new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan),
+            NullableDateTime = new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan),
         }, _jsonSerializerOptions);
 
         memoryStream.Seek(0, SeekOrigin.Begin);

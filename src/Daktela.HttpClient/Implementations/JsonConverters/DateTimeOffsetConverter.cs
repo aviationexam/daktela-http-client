@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Configuration;
+using Daktela.HttpClient.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Buffers;
