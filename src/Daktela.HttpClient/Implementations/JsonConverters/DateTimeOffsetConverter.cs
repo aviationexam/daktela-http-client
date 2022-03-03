@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Daktela.HttpClient.Implementations.JsonParsers;
+namespace Daktela.HttpClient.Implementations.JsonConverters;
 
 public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
 {
@@ -48,17 +48,18 @@ public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
         // The "G" format without offset will always be 19 bytes.
         var utf8Date = new byte[19].AsSpan();
 
-        var result = Utf8Formatter.TryFormat(value, utf8Date, out _, new StandardFormat('R'));
+        var result = Utf8Formatter.TryFormat(value, utf8Date, out _, new StandardFormat('G'));
         Debug.Assert(result);
 
-        for (var i = 0; i < utf8Date.Length; i++)
-        {
-            if (utf8Date[i] == '/')
-            {
-                utf8Date[i] = (byte) '-';
-            }
-        }
+        var span = new byte[19].AsSpan();
+        utf8Date[6..10].CopyTo(span[0..4]);
+        span[4] = (byte) '-';
+        utf8Date[..2].CopyTo(span[5..7]);
+        span[7] = (byte) '-';
+        utf8Date[3..5].CopyTo(span[8..10]);
 
-        writer.WriteStringValue(utf8Date);
+        utf8Date[10..19].CopyTo(span[10..]);
+
+        writer.WriteStringValue(span);
     }
 }
