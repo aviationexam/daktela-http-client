@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Integrations;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -15,7 +16,7 @@ public class User
     /// Login name
     /// </summary>
     [JsonPropertyName("name")]
-    public string Name { get; private set; } = null!;
+    public string Name { get; set; } = null!;
 
     /// <summary>
     /// Title
@@ -24,7 +25,7 @@ public class User
     /// </summary>
     [JsonPropertyName("title")]
     [Required]
-    public string Title { get; private set; } = null!;
+    public string Title { get; set; } = null!;
 
     /// <summary>
     /// Alias
@@ -80,7 +81,7 @@ public class User
     /// Password
     /// </summary>
     [JsonPropertyName("password")]
-    public string Password { get; private set; } = null!;
+    public string Password { get; set; } = null!;
 
     /// <summary>
     /// Extension

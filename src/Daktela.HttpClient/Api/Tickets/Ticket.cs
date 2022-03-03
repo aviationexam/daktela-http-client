@@ -11,7 +11,7 @@ public class Ticket
     /// Unique name
     /// </summary>
     [JsonPropertyName("name")]
-    public int Name { get; private set; }
+    public int Name { get; set; }
 
     /// <summary>
     /// Subject of ticket

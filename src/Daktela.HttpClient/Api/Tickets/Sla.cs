@@ -9,7 +9,7 @@ public class Sla
     /// Name
     /// </summary>
     [JsonPropertyName("name")]
-    public string Name { get; private set; } = null!;
+    public string Name { get; set; } = null!;
 
     /// <summary>
     /// Title

@@ -11,7 +11,7 @@ public class Queue
     /// Unique number of queue
     /// </summary>
     [JsonPropertyName("name")]
-    public int Name { get; private set; }
+    public int Name { get; set; }
 
     /// <summary>
     /// Title
