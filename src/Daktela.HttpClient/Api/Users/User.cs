@@ -111,7 +111,7 @@ public class User
     /// What phone number should the user represent when calling
     /// </summary>
     [JsonPropertyName("clid")]
-    public int CallId { get; set; }
+    public string CallId { get; set; } = null!;
 
     /// <summary>
     /// Login static
@@ -181,7 +181,7 @@ public class User
     /// Additional parameters
     /// </summary>
     [JsonPropertyName("options")]
-    public string Options { get; set; } = null!;
+    public IDictionary<string, object> Options { get; set; } = null!;
 
     /// <summary>
     /// Backoffice user
