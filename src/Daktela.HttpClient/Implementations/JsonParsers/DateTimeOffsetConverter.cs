@@ -9,11 +9,11 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Implementations.JsonParsers;
 
-public class DateTimeOffsetParser : JsonConverter<DateTimeOffset>
+public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
 {
     private readonly DaktelaOptions _daktelaOptions;
 
-    public DateTimeOffsetParser(IOptions<DaktelaOptions> daktelaOptions)
+    public DateTimeOffsetConverter(IOptions<DaktelaOptions> daktelaOptions)
     {
         _daktelaOptions = daktelaOptions.Value;
     }

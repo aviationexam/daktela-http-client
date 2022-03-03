@@ -17,7 +17,8 @@ public class HttpResponseParser : IHttpResponseParser
     public HttpResponseParser(IOptions<DaktelaOptions> daktelaOptions)
     {
         _jsonSerializerOptions = new JsonSerializerOptions();
-        _jsonSerializerOptions.Converters.Add(new DateTimeOffsetParser(daktelaOptions));
+        _jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter(daktelaOptions));
+        _jsonSerializerOptions.Converters.Add(new EnumsConverterFactory());
     }
 
     public async Task<T> ParseResponseAsync<T>(
