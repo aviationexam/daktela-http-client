@@ -114,7 +114,7 @@ public class ContactEndpointTests
     [Fact]
     public async Task GetSimpleContactWithUserWorks()
     {
-        const string name = "testing_user";
+        const string name = "test_user_with_user";
 
         using var _ = await MockHttpGetResponse<SingleResponse<Contact>>(
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}",
@@ -381,7 +381,8 @@ public class ContactEndpointTests
         Assert.NotNull(contact.User);
         Assert.Null(contact.Account);
 
-        Assert.Equal("admin", contact.User!.Name);
+        Assert.Equal("administrator", contact.User!.Name);
+        Assert.Equal("admin", contact.User.Role.Name);
     }
 
     private async Task<IDisposable> MockHttpGetResponse<THttpContract>(string name, string httpContent)
