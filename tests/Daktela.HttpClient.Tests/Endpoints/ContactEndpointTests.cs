@@ -79,30 +79,36 @@ public class ContactEndpointTests
         Assert.Equal("admin", contact.User.Role.Name);
     }
 
-    private async Task<IDisposable> MockHttpGetResponse<THttpContract, TContract>(string name, string httpContent)
-        where THttpContract : class
-        where TContract : class
+    [Fact]
+    public async Task GetContactsWorks()
     {
-        // disposed from httpResponseContent
-        var memoryStream = new MemoryStream();
+        using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<Contact>(
+            $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}", "contacts"
+        );
 
-        await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(httpContent);
-        await streamWriter.FlushAsync();
-        streamWriter.Close();
+        var responseMetadata = new TotalRecordsResponseMetadata();
 
-        memoryStream.Seek(0, SeekOrigin.Begin);
+        var count = 0;
+        await foreach (
+            var contact in _contactEndpoint.GetContactsAsync(
+                RequestBuilder.CreateEmpty(),
+                RequestOptionBuilder.CreateAutoPagingRequestOption(false),
+                responseMetadata
+            ))
+        {
+            count++;
+            Assert.NotNull(contact);
+        }
 
-        var httpResponseContent = new StreamContent(memoryStream);
+        Assert.Equal(2, count);
+        var totalRecords = Assert.Single(responseMetadata.TotalRecords);
+        Assert.Equal(2, totalRecords);
+    }
 
-        _daktelaHttpClientMock.Setup(x => x.GetAsync<TContract>(
-            It.IsAny<IHttpResponseParser>(),
-            name,
-            It.IsAny<CancellationToken>()
-        )).Returns((
-            IHttpResponseParser httpResponseParser, string _, CancellationToken cancellationToken
-        ) => httpResponseParser.ParseResponseAsync<THttpContract>(httpResponseContent, cancellationToken));
+    private class TotalRecordsResponseMetadata : ITotalRecordsResponseMetadata
+    {
+        public ICollection<int> TotalRecords { get; } = new List<int>();
 
-        return httpResponseContent;
+        public void SetTotalRecords(int totalRecords) => TotalRecords.Add(totalRecords);
     }
 }
