@@ -4,6 +4,7 @@ using Daktela.HttpClient.Interfaces.Requests;
 using Moq;
 using System;
 using System.IO;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
@@ -33,6 +34,12 @@ public static class DaktelaHttpClientMock
 
     public static IDisposable MockHttpGetListResponse<TContract>(this Mock<IDaktelaHttpClient> mock, string uri, string resourceName)
         where TContract : class
+        => mock.MockHttpGetListResponse<TContract>(uri, _ => true, resourceName);
+
+    public static IDisposable MockHttpGetListResponse<TContract>(
+        this Mock<IDaktelaHttpClient> mock, string uri, Expression<Func<IRequest, bool>> requestFilter, string resourceName
+    )
+        where TContract : class
     {
         // disposed from httpResponseContent
         var stream = LoadEmbeddedJson(resourceName);
@@ -42,7 +49,7 @@ public static class DaktelaHttpClientMock
         mock.Setup(x => x.GetListAsync<TContract>(
             It.IsAny<IHttpResponseParser>(),
             uri,
-            It.IsAny<IRequest>(),
+            It.Is(requestFilter),
             It.IsAny<CancellationToken>()
         )).Returns((
             IHttpResponseParser httpResponseParser, string _, IRequest _, CancellationToken cancellationToken
