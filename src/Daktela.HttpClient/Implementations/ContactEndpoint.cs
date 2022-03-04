@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Api.Contacts;
-using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Interfaces;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -21,16 +22,32 @@ public class ContactEndpoint : IContactEndpoint
         _httpResponseParser = httpResponseParser;
     }
 
-    public async Task<Contact> GetContactAsync(string name, CancellationToken cancellationToken = default)
+    public async Task<Contact> GetContactAsync(
+        string name, CancellationToken cancellationToken
+    )
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        var contact = await _daktelaHttpClient.GetAsync<SingleResponse<Contact>>(
+        var contact = await _daktelaHttpClient.GetAsync<Contact>(
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             cancellationToken
         );
 
         return contact.Result;
+    }
+
+    public async IAsyncEnumerable<Contact> GetContactsAsync(
+        IRequest request, [EnumeratorCancellation] CancellationToken cancellationToken
+    )
+    {
+        var contacts = await _daktelaHttpClient.GetListAsync<Contact>(
+            _httpResponseParser,
+            $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
+            request,
+            cancellationToken
+        );
+
+        yield break;
     }
 }

@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Contacts;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,5 +13,10 @@ public interface IContactEndpoint
     Task<Contact> GetContactAsync(
         string name,
         CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<Contact> GetContactsAsync(
+        IRequest request,
+        CancellationToken cancellationToken
     );
 }
