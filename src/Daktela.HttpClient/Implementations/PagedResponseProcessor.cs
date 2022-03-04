@@ -71,6 +71,14 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
             {
                 yield return item;
             }
+
+            if (autoPaging && request is IPagedQuery pagedQuery)
+            {
+                pagedQuery.Paging = pagedQuery.Paging with
+                {
+                    Skip = pagedQuery.Paging.Skip + pagedQuery.Paging.Take
+                };
+            }
         } while (autoPaging && itemCount < totalItemCount);
     }
 }

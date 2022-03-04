@@ -6,6 +6,8 @@ namespace Daktela.HttpClient.Implementations.Requests;
 
 internal record PagingOnlyRequest(Paging Paging) : IPagedRequest
 {
+    public Paging Paging { get; set; } = Paging;
+
     public IPagedSortingRequest WithSortable(IReadOnlyCollection<Sorting> sorting) => new PagedSortingRequest(
         sorting,
         Paging

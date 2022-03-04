@@ -5,5 +5,5 @@ namespace Daktela.HttpClient.Interfaces.Queries;
 
 public interface IPagedQuery : IRequest
 {
-    Paging Paging { get; }
+    Paging Paging { get; set; }
 }
