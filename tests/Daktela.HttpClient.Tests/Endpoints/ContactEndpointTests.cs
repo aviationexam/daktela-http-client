@@ -42,7 +42,7 @@ public class ContactEndpointTests
     {
         const string name = "testing_user";
 
-        using var _ = await MockHttpGetResponse<SingleResponse<Contact>>(
+        using var _ = await MockHttpGetResponse<SingleResponse<Contact>, Contact>(
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}",
             @"
 {
@@ -116,7 +116,7 @@ public class ContactEndpointTests
     {
         const string name = "test_user_with_user";
 
-        using var _ = await MockHttpGetResponse<SingleResponse<Contact>>(
+        using var _ = await MockHttpGetResponse<SingleResponse<Contact>, Contact>(
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}",
             @"
 {
@@ -385,8 +385,9 @@ public class ContactEndpointTests
         Assert.Equal("admin", contact.User.Role.Name);
     }
 
-    private async Task<IDisposable> MockHttpGetResponse<THttpContract>(string name, string httpContent)
+    private async Task<IDisposable> MockHttpGetResponse<THttpContract, TContract>(string name, string httpContent)
         where THttpContract : class
+        where TContract : class
     {
         // disposed from httpResponseContent
         var memoryStream = new MemoryStream();
@@ -400,7 +401,7 @@ public class ContactEndpointTests
 
         var httpResponseContent = new StreamContent(memoryStream);
 
-        _daktelaHttpClientMock.Setup(x => x.GetAsync<THttpContract>(
+        _daktelaHttpClientMock.Setup(x => x.GetAsync<TContract>(
             It.IsAny<IHttpResponseParser>(),
             name,
             It.IsAny<CancellationToken>()
