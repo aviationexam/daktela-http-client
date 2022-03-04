@@ -74,7 +74,7 @@ public class RequestsBuilderTests
     }
 
     [Fact]
-    public void CreateFilteringQuery()
+    public void CreateFilteringRequest()
     {
         var request = RequestBuilder.CreateFiltering(new Filter());
 
@@ -176,7 +176,7 @@ public class RequestsBuilderTests
     }
 
     [Fact]
-    public void CreateFilteringQuery_Paged()
+    public void CreateFilteringRequest_Paged()
     {
         var request = RequestBuilder.CreateFiltering(new Filter())
             .WithPaging(new Paging(0, 20));
@@ -187,7 +187,7 @@ public class RequestsBuilderTests
     }
 
     [Fact]
-    public void CreateFilteringQuery_Paged_Sorted()
+    public void CreateFilteringRequest_Paged_Sorted()
     {
         var request = RequestBuilder.CreateFiltering(new Filter())
             .WithPaging(new Paging(0, 20))
@@ -199,7 +199,7 @@ public class RequestsBuilderTests
     }
 
     [Fact]
-    public void CreateFilteringQuery_Sorted()
+    public void CreateFilteringRequest_Sorted()
     {
         var request = RequestBuilder.CreateFiltering(new Filter())
             .WithSortable(new List<Sorting>());
@@ -210,7 +210,7 @@ public class RequestsBuilderTests
     }
 
     [Fact]
-    public void CreateFilteringQuery_Sorted_Paged()
+    public void CreateFilteringRequest_Sorted_Paged()
     {
         var request = RequestBuilder.CreateFiltering(new Filter())
             .WithSortable(new List<Sorting>())
