@@ -8,6 +8,9 @@ public class DaktelaOptions
 
     public string AccessToken { get; set; } = null!;
 
+    /// <summary>
+    /// HTTP request timeout
+    /// </summary>
     public TimeSpan Timeout { get; set; }
 
     /// <summary>
