@@ -12,7 +12,7 @@ public class ListResponse<T> where T : class
     public ICollection<string> Error { get; set; } = null!;
 
     [JsonPropertyName("result")]
-    public T Result { get; set; } = null!;
+    public ResultObject Result { get; set; } = null!;
 
     [JsonPropertyName("_time")]
     public DateTimeOffset Time { get; set; }
