@@ -1,7 +1,10 @@
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
+using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Interfaces;
+using Daktela.HttpClient.Interfaces.Endpoints;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net;
@@ -37,7 +40,9 @@ public static class DaktelaExtensions
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
             });
 
-        serviceCollection.AddSingleton<IHttpResponseParser, HttpResponseParser>();
+        serviceCollection.TryAddSingleton(typeof(IPagedResponseProcessor<>), typeof(PagedResponseProcessor<>));
+
+        serviceCollection.TryAddSingleton<IHttpResponseParser, HttpResponseParser>();
 
         serviceCollection.AddScoped<IContactEndpoint, ContactEndpoint>();
 
