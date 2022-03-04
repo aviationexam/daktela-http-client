@@ -53,7 +53,8 @@ public class MyService {
         RequestBuilder.CreatePaged(new Paging(0, 20)),
         RequestOptionBuilder.CreateAutoPagingRequestOption(false),
         responseMetadata
-      ))
+      )
+    )
     {
       var contactName = contact.Name;
     }

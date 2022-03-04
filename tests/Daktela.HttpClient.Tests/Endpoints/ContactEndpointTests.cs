@@ -1,9 +1,12 @@
 using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.Requests;
+using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
+using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Responses;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -77,6 +80,7 @@ public class ContactEndpointTests
 
         Assert.Equal("administrator", contact.User!.Name);
         Assert.Equal("admin", contact.User.Role.Name);
+        Assert.Equal("admin", contact.User.Profile.Name);
     }
 
     [Fact]
@@ -89,20 +93,80 @@ public class ContactEndpointTests
         var responseMetadata = new TotalRecordsResponseMetadata();
 
         var count = 0;
+        var users = new List<User>();
         await foreach (
             var contact in _contactEndpoint.GetContactsAsync(
-                RequestBuilder.CreateEmpty(),
+                RequestBuilder.CreatePaged(new Paging(0, 2)),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(false),
                 responseMetadata
-            ))
+            )
+        )
         {
             count++;
             Assert.NotNull(contact);
+            Assert.Null(contact.Account);
+            Assert.NotNull(contact.CustomFields);
+            Assert.All(contact.CustomFields!, x =>
+            {
+                Assert.NotEmpty(x.Key);
+                Assert.Empty(x.Value);
+            });
+
+            if (contact.User != null)
+            {
+                users.Add(contact.User);
+            }
         }
 
         Assert.Equal(2, count);
         var totalRecords = Assert.Single(responseMetadata.TotalRecords);
-        Assert.Equal(2, totalRecords);
+        Assert.Equal(4, totalRecords);
+
+        var user = Assert.Single(users);
+        Assert.Equal("administrator", user.Name);
+        Assert.Equal("admin", user.Role.Name);
+        Assert.Equal("admin", user.Profile.Name);
+        Assert.Equal(ECanTransferCall.BlindAndAssistedTransfer, user.Profile.CanTransferCall);
+        Assert.Equal(EExtensionState.Offline, user.ExtensionState);
+        Assert.Equal(ERecordAtCallStart.Disabled, user.RecordAtCallStart);
+        Assert.Null(user.Acl);
+        Assert.False(user.Deleted);
+        Assert.False(user.Deactivated);
+    }
+
+    [Fact]
+    public async Task GetContactsWorks_AutoPaginate()
+    {
+        using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<Contact>(
+            $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
+            request => ((IPagedQuery) request).Paging == new Paging(0, 2),
+            "contacts"
+        );
+        using var secondResponse = _daktelaHttpClientMock.MockHttpGetListResponse<Contact>(
+            $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
+            request => ((IPagedQuery) request).Paging == new Paging(2, 2),
+            "contacts"
+        );
+
+        var responseMetadata = new TotalRecordsResponseMetadata();
+
+        var count = 0;
+        await foreach (
+            var contact in _contactEndpoint.GetContactsAsync(
+                RequestBuilder.CreatePaged(new Paging(0, 2)),
+                RequestOptionBuilder.CreateAutoPagingRequestOption(true),
+                responseMetadata
+            )
+        )
+        {
+            count++;
+            Assert.NotNull(contact);
+            Assert.Null(contact.Account);
+        }
+
+        Assert.Equal(4, count);
+        Assert.Equal(2, responseMetadata.TotalRecords.Count);
+        Assert.All(responseMetadata.TotalRecords, x => Assert.Equal(4, x));
     }
 
     private class TotalRecordsResponseMetadata : ITotalRecordsResponseMetadata
