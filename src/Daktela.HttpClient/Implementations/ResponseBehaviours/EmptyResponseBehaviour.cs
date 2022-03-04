@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Interfaces.ResponseBehaviours;
+using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 
 namespace Daktela.HttpClient.Implementations.ResponseBehaviours;
 
