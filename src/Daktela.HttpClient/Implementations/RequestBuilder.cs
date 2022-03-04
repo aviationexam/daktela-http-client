@@ -7,9 +7,11 @@ namespace Daktela.HttpClient.Implementations;
 
 public static class RequestBuilder
 {
-    public static ISortingRequest CreateSortableQuery(IReadOnlyCollection<Sorting> sorting) => new SortingOnlyRequest(sorting);
+    public static IEmptyRequest CreateEmpty() => new EmptyRequest();
 
-    public static IPagedRequest CreatePagedQuery(Paging paging) => new PagingOnlyRequest(paging);
+    public static ISortingRequest CreateSortable(IReadOnlyCollection<Sorting> sorting) => new SortingOnlyRequest(sorting);
 
-    public static IFilteringRequest CreateFilteringQuery(IFilter filters) => new FilteringOnlyRequest(filters);
+    public static IPagedRequest CreatePaged(Paging paging) => new PagingOnlyRequest(paging);
+
+    public static IFilteringRequest CreateFiltering(IFilter filters) => new FilteringOnlyRequest(filters);
 }
