@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Api.Responses;
+using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.Responses;

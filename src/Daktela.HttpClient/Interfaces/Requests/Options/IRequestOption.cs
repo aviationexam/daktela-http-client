@@ -1,4 +1,4 @@
-﻿namespace Daktela.HttpClient.Interfaces.Requests.Options;
+namespace Daktela.HttpClient.Interfaces.Requests.Options;
 
 public interface IRequestOption
 {

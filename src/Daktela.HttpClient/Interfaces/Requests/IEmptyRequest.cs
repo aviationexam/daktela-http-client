@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Interfaces.Requests.Builder;
+using Daktela.HttpClient.Interfaces.Requests.Builder;
 
 namespace Daktela.HttpClient.Interfaces.Requests;
 

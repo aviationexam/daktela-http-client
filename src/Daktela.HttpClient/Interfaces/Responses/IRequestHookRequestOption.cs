@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Api.Requests;
+using Daktela.HttpClient.Api.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using System.Threading;
 using System.Threading.Tasks;

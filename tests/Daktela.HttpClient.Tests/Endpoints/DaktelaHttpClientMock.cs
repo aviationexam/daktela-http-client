@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Api.Responses;
+using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Requests;
 using Moq;
