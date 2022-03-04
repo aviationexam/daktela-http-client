@@ -1,14 +1,14 @@
 using Daktela.HttpClient.Api.Contacts;
-using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
+using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Interfaces;
+using Daktela.HttpClient.Interfaces.Endpoints;
+using Daktela.HttpClient.Interfaces.Responses;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -20,6 +20,7 @@ public class ContactEndpointTests
 
     private readonly Mock<IDaktelaHttpClient> _daktelaHttpClientMock = new(MockBehavior.Strict);
     private readonly Mock<IOptions<DaktelaOptions>> _daktelaOptionsMock = new(MockBehavior.Strict);
+    private readonly Mock<IPagedResponseProcessor<IContactEndpoint>> _pagedResponseProcessorMock = new(MockBehavior.Strict);
 
     private readonly IContactEndpoint _contactEndpoint;
 
@@ -33,7 +34,8 @@ public class ContactEndpointTests
 
         _contactEndpoint = new ContactEndpoint(
             _daktelaHttpClientMock.Object,
-            new HttpResponseParser(_daktelaOptionsMock.Object)
+            new HttpResponseParser(_daktelaOptionsMock.Object),
+            _pagedResponseProcessorMock.Object
         );
     }
 

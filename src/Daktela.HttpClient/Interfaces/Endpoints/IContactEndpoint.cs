@@ -1,10 +1,12 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Interfaces.Requests;
+using Daktela.HttpClient.Interfaces.Requests.Options;
+using Daktela.HttpClient.Interfaces.Responses;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Daktela.HttpClient.Interfaces;
+namespace Daktela.HttpClient.Interfaces.Endpoints;
 
 public interface IContactEndpoint
 {
@@ -18,6 +20,8 @@ public interface IContactEndpoint
 
     IAsyncEnumerable<Contact> GetContactsAsync(
         IRequest request,
+        IRequestOption requestOption,
+        IResponseMetadata responseMetadata,
         CancellationToken cancellationToken = default
     );
 }
