@@ -1,5 +1,7 @@
 using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Interfaces;
+using Daktela.HttpClient.Interfaces.Queries;
+using Daktela.HttpClient.Interfaces.Requests;
 using System;
 using System.Collections.Specialized;
 using System.Net.Http;

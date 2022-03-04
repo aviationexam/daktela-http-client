@@ -1,5 +1,6 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Interfaces;
+using Daktela.HttpClient.Interfaces.Requests;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
