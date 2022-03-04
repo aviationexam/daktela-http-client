@@ -5,27 +5,20 @@ using Moq;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Daktela.HttpClient.Tests.Endpoints;
 
 public static class DaktelaHttpClientMock
 {
-    public static async Task<IDisposable> MockHttpGetResponse<TContract>(this Mock<IDaktelaHttpClient> mock, string uri, string httpContent)
+    public static IDisposable MockHttpGetResponse<TContract>(this Mock<IDaktelaHttpClient> mock, string uri, string resourceName)
         where TContract : class
     {
         // disposed from httpResponseContent
-        var memoryStream = new MemoryStream();
+        var stream = LoadEmbeddedJson(resourceName);
 
-        await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(httpContent);
-        await streamWriter.FlushAsync();
-        streamWriter.Close();
-
-        memoryStream.Seek(0, SeekOrigin.Begin);
-
-        var httpResponseContent = new StreamContent(memoryStream);
+        var httpResponseContent = new StreamContent(stream);
 
         mock.Setup(x => x.GetAsync<TContract>(
             It.IsAny<IHttpResponseParser>(),
@@ -38,20 +31,13 @@ public static class DaktelaHttpClientMock
         return httpResponseContent;
     }
 
-    public static async Task<IDisposable> MockHttpGetListResponse<TContract>(this Mock<IDaktelaHttpClient> mock, string uri, string httpContent)
+    public static IDisposable MockHttpGetListResponse<TContract>(this Mock<IDaktelaHttpClient> mock, string uri, string resourceName)
         where TContract : class
     {
         // disposed from httpResponseContent
-        var memoryStream = new MemoryStream();
+        var stream = LoadEmbeddedJson(resourceName);
 
-        await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(httpContent);
-        await streamWriter.FlushAsync();
-        streamWriter.Close();
-
-        memoryStream.Seek(0, SeekOrigin.Begin);
-
-        var httpResponseContent = new StreamContent(memoryStream);
+        var httpResponseContent = new StreamContent(stream);
 
         mock.Setup(x => x.GetListAsync<TContract>(
             It.IsAny<IHttpResponseParser>(),
@@ -63,5 +49,12 @@ public static class DaktelaHttpClientMock
         ) => httpResponseParser.ParseResponseAsync<ListResponse<TContract>>(httpResponseContent, cancellationToken));
 
         return httpResponseContent;
+    }
+
+    private static Stream LoadEmbeddedJson(string name)
+    {
+        var resourceName = $"Daktela.HttpClient.Tests.json_responses.{name}.json";
+        var assembly = typeof(DaktelaHttpClientMock).GetTypeInfo().Assembly;
+        return assembly.GetManifestResourceStream(resourceName) ?? throw new NullReferenceException($"Resource {resourceName} was not found");
     }
 }
