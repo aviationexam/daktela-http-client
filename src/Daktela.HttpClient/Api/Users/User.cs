@@ -95,7 +95,7 @@ public class User
     /// Custom ACL
     /// </summary>
     [JsonPropertyName("acl")]
-    public RightsToCall Acl { get; set; } = null!;
+    public RightsToCall? Acl { get; set; } = null!;
 
     /// <summary>
     /// Extension state
