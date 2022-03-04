@@ -8,7 +8,7 @@ using Xunit;
 namespace Daktela.HttpClient.Tests.Requests;
 
 [SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
-public class RequestsBuilderTests
+public class RequestBuilderTests
 {
     [Fact]
     public void CreateEmptyRequest()
