@@ -2,7 +2,7 @@ namespace Daktela.HttpClient.Api.Requests;
 
 public class Paging
 {
-    int Skip { get; set; }
+    public int Skip { get; set; }
 
-    int Take { get; set; }
+    public int Take { get; set; }
 }
