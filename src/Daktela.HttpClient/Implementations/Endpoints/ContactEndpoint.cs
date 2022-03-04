@@ -3,7 +3,7 @@ using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
-using Daktela.HttpClient.Interfaces.Responses;
+using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,12 +46,12 @@ public class ContactEndpoint : IContactEndpoint
     public IAsyncEnumerable<Contact> GetContactsAsync(
         IRequest request,
         IRequestOption requestOption,
-        IResponseMetadata responseMetadata,
+        IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
     ) => _pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
-        responseMetadata,
+        responseBehaviour,
         new
         {
             daktelaHttpClient = _daktelaHttpClient,

@@ -1,11 +1,10 @@
 using Daktela.HttpClient.Api.Requests;
-using Daktela.HttpClient.Interfaces.Requests.Options;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Daktela.HttpClient.Interfaces.Responses;
+namespace Daktela.HttpClient.Interfaces.ResponseBehaviours;
 
-public interface IProcessRequestHooksResponseMetadata : IResponseMetadata
+public interface IProcessRequestHooksResponseBehaviour : IResponseBehaviour
 {
     Task BeforePageAsync(Paging? paging, CancellationToken cancellationToken);
 

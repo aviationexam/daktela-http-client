@@ -7,7 +7,7 @@ using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Queries;
-using Daktela.HttpClient.Interfaces.Responses;
+using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
@@ -91,7 +91,7 @@ public class ContactEndpointTests
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}", "contacts"
         );
 
-        var responseMetadata = new TotalRecordsResponseMetadata();
+        var responseMetadata = new TotalRecordsResponseBehaviour();
 
         var cancellationToken = CancellationToken.None;
 
@@ -154,7 +154,7 @@ public class ContactEndpointTests
         );
 
         var cancellationToken = CancellationToken.None;
-        var responseMetadata = new TotalRecordsResponseMetadata();
+        var responseMetadata = new TotalRecordsResponseBehaviour();
 
         var count = 0;
         await foreach (
@@ -176,7 +176,7 @@ public class ContactEndpointTests
         Assert.All(responseMetadata.TotalRecords, x => Assert.Equal(4, x));
     }
 
-    private class TotalRecordsResponseMetadata : ITotalRecordsResponseMetadata
+    private class TotalRecordsResponseBehaviour : ITotalRecordsResponseBehaviour
     {
         public ICollection<int> TotalRecords { get; } = new List<int>();
 

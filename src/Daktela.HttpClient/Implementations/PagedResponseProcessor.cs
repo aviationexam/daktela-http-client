@@ -3,7 +3,7 @@ using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
-using Daktela.HttpClient.Interfaces.Responses;
+using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -18,12 +18,12 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
     public async IAsyncEnumerable<TContract> InvokeAsync<TContract, TCtx>(
         IRequest request,
         IRequestOption requestOption,
-        IResponseMetadata responseMetadata,
+        IResponseBehaviour responseBehaviour,
         TCtx ctx,
         Func<
             IRequest,
             IRequestOption,
-            IResponseMetadata,
+            IResponseBehaviour,
             TCtx,
             CancellationToken,
             Task<ListResponse<TContract>>
@@ -50,15 +50,15 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
             autoPaging = autoPagingRequestOption.AutoPaging;
         }
 
-        var totalRecordsResponseMetadata = responseMetadata as ITotalRecordsResponseMetadata;
-        var processRequestHooksResponseMetadata = responseMetadata as IProcessRequestHooksResponseMetadata;
+        var totalRecordsResponseBehaviour = responseBehaviour as ITotalRecordsResponseBehaviour;
+        var processRequestHooksResponseBehaviour = responseBehaviour as IProcessRequestHooksResponseBehaviour;
 
         do
         {
             var response = await pageRequestCallback(
                 request,
                 requestOption,
-                responseMetadata,
+                responseBehaviour,
                 ctx,
                 cancellationToken
             );
@@ -66,11 +66,11 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
             itemCount += response.Result.Data.Count;
             totalItemCount = response.Result.Total;
 
-            totalRecordsResponseMetadata?.SetTotalRecords(totalItemCount);
+            totalRecordsResponseBehaviour?.SetTotalRecords(totalItemCount);
 
-            if (processRequestHooksResponseMetadata != null)
+            if (processRequestHooksResponseBehaviour != null)
             {
-                await processRequestHooksResponseMetadata.BeforePageAsync(pagedQuery?.Paging, cancellationToken).ConfigureAwait(false);
+                await processRequestHooksResponseBehaviour.BeforePageAsync(pagedQuery?.Paging, cancellationToken).ConfigureAwait(false);
             }
 
             foreach (var item in response.Result.Data)
@@ -78,9 +78,9 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
                 yield return item;
             }
 
-            if (processRequestHooksResponseMetadata != null)
+            if (processRequestHooksResponseBehaviour != null)
             {
-                await processRequestHooksResponseMetadata.AfterPageAsync(cancellationToken).ConfigureAwait(false);
+                await processRequestHooksResponseBehaviour.AfterPageAsync(cancellationToken).ConfigureAwait(false);
             }
 
             if (autoPaging && pagedQuery != null)
