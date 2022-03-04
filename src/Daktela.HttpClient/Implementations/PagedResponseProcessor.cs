@@ -39,15 +39,19 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
         // ReSharper disable once RedundantAssignment
         var autoPaging = false;
 
-        if (request is IPagedQuery { Paging: { } paging })
+        var pagedQuery = request as IPagedQuery;
+        if (pagedQuery != null)
         {
-            itemCount = paging.Skip;
+            itemCount = pagedQuery.Paging.Skip;
         }
 
         if (requestOption is IAutoPagingRequestOption autoPagingRequestOption)
         {
             autoPaging = autoPagingRequestOption.AutoPaging;
         }
+
+        var totalRecordsResponseMetadata = responseMetadata as ITotalRecordsResponseMetadata;
+        var processRequestHooksResponseMetadata = responseMetadata as IProcessRequestHooksResponseMetadata;
 
         do
         {
@@ -62,9 +66,11 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
             itemCount += response.Result.Data.Count;
             totalItemCount = response.Result.Total;
 
-            if (responseMetadata is ITotalRecordsResponseMetadata totalRecordsResponseMetadata)
+            totalRecordsResponseMetadata?.SetTotalRecords(totalItemCount);
+
+            if (processRequestHooksResponseMetadata != null)
             {
-                totalRecordsResponseMetadata.SetTotalRecords(totalItemCount);
+                await processRequestHooksResponseMetadata.BeforePageAsync(pagedQuery?.Paging, cancellationToken).ConfigureAwait(false);
             }
 
             foreach (var item in response.Result.Data)
@@ -72,7 +78,12 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
                 yield return item;
             }
 
-            if (autoPaging && request is IPagedQuery pagedQuery)
+            if (processRequestHooksResponseMetadata != null)
+            {
+                await processRequestHooksResponseMetadata.AfterPageAsync(cancellationToken).ConfigureAwait(false);
+            }
+
+            if (autoPaging && pagedQuery != null)
             {
                 pagedQuery.Paging = pagedQuery.Paging with
                 {

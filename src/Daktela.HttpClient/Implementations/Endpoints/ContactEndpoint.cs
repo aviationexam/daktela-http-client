@@ -38,7 +38,7 @@ public class ContactEndpoint : IContactEndpoint
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             cancellationToken
-        );
+        ).ConfigureAwait(false);
 
         return contact.Result;
     }
@@ -68,6 +68,7 @@ public class ContactEndpoint : IContactEndpoint
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request,
             cancellationToken
-        ), cancellationToken
-    );
+        ),
+        cancellationToken
+    ).IteratingConfigureAwait(cancellationToken);
 }

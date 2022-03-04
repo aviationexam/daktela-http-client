@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -92,20 +93,24 @@ public class ContactEndpointTests
 
         var responseMetadata = new TotalRecordsResponseMetadata();
 
+        var cancellationToken = CancellationToken.None;
+
         var count = 0;
         var users = new List<User>();
         await foreach (
             var contact in _contactEndpoint.GetContactsAsync(
                 RequestBuilder.CreatePaged(new Paging(0, 2)),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(false),
-                responseMetadata
-            )
+                responseMetadata,
+                cancellationToken
+            ).WithCancellation(cancellationToken)
         )
         {
             count++;
             Assert.NotNull(contact);
             Assert.Null(contact.Account);
             Assert.NotNull(contact.CustomFields);
+            // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
             Assert.All(contact.CustomFields!, x =>
             {
                 Assert.NotEmpty(x.Key);
@@ -148,6 +153,7 @@ public class ContactEndpointTests
             "contacts"
         );
 
+        var cancellationToken = CancellationToken.None;
         var responseMetadata = new TotalRecordsResponseMetadata();
 
         var count = 0;
@@ -155,8 +161,9 @@ public class ContactEndpointTests
             var contact in _contactEndpoint.GetContactsAsync(
                 RequestBuilder.CreatePaged(new Paging(0, 2)),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(true),
-                responseMetadata
-            )
+                responseMetadata,
+                cancellationToken
+            ).WithCancellation(cancellationToken)
         )
         {
             count++;

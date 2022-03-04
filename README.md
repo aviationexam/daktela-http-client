@@ -52,8 +52,9 @@ public class MyService {
       var contact in _contactEndpoint.GetContactsAsync(
         RequestBuilder.CreatePaged(new Paging(0, 20)),
         RequestOptionBuilder.CreateAutoPagingRequestOption(false),
-        responseMetadata
-      )
+        responseMetadata,
+        cancellationToken
+      ).WithCancellation(cancellationToken)
     )
     {
       var contactName = contact.Name;
