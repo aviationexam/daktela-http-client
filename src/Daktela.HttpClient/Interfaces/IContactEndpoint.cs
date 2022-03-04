@@ -18,6 +18,6 @@ public interface IContactEndpoint
 
     IAsyncEnumerable<Contact> GetContactsAsync(
         IRequest request,
-        CancellationToken cancellationToken
+        CancellationToken cancellationToken = default
     );
 }
