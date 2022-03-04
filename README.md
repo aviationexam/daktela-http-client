@@ -46,13 +46,15 @@ public class MyService {
 
   public async Task CallApiGetList(CancellationToken cancellationToken = default)
   {
-    var responseMetadata = new TotalRecordsResponseMetadata();
+    var responseBehaviour = new TotalRecordsResponseBehaviour();
+    // or you can simply use an empty response behavior as follow
+    var emptyResponseBehaviour = ResponseBehaviourBuilder.CreateEmpty();
 
     await foreach(
       var contact in _contactEndpoint.GetContactsAsync(
         RequestBuilder.CreatePaged(new Paging(0, 20)),
         RequestOptionBuilder.CreateAutoPagingRequestOption(false),
-        responseMetadata,
+        responseBehaviour,
         cancellationToken
       ).WithCancellation(cancellationToken)
     )
@@ -60,10 +62,10 @@ public class MyService {
       var contactName = contact.Name;
     }
 
-    var totalRecords = responseMetadata.TotalRecords;
+    var totalRecords = responseBehaviour.TotalRecords;
   }
 
-  private class TotalRecordsResponseMetadata : ITotalRecordsResponseMetadata
+  private class TotalRecordsResponseBehaviour : ITotalRecordsResponseBehaviour
   {
     public int? TotalRecords { get; private set; }
 
