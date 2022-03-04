@@ -42,7 +42,7 @@ public class ContactEndpointTests
     {
         const string name = "testing_user";
 
-        using var _ = await MockHttpGetResponse<SingleResponse<Contact>, Contact>(
+        using var _ = await _daktelaHttpClientMock.MockHttpGetResponse<Contact>(
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}",
             @"
 {
@@ -116,7 +116,7 @@ public class ContactEndpointTests
     {
         const string name = "test_user_with_user";
 
-        using var _ = await MockHttpGetResponse<SingleResponse<Contact>, Contact>(
+        using var _ = await _daktelaHttpClientMock.MockHttpGetResponse<Contact>(
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}",
             @"
 {
