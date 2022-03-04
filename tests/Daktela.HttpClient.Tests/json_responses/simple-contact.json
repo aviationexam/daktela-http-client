@@ -1,0 +1,54 @@
+{
+  "error": [],
+  "result": {
+    "title": "Testing user",
+    "firstname": "Testing",
+    "lastname": "user",
+    "account": null,
+    "user": null,
+    "description": "",
+    "nps_score": 0,
+    "edited": "2022-03-02 14:06:05",
+    "created": "2022-03-02 14:06:05",
+    "customFields": {
+      "number": [],
+      "address": [],
+      "email": [],
+      "note": []
+    },
+    "duplicateContacts": null,
+    "notDuplicateContacts": null,
+    "name": "testing_user",
+    "_sys": {
+      "hash": "87",
+      "model": "contacts",
+      "cfScheme": {
+        "number": {
+          "type": "PHONE",
+          "title": "Telefon",
+          "hidden": false,
+          "readonly": false
+        },
+        "address": {
+          "type": "ADDRESS",
+          "title": "Adresa",
+          "hidden": false,
+          "readonly": false
+        },
+        "email": {
+          "type": "EMAIL",
+          "title": "Email",
+          "hidden": false,
+          "readonly": false
+        },
+        "note": {
+          "type": "TEXTAREA",
+          "title": "Poznámka",
+          "hidden": false,
+          "readonly": false
+        }
+      }
+    }
+  },
+  "_time": "2022-03-02 14:06:16"
+}
