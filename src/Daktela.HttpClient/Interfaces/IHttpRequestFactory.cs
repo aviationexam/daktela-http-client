@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Interfaces.Requests;
+using Daktela.HttpClient.Interfaces.Requests;
 using System;
 using System.Collections.Specialized;
 using System.Net.Http;

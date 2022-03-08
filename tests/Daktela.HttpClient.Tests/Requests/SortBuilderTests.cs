@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Requests;
 using Daktela.HttpClient.Implementations;
 using Xunit;

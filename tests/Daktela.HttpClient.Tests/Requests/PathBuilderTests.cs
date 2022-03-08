@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Implementations;
+using Daktela.HttpClient.Implementations;
 using System.Text.Json.Serialization;
 using Xunit;
 
