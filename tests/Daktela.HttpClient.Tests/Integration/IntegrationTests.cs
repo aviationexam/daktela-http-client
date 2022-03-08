@@ -1,9 +1,9 @@
 using Daktela.HttpClient.Tests.Infrastructure;
 using Xunit;
 
-namespace Daktela.HttpClient.Tests
+namespace Daktela.HttpClient.Tests.Integration
 {
-    public class DaktelaTests
+    public class IntegrationTests
     {
         [Fact]
         public void EmptyInfrastructureTest()
