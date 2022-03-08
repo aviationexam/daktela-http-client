@@ -8,7 +8,7 @@ internal record PagingOnlyRequest(Paging Paging) : IPagedRequest
 {
     public Paging Paging { get; set; } = Paging;
 
-    public IPagedSortingRequest WithSortable(IReadOnlyCollection<Sorting> sorting) => new PagedSortingRequest(
+    public IPagedSortingRequest WithSortable(IReadOnlyCollection<ISorting> sorting) => new PagedSortingRequest(
         sorting,
         Paging
     );

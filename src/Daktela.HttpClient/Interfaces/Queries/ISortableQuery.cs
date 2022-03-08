@@ -6,5 +6,5 @@ namespace Daktela.HttpClient.Interfaces.Queries;
 
 public interface ISortableQuery : IRequest
 {
-    IReadOnlyCollection<Sorting> Sorting { get; }
+    IReadOnlyCollection<ISorting> Sorting { get; }
 }

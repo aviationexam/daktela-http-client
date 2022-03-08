@@ -8,7 +8,7 @@ internal record EmptyRequest : IEmptyRequest
 {
     public IPagedRequest WithPaging(Paging paging) => new PagingOnlyRequest(paging);
 
-    public ISortingRequest WithSortable(IReadOnlyCollection<Sorting> sorting) => new SortingOnlyRequest(sorting);
+    public ISortingRequest WithSortable(IReadOnlyCollection<ISorting> sorting) => new SortingOnlyRequest(sorting);
 
     public IFilteringRequest WithFilter(IFilter filter) => new FilteringOnlyRequest(filter);
 }

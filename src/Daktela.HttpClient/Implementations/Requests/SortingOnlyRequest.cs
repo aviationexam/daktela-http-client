@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Daktela.HttpClient.Implementations.Requests;
 
-internal record SortingOnlyRequest(IReadOnlyCollection<Sorting> Sorting) : ISortingRequest
+internal record SortingOnlyRequest(IReadOnlyCollection<ISorting> Sorting) : ISortingRequest
 {
     public IFilteringSortingRequest WithFilter(IFilter filters) => new FilteringSortingRequest(
         filters,

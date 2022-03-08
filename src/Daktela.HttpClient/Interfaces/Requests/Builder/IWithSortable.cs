@@ -6,5 +6,5 @@ namespace Daktela.HttpClient.Interfaces.Requests.Builder;
 
 public interface IWithSortable<T> where T : class, ISortableQuery
 {
-    T WithSortable(IReadOnlyCollection<Sorting> sorting);
+    T WithSortable(IReadOnlyCollection<ISorting> sorting);
 }

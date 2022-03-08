@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Daktela.HttpClient.Implementations.Requests;
 
-internal record PagedSortingRequest(IReadOnlyCollection<Sorting> Sorting, Paging Paging) : IPagedSortingRequest
+internal record PagedSortingRequest(IReadOnlyCollection<ISorting> Sorting, Paging Paging) : IPagedSortingRequest
 {
     public Paging Paging { get; set; } = Paging;
 

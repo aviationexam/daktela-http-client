@@ -1,7 +1,7 @@
 using Daktela.HttpClient.Api.Requests;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Interfaces.Queries;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
@@ -35,7 +35,7 @@ public class RequestBuilderTests
     public void CreateEmptyRequest_Sorted()
     {
         var request = RequestBuilder.CreateEmpty()
-            .WithSortable(new List<Sorting>());
+            .WithSortable(Array.Empty<ISorting>());
 
         Assert.IsAssignableFrom<ISortableQuery>(request);
         Assert.False(request is IFilteringQuery);
@@ -66,7 +66,7 @@ public class RequestBuilderTests
     [Fact]
     public void CreateSortedRequest()
     {
-        var request = RequestBuilder.CreateSortable(new List<Sorting>());
+        var request = RequestBuilder.CreateSortable(Array.Empty<ISorting>());
 
         Assert.IsAssignableFrom<ISortableQuery>(request);
         Assert.False(request is IFilteringQuery);
@@ -87,7 +87,7 @@ public class RequestBuilderTests
     public void CreatePagedRequest_Sorted()
     {
         var request = RequestBuilder.CreatePaged(new Paging(0, 20))
-            .WithSortable(new List<Sorting>());
+            .WithSortable(Array.Empty<ISorting>());
 
         Assert.IsAssignableFrom<IPagedQuery>(request);
         Assert.IsAssignableFrom<ISortableQuery>(request);
@@ -98,7 +98,7 @@ public class RequestBuilderTests
     public void CreatePagedRequest_Sorted_Filtered()
     {
         var request = RequestBuilder.CreatePaged(new Paging(0, 20))
-            .WithSortable(new List<Sorting>())
+            .WithSortable(Array.Empty<ISorting>())
             .WithFilter(new Filter());
 
         Assert.IsAssignableFrom<IPagedQuery>(request);
@@ -122,7 +122,7 @@ public class RequestBuilderTests
     {
         var request = RequestBuilder.CreatePaged(new Paging(0, 20))
             .WithFilter(new Filter())
-            .WithSortable(new List<Sorting>());
+            .WithSortable(Array.Empty<ISorting>());
 
         Assert.IsAssignableFrom<IPagedQuery>(request);
         Assert.IsAssignableFrom<ISortableQuery>(request);
@@ -132,7 +132,7 @@ public class RequestBuilderTests
     [Fact]
     public void CreateSortedRequest_Filtered()
     {
-        var sortableQuery = RequestBuilder.CreateSortable(new List<Sorting>())
+        var sortableQuery = RequestBuilder.CreateSortable(Array.Empty<ISorting>())
             .WithFilter(new Filter());
 
         Assert.IsAssignableFrom<ISortableQuery>(sortableQuery);
@@ -143,7 +143,7 @@ public class RequestBuilderTests
     [Fact]
     public void CreateSortedRequest_Filtered_Paged()
     {
-        var sortableQuery = RequestBuilder.CreateSortable(new List<Sorting>())
+        var sortableQuery = RequestBuilder.CreateSortable(Array.Empty<ISorting>())
             .WithFilter(new Filter())
             .WithPaging(new Paging(0, 20));
 
@@ -155,7 +155,7 @@ public class RequestBuilderTests
     [Fact]
     public void CreateSortedRequest_Paged()
     {
-        var sortableQuery = RequestBuilder.CreateSortable(new List<Sorting>())
+        var sortableQuery = RequestBuilder.CreateSortable(Array.Empty<ISorting>())
             .WithPaging(new Paging(0, 20));
 
         Assert.IsAssignableFrom<ISortableQuery>(sortableQuery);
@@ -166,7 +166,7 @@ public class RequestBuilderTests
     [Fact]
     public void CreateSortedRequest_Paged_Filtered()
     {
-        var sortableQuery = RequestBuilder.CreateSortable(new List<Sorting>())
+        var sortableQuery = RequestBuilder.CreateSortable(Array.Empty<ISorting>())
             .WithPaging(new Paging(0, 20))
             .WithFilter(new Filter());
 
@@ -191,7 +191,7 @@ public class RequestBuilderTests
     {
         var request = RequestBuilder.CreateFiltering(new Filter())
             .WithPaging(new Paging(0, 20))
-            .WithSortable(new List<Sorting>());
+            .WithSortable(Array.Empty<ISorting>());
 
         Assert.IsAssignableFrom<IFilteringQuery>(request);
         Assert.IsAssignableFrom<IPagedQuery>(request);
@@ -202,7 +202,7 @@ public class RequestBuilderTests
     public void CreateFilteringRequest_Sorted()
     {
         var request = RequestBuilder.CreateFiltering(new Filter())
-            .WithSortable(new List<Sorting>());
+            .WithSortable(Array.Empty<ISorting>());
 
         Assert.IsAssignableFrom<IFilteringQuery>(request);
         Assert.IsAssignableFrom<ISortableQuery>(request);
@@ -213,7 +213,7 @@ public class RequestBuilderTests
     public void CreateFilteringRequest_Sorted_Paged()
     {
         var request = RequestBuilder.CreateFiltering(new Filter())
-            .WithSortable(new List<Sorting>())
+            .WithSortable(Array.Empty<ISorting>())
             .WithPaging(new Paging(0, 20));
 
         Assert.IsAssignableFrom<IFilteringQuery>(request);

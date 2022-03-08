@@ -9,7 +9,7 @@ public static class RequestBuilder
 {
     public static IEmptyRequest CreateEmpty() => new EmptyRequest();
 
-    public static ISortingRequest CreateSortable(IReadOnlyCollection<Sorting> sorting) => new SortingOnlyRequest(sorting);
+    public static ISortingRequest CreateSortable(IReadOnlyCollection<ISorting> sorting) => new SortingOnlyRequest(sorting);
 
     public static IPagedRequest CreatePaged(Paging paging) => new PagingOnlyRequest(paging);
 
