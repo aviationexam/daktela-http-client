@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -144,12 +145,14 @@ public class ContactEndpointTests
     {
         using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<Contact>(
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
-            request => ((IPagedQuery) request).Paging == new Paging(0, 2),
+            request => ((IPagedQuery) request).Paging == new Paging(0, 2)
+                       && (Sorting) ((ISortableQuery) request).Sorting.Single() == new Sorting("edited", ESortDirection.Asc),
             "contacts"
         );
         using var secondResponse = _daktelaHttpClientMock.MockHttpGetListResponse<Contact>(
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
-            request => ((IPagedQuery) request).Paging == new Paging(2, 2),
+            request => ((IPagedQuery) request).Paging == new Paging(2, 2)
+                       && (Sorting) ((ISortableQuery) request).Sorting.Single() == new Sorting("edited", ESortDirection.Asc),
             "contacts"
         );
 
@@ -159,7 +162,8 @@ public class ContactEndpointTests
         var count = 0;
         await foreach (
             var contact in _contactEndpoint.GetContactsAsync(
-                RequestBuilder.CreatePaged(new Paging(0, 2)),
+                RequestBuilder.CreatePaged(new Paging(0, 2))
+                    .WithSortable(SortBuilder<Contact>.Ascending(x => x.Edited)),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(true),
                 responseMetadata,
                 cancellationToken
