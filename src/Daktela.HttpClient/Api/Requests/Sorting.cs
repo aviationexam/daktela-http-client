@@ -2,11 +2,11 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Requests;
 
-public record Sorting : ISorting
+public record Sorting(string Field, ESortDirection Dir) : ISorting
 {
     [JsonPropertyName("field")]
-    public string Field { get; init; } = null!;
+    public string Field { get; } = Field;
 
     [JsonPropertyName("dir")]
-    public ESortDirection Dir { get; init; }
+    public ESortDirection Dir { get; } = Dir;
 }
