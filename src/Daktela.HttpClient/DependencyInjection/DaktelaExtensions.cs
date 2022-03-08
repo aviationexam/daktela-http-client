@@ -27,6 +27,7 @@ public static class DaktelaExtensions
             serviceCollection.Configure(configure);
         }
 
+        serviceCollection.AddSingleton<IHttpRequestFactory, HttpRequestFactory>();
         serviceCollection.AddHttpClient<IDaktelaHttpClient, DaktelaHttpClient>((serviceProvider, httpClient) =>
             {
                 var daktelaOptions = serviceProvider.GetRequiredService<IOptions<DaktelaOptions>>().Value;

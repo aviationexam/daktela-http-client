@@ -5,4 +5,7 @@
 /// </summary>
 public interface ISorting
 {
+    string Field { get; }
+
+    ESortDirection Dir { get; }
 }

@@ -11,6 +11,8 @@ public static class RequestBuilder
 
     public static ISortingRequest CreateSortable(IReadOnlyCollection<ISorting> sorting) => new SortingOnlyRequest(sorting);
 
+    public static ISortingRequest CreateSortable(ISorting sorting) => CreateSortable(new[] { sorting });
+
     public static IPagedRequest CreatePaged(Paging paging) => new PagingOnlyRequest(paging);
 
     public static IFilteringRequest CreateFiltering(IFilter filters) => new FilteringOnlyRequest(filters);

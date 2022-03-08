@@ -13,18 +13,16 @@ namespace Daktela.HttpClient.Implementations.JsonConverters;
 public class EnumsConverter<TEnum> : JsonConverter<TEnum>
     where TEnum : struct, Enum
 {
-    private readonly IDictionary<string, TEnum> _mapping;
-    private readonly IDictionary<TEnum, string> _reverseMapping;
     private readonly Type _enumType;
 
-    public EnumsConverter(
-        [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = $"The parameter required in the {nameof(EnumsConverterFactory)}")]
-        JsonSerializerOptions options
-    )
+    public IDictionary<string, TEnum> Mapping { get; }
+    public IDictionary<TEnum, string> ReverseMapping { get; }
+
+    public EnumsConverter()
     {
         _enumType = typeof(TEnum);
 
-        _mapping = Enum.GetValues<TEnum>().ToDictionary(
+        Mapping = Enum.GetValues<TEnum>().ToDictionary(
             x => _enumType.GetMember(x.ToString())
                 .First()
                 .GetCustomAttributes<EnumMemberAttribute>(true)
@@ -35,7 +33,14 @@ public class EnumsConverter<TEnum> : JsonConverter<TEnum>
             x => x
         );
 
-        _reverseMapping = _mapping.ToDictionary(x => x.Value, x => x.Key);
+        ReverseMapping = Mapping.ToDictionary(x => x.Value, x => x.Key);
+    }
+
+    public EnumsConverter(
+        [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = $"The parameter required in the {nameof(EnumsConverterFactory)}")]
+        JsonSerializerOptions options
+    ) : this()
+    {
     }
 
     public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -44,9 +49,9 @@ public class EnumsConverter<TEnum> : JsonConverter<TEnum>
 
         var value = reader.GetString();
 
-        if (value != null && _mapping.ContainsKey(value))
+        if (value != null && Mapping.ContainsKey(value))
         {
-            return _mapping[value];
+            return Mapping[value];
         }
 
         throw new FormatException($"Unable to deserialize {value} into the {typeof(TEnum).Name}");
@@ -54,9 +59,9 @@ public class EnumsConverter<TEnum> : JsonConverter<TEnum>
 
     public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
     {
-        if (_reverseMapping.ContainsKey(value))
+        if (ReverseMapping.ContainsKey(value))
         {
-            writer.WriteStringValue(_reverseMapping[value]);
+            writer.WriteStringValue(ReverseMapping[value]);
 
             return;
         }
