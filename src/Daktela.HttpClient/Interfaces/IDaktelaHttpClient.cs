@@ -20,4 +20,9 @@ public interface IDaktelaHttpClient : IDisposable
         IRequest request,
         CancellationToken cancellationToken
     ) where T : class;
+
+    Task DeleteAsync(
+        string uri,
+        CancellationToken cancellationToken
+    );
 }

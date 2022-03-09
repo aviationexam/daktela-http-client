@@ -1,7 +1,9 @@
 using Daktela.HttpClient.Api.Responses;
+using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Requests;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,5 +71,20 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         var response = await httpResponseParser.ParseResponseAsync<ListResponse<T>>(httpResponse.Content, cancellationToken);
 
         return response;
+    }
+
+    public async Task DeleteAsync(string uri, CancellationToken cancellationToken)
+    {
+        var uriObject = new Uri(uri, UriKind.Relative);
+
+        var httpResponse = await _httpClient.DeleteAsync(uriObject, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (httpResponse.StatusCode == HttpStatusCode.NoContent)
+        {
+            return;
+        }
+
+        throw new UnexpectedHttpResponseException(uri, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
     }
 }
