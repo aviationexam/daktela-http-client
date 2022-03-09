@@ -71,4 +71,16 @@ public class ContactEndpoint : IContactEndpoint
         ),
         cancellationToken
     ).IteratingConfigureAwait(cancellationToken);
+
+    public async Task DeleteContactAsync(
+        string name, CancellationToken cancellationToken
+    )
+    {
+        var encodedName = HttpUtility.UrlEncode(name);
+
+        await _daktelaHttpClient.DeleteAsync(
+            $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
+            cancellationToken
+        ).ConfigureAwait(false);
+    }
 }

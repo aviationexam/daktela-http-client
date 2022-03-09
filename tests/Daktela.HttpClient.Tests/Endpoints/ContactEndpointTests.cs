@@ -180,6 +180,16 @@ public class ContactEndpointTests
         Assert.All(responseMetadata.TotalRecords, x => Assert.Equal(4, x));
     }
 
+    [Fact]
+    public async Task DeleteContactsWorks()
+    {
+        const string name = "testing_user";
+
+        _daktelaHttpClientMock.MockHttpDeleteResponse($"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}");
+
+        await _contactEndpoint.DeleteContactAsync(name);
+    }
+
     private class TotalRecordsResponseBehaviour : ITotalRecordsResponseBehaviour
     {
         public ICollection<int> TotalRecords { get; } = new List<int>();

@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Daktela.HttpClient.Tests.Endpoints;
 
@@ -56,6 +57,14 @@ public static class DaktelaHttpClientMock
         ) => httpResponseParser.ParseResponseAsync<ListResponse<TContract>>(httpResponseContent, cancellationToken));
 
         return httpResponseContent;
+    }
+
+    public static void MockHttpDeleteResponse(this Mock<IDaktelaHttpClient> mock, string uri)
+    {
+        mock.Setup(x => x.DeleteAsync(
+            uri,
+            It.IsAny<CancellationToken>()
+        )).Returns(Task.CompletedTask);
     }
 
     private static Stream LoadEmbeddedJson(string name)

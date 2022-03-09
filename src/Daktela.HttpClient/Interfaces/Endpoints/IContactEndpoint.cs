@@ -24,4 +24,8 @@ public interface IContactEndpoint
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken = default
     );
+
+    Task DeleteContactAsync(
+        string name, CancellationToken cancellationToken = default
+    );
 }
