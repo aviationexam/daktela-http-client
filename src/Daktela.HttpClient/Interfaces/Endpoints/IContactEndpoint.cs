@@ -13,12 +13,12 @@ public interface IContactEndpoint
     protected internal const string UriPrefix = "/api/v6/contacts";
     protected internal const string UriPostfix = ".json";
 
-    Task<Contact> GetContactAsync(
+    Task<ReadContact> GetContactAsync(
         string name,
         CancellationToken cancellationToken = default
     );
 
-    IAsyncEnumerable<Contact> GetContactsAsync(
+    IAsyncEnumerable<ReadContact> GetContactsAsync(
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,

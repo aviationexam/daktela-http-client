@@ -28,13 +28,13 @@ public class ContactEndpoint : IContactEndpoint
         _pagedResponseProcessor = pagedResponseProcessor;
     }
 
-    public async Task<Contact> GetContactAsync(
+    public async Task<ReadContact> GetContactAsync(
         string name, CancellationToken cancellationToken
     )
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        var contact = await _daktelaHttpClient.GetAsync<Contact>(
+        var contact = await _daktelaHttpClient.GetAsync<ReadContact>(
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             cancellationToken
@@ -43,7 +43,7 @@ public class ContactEndpoint : IContactEndpoint
         return contact.Result;
     }
 
-    public IAsyncEnumerable<Contact> GetContactsAsync(
+    public IAsyncEnumerable<ReadContact> GetContactsAsync(
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
@@ -63,7 +63,7 @@ public class ContactEndpoint : IContactEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<Contact>(
+        ) => await ctx.daktelaHttpClient.GetListAsync<ReadContact>(
             ctx.httpResponseParser,
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request,

@@ -12,7 +12,7 @@ public class SortBuilderTests
     [InlineData(ESortDirection.Desc)]
     public void SimpleSortWithWorks(ESortDirection sortDirection)
     {
-        var sorting = SortBuilder<Contact>.With(x => x.Name, sortDirection);
+        var sorting = SortBuilder<ReadContact>.With(x => x.Name, sortDirection);
 
         var sortingImpl = Assert.IsType<Sorting>(sorting);
         Assert.Equal("name", sortingImpl.Field);
@@ -22,7 +22,7 @@ public class SortBuilderTests
     [Fact]
     public void SimpleSortAscWithWorks()
     {
-        var sorting = SortBuilder<Contact>.Ascending(x => x.Name);
+        var sorting = SortBuilder<ReadContact>.Ascending(x => x.Name);
 
         var sortingImpl = Assert.IsType<Sorting>(sorting);
         Assert.Equal("name", sortingImpl.Field);
@@ -32,7 +32,7 @@ public class SortBuilderTests
     [Fact]
     public void SimpleSortDescWithWorks()
     {
-        var sorting = SortBuilder<Contact>.Descending(x => x.Name);
+        var sorting = SortBuilder<ReadContact>.Descending(x => x.Name);
 
         var sortingImpl = Assert.IsType<Sorting>(sorting);
         Assert.Equal("name", sortingImpl.Field);
@@ -44,7 +44,7 @@ public class SortBuilderTests
     [InlineData(ESortDirection.Desc)]
     public void ComplexSortWithWorks(ESortDirection sortDirection)
     {
-        var sorting = SortBuilder<Contact>.With(x => x.User!.Name, sortDirection);
+        var sorting = SortBuilder<ReadContact>.With(x => x.User!.Name, sortDirection);
 
         var sortingImpl = Assert.IsType<Sorting>(sorting);
         Assert.Equal("user.name", sortingImpl.Field);

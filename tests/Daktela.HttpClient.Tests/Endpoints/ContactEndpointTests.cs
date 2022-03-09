@@ -48,7 +48,7 @@ public class ContactEndpointTests
     {
         const string name = "testing_user";
 
-        using var _ = _daktelaHttpClientMock.MockHttpGetResponse<Contact>(
+        using var _ = _daktelaHttpClientMock.MockHttpGetResponse<ReadContact>(
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}", "simple-contact"
         );
 
@@ -67,7 +67,7 @@ public class ContactEndpointTests
     {
         const string name = "test_user_with_user";
 
-        using var _ = _daktelaHttpClientMock.MockHttpGetResponse<Contact>(
+        using var _ = _daktelaHttpClientMock.MockHttpGetResponse<ReadContact>(
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}", "simple-contact-with-user"
         );
 
@@ -88,7 +88,7 @@ public class ContactEndpointTests
     [Fact]
     public async Task GetContactsWorks()
     {
-        using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<Contact>(
+        using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<ReadContact>(
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}", "contacts"
         );
 
@@ -143,13 +143,13 @@ public class ContactEndpointTests
     [Fact]
     public async Task GetContactsWorks_AutoPaginate()
     {
-        using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<Contact>(
+        using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<ReadContact>(
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request => ((IPagedQuery) request).Paging == new Paging(0, 2)
                        && (Sorting) ((ISortableQuery) request).Sorting.Single() == new Sorting("edited", ESortDirection.Asc),
             "contacts"
         );
-        using var secondResponse = _daktelaHttpClientMock.MockHttpGetListResponse<Contact>(
+        using var secondResponse = _daktelaHttpClientMock.MockHttpGetListResponse<ReadContact>(
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request => ((IPagedQuery) request).Paging == new Paging(2, 2)
                        && (Sorting) ((ISortableQuery) request).Sorting.Single() == new Sorting("edited", ESortDirection.Asc),
@@ -163,7 +163,7 @@ public class ContactEndpointTests
         await foreach (
             var contact in _contactEndpoint.GetContactsAsync(
                 RequestBuilder.CreatePaged(new Paging(0, 2))
-                    .WithSortable(SortBuilder<Contact>.Ascending(x => x.Edited)),
+                    .WithSortable(SortBuilder<ReadContact>.Ascending(x => x.Edited)),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(true),
                 responseMetadata,
                 cancellationToken
