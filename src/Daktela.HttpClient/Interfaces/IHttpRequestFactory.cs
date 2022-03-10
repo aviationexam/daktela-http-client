@@ -6,18 +6,20 @@ namespace Daktela.HttpClient.Interfaces;
 
 public interface IHttpRequestFactory
 {
+    Uri CreateUri(string path);
+
     HttpRequestMessage CreateHttpRequestMessage(
-        HttpMethod method, Uri uri
+        HttpMethod method, string path
     );
 
     HttpRequestMessage CreateHttpRequestMessage(
-        HttpMethod method, Uri uri, IRequest request
+        HttpMethod method, string path, IRequest request
     );
 
     HttpRequestMessage CreateHttpRequestMessage<TBody>(
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
-        Uri uri,
+        string path,
         TBody body
     ) where TBody : class;
 }

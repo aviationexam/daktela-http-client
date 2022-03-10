@@ -22,8 +22,23 @@ public class HttpRequestFactory : IHttpRequestFactory
         _daktelaOptions = daktelaOptions.Value;
     }
 
+    public Uri CreateUri(string path)
+    {
+        if (string.IsNullOrEmpty(_daktelaOptions.BaseUrl))
+        {
+            throw new ArgumentException($"The {nameof(DaktelaOptions)}.{nameof(_daktelaOptions.BaseUrl)} is required");
+        }
+
+        if (!path.StartsWith('/'))
+        {
+            path = $"/{path}";
+        }
+
+        return new Uri($"{_daktelaOptions.BaseUrl}{path}", UriKind.Absolute);
+    }
+
     public HttpRequestMessage CreateHttpRequestMessage(
-        HttpMethod method, Uri uri
+        HttpMethod method, string path
     )
     {
         if (string.IsNullOrEmpty(_daktelaOptions.AccessToken))
@@ -31,6 +46,15 @@ public class HttpRequestFactory : IHttpRequestFactory
             throw new ArgumentException($"The {nameof(DaktelaOptions)}.{nameof(_daktelaOptions.AccessToken)} is required");
         }
 
+        var uri = CreateUri(path);
+
+        return CreateHttpRequestMessage(method, uri);
+    }
+
+    private HttpRequestMessage CreateHttpRequestMessage(
+        HttpMethod method, Uri uri
+    )
+    {
         var parsedQuery = HttpUtility.ParseQueryString(uri.Query);
 
         parsedQuery.Add("accessToken", _daktelaOptions.AccessToken);
@@ -46,9 +70,11 @@ public class HttpRequestFactory : IHttpRequestFactory
     }
 
     public HttpRequestMessage CreateHttpRequestMessage(
-        HttpMethod method, Uri uri, IRequest request
+        HttpMethod method, string path, IRequest request
     )
     {
+        var uri = CreateUri(path);
+
         var queryDictionary = new NameValueCollection();
 
         ApplySorting(request, queryDictionary);
@@ -110,11 +136,11 @@ public class HttpRequestFactory : IHttpRequestFactory
     public HttpRequestMessage CreateHttpRequestMessage<TBody>(
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
-        Uri uri,
+        string path,
         TBody body
     ) where TBody : class
     {
-        var httpMessage = CreateHttpRequestMessage(method, uri);
+        var httpMessage = CreateHttpRequestMessage(method, path);
 
         httpMessage.Content = httpRequestSerializer.SerializeRequest(body);
 
