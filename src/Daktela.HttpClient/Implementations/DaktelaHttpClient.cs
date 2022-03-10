@@ -110,9 +110,9 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
     public async Task DeleteAsync(string path, CancellationToken cancellationToken)
     {
-        var uri = _httpRequestFactory.CreateUri(path);
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(HttpMethod.Delete, path);
 
-        using var httpResponse = await _httpClient.DeleteAsync(uri, cancellationToken)
+        using var httpResponse = await _httpClient.SendAsync(httpRequestMessage, cancellationToken)
             .ConfigureAwait(false);
 
         if (httpResponse.StatusCode == HttpStatusCode.NoContent)
