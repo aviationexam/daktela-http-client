@@ -8,6 +8,10 @@ public class IntegrationTests
     [Fact]
     public void EmptyInfrastructureTest()
     {
-        using var daktelaHttpClient = TestHttpClientFactory.CreateHttpClient();
+        using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
+
+        var daktelaHttpClient = serviceProvider.GetRequiredService<IDaktelaHttpClient>();
+
+        Assert.NotNull(daktelaHttpClient);
     }
 }

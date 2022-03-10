@@ -1,5 +1,4 @@
 using Daktela.HttpClient.DependencyInjection;
-using Daktela.HttpClient.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -12,7 +11,7 @@ namespace Daktela.HttpClient.Tests.Infrastructure
 {
     public static class TestHttpClientFactory
     {
-        private static IServiceProvider CreateServiceProvider()
+        public static ServiceProvider CreateServiceProvider()
         {
             var configurationBuilder = new ConfigurationBuilder();
 
@@ -48,13 +47,6 @@ namespace Daktela.HttpClient.Tests.Infrastructure
             }
 
             return serviceCollection.BuildServiceProvider();
-        }
-
-        public static IDaktelaHttpClient CreateHttpClient()
-        {
-            var serviceProvider = CreateServiceProvider();
-
-            return serviceProvider.GetRequiredService<IDaktelaHttpClient>();
         }
     }
 }
