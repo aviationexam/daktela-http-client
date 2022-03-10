@@ -22,20 +22,9 @@ public class HttpRequestFactory : IHttpRequestFactory
         _daktelaOptions = daktelaOptions.Value;
     }
 
-    public Uri CreateUri(string path)
-    {
-        if (string.IsNullOrEmpty(_daktelaOptions.BaseUrl))
-        {
-            throw new ArgumentException($"The {nameof(DaktelaOptions)}.{nameof(_daktelaOptions.BaseUrl)} is required");
-        }
-
-        if (!path.StartsWith('/'))
-        {
-            path = $"/{path}";
-        }
-
-        return new Uri($"{_daktelaOptions.BaseUrl}{path}", UriKind.Absolute);
-    }
+    public Uri CreateUri(
+        string path
+    ) => new(new Uri(_daktelaOptions.BaseUrl!, UriKind.Absolute), path);
 
     public HttpRequestMessage CreateHttpRequestMessage(
         HttpMethod method, string path
