@@ -73,6 +73,50 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         return response;
     }
 
+    public async Task<TResponse> PostAsync<TRequest, TResponse>(
+        IHttpRequestSerializer httpRequestSerializer,
+        IHttpResponseParser httpResponseParser,
+        string uri,
+        TRequest request,
+        CancellationToken cancellationToken
+    ) where TRequest : class
+    {
+        var uriObject = new Uri(uri, UriKind.Relative);
+
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Post, uriObject, request);
+
+        using var httpResponse = await _httpClient
+            .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+            .ConfigureAwait(false);
+
+        var response = await httpResponseParser.ParseResponseAsync<TResponse>(httpResponse.Content, cancellationToken);
+
+        return response;
+    }
+
+    public async Task PostAsync<TRequest>(
+        IHttpRequestSerializer httpRequestSerializer,
+        string uri,
+        TRequest request,
+        CancellationToken cancellationToken
+    ) where TRequest : class
+    {
+        var uriObject = new Uri(uri, UriKind.Relative);
+
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Post, uriObject, request);
+
+        using var httpResponse = await _httpClient
+            .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (httpResponse.StatusCode == HttpStatusCode.Created)
+        {
+            return;
+        }
+
+        throw new UnexpectedHttpResponseException(uri, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+    }
+
     public async Task DeleteAsync(string uri, CancellationToken cancellationToken)
     {
         var uriObject = new Uri(uri, UriKind.Relative);

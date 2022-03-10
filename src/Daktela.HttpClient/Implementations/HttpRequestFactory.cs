@@ -80,10 +80,15 @@ public class HttpRequestFactory : IHttpRequestFactory
     }
 
     public HttpRequestMessage CreateHttpRequestMessage<TBody>(
-        HttpMethod method, Uri uri, TBody? body
+        IHttpRequestSerializer httpRequestSerializer,
+        HttpMethod method,
+        Uri uri,
+        TBody body
     ) where TBody : class
     {
         var httpMessage = CreateHttpRequestMessage(method, uri);
+
+        httpMessage.Content = httpRequestSerializer.SerializeRequest(body);
 
         return httpMessage;
     }
