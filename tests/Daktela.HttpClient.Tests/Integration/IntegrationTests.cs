@@ -1,14 +1,13 @@
 using Daktela.HttpClient.Tests.Infrastructure;
 using Xunit;
 
-namespace Daktela.HttpClient.Tests.Integration
+namespace Daktela.HttpClient.Tests.Integration;
+
+public class IntegrationTests
 {
-    public class IntegrationTests
+    [Fact]
+    public void EmptyInfrastructureTest()
     {
-        [Fact]
-        public void EmptyInfrastructureTest()
-        {
-            using var daktelaHttpClient = TestHttpClientFactory.CreateHttpClient();
-        }
+        using var daktelaHttpClient = TestHttpClientFactory.CreateHttpClient();
     }
 }
