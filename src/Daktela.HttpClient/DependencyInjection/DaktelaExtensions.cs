@@ -45,6 +45,7 @@ public static class DaktelaExtensions
 
         serviceCollection.TryAddSingleton<IHttpJsonSerializerOptions, HttpJsonSerializerOptions>();
         serviceCollection.TryAddSingleton<IHttpResponseParser, HttpResponseParser>();
+        serviceCollection.TryAddSingleton<IHttpRequestSerializer, HttpRequestSerializer>();
 
         serviceCollection.AddScoped<IContactEndpoint, ContactEndpoint>();
 
