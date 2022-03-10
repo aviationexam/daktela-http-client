@@ -1,20 +1,25 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Daktela.HttpClient.Configuration;
 
 public class DaktelaOptions
 {
-    public string BaseUrl { get; set; } = null!;
+    [Required]
+    public string? BaseUrl { get; set; }
 
-    public string AccessToken { get; set; } = null!;
+    [Required]
+    public string? AccessToken { get; set; }
 
     /// <summary>
     /// HTTP request timeout
     /// </summary>
-    public TimeSpan Timeout { get; set; }
+    [Required]
+    public TimeSpan? Timeout { get; set; }
 
     /// <summary>
     /// Remote server date time offset
     /// </summary>
-    public TimeSpan DateTimeOffset { get; set; }
+    [Required]
+    public TimeSpan? DateTimeOffset { get; set; }
 }

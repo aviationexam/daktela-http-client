@@ -27,18 +27,15 @@ public static class DaktelaExtensions
             serviceCollection.Configure(configure);
         }
 
+        serviceCollection.AddSingleton<IValidateOptions<DaktelaOptions>, DataAnnotationValidateOptions<DaktelaOptions>>();
+
         serviceCollection.AddSingleton<IHttpRequestFactory, HttpRequestFactory>();
         serviceCollection.AddHttpClient<IDaktelaHttpClient, DaktelaHttpClient>((serviceProvider, httpClient) =>
             {
                 var daktelaOptions = serviceProvider.GetRequiredService<IOptions<DaktelaOptions>>().Value;
 
-                if (string.IsNullOrEmpty(daktelaOptions.BaseUrl))
-                {
-                    throw new ArgumentException($"The {nameof(DaktelaOptions)}.{nameof(daktelaOptions.BaseUrl)} is required");
-                }
-
-                httpClient.Timeout = daktelaOptions.Timeout;
-                httpClient.BaseAddress = new Uri(daktelaOptions.BaseUrl);
+                httpClient.Timeout = daktelaOptions.Timeout!.Value;
+                httpClient.BaseAddress = new Uri(daktelaOptions.BaseUrl!);
             })
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {

@@ -37,7 +37,7 @@ public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
 
         if (Utf8Parser.TryParse(span, out DateTimeOffset value, out _, 'G'))
         {
-            return new DateTimeOffset(value.DateTime, _daktelaOptions.DateTimeOffset);
+            return new DateTimeOffset(value.DateTime, _daktelaOptions.DateTimeOffset!.Value);
         }
 
         throw new FormatException();
