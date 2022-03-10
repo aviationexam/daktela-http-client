@@ -44,7 +44,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(HttpMethod.Get, uriObject);
 
-        var httpResponse = await _httpClient
+        using var httpResponse = await _httpClient
             .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
             .ConfigureAwait(false);
 
@@ -64,7 +64,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(HttpMethod.Get, uriObject, request);
 
-        var httpResponse = await _httpClient
+        using var httpResponse = await _httpClient
             .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
             .ConfigureAwait(false);
 
@@ -77,7 +77,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
     {
         var uriObject = new Uri(uri, UriKind.Relative);
 
-        var httpResponse = await _httpClient.DeleteAsync(uriObject, cancellationToken)
+        using var httpResponse = await _httpClient.DeleteAsync(uriObject, cancellationToken)
             .ConfigureAwait(false);
 
         if (httpResponse.StatusCode == HttpStatusCode.NoContent)
