@@ -32,6 +32,11 @@ public static class DaktelaExtensions
             {
                 var daktelaOptions = serviceProvider.GetRequiredService<IOptions<DaktelaOptions>>().Value;
 
+                if (string.IsNullOrEmpty(daktelaOptions.BaseUrl))
+                {
+                    throw new ArgumentException($"The {nameof(DaktelaOptions)}.{nameof(daktelaOptions.BaseUrl)} is required");
+                }
+
                 httpClient.Timeout = daktelaOptions.Timeout;
                 httpClient.BaseAddress = new Uri(daktelaOptions.BaseUrl);
             })
