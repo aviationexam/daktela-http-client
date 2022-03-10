@@ -6,7 +6,7 @@ namespace Daktela.HttpClient.Configuration;
 public class DaktelaOptions
 {
     [Required]
-    public string? BaseUrl { get; set; }
+    public string? ApiDomain { get; set; }
 
     [Required]
     public string? AccessToken { get; set; }

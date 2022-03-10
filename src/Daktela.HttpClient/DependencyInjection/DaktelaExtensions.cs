@@ -34,7 +34,7 @@ public static class DaktelaExtensions
                 var daktelaOptions = serviceProvider.GetRequiredService<IOptions<DaktelaOptions>>().Value;
 
                 httpClient.Timeout = daktelaOptions.Timeout!.Value;
-                httpClient.BaseAddress = new Uri(daktelaOptions.BaseUrl!);
+                httpClient.BaseAddress = new Uri(daktelaOptions.ApiDomain!);
             })
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {

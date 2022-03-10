@@ -13,7 +13,7 @@ using System;
 IServiceCollection serviceCollection;
 
 serviceCollection.AddDaktelaHttpClient((DaktelaOptions configuration) => {
-  configuration.BaseUrl = "https://<domain>.daktela.com/api/";
+  configuration.ApiDomain = "https://<domain>.daktela.com";
   configuration.AccessToken = "<AccessToken>";
   // HTTP request timeout
   configuration.Timeout = TimeSpan.FromSeconds(60);

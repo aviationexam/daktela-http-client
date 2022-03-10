@@ -24,7 +24,7 @@ public class HttpRequestFactory : IHttpRequestFactory
 
     public Uri CreateUri(
         string path
-    ) => new(new Uri(_daktelaOptions.BaseUrl!, UriKind.Absolute), path);
+    ) => new(new Uri(_daktelaOptions.ApiDomain!, UriKind.Absolute), path);
 
     public HttpRequestMessage CreateHttpRequestMessage(
         HttpMethod method, string path

@@ -23,7 +23,7 @@ public class HttpRequestFactoryTests
         _daktelaOptionsMock.Setup(x => x.Value)
             .Returns(new DaktelaOptions
             {
-                BaseUrl = DaktelaUrl,
+                ApiDomain = DaktelaUrl,
                 AccessToken = AccessToken,
             });
         _httpRequestFactory = new HttpRequestFactory(_daktelaOptionsMock.Object);
