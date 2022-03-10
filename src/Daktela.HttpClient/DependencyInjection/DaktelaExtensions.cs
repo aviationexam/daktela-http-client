@@ -19,15 +19,14 @@ public static class DaktelaExtensions
 {
     public static IServiceCollection AddDaktelaHttpClient(
         this IServiceCollection serviceCollection,
-        Action<DaktelaOptions>? configure = null
+        Action<DaktelaOptions> configure
     )
     {
-        if (configure != null)
-        {
-            serviceCollection.Configure(configure);
-        }
+        serviceCollection.AddOptions<DaktelaOptions>()
+            .Configure(configure)
+            .ValidateDataAnnotations();
 
-        serviceCollection.AddSingleton<IValidateOptions<DaktelaOptions>, DataAnnotationValidateOptions<DaktelaOptions>>();
+        serviceCollection.AddSingleton<IValidateOptions<DaktelaOptions>>(new DataAnnotationValidateOptions<DaktelaOptions>(nameof(DaktelaOptions)));
 
         serviceCollection.AddSingleton<IHttpRequestFactory, HttpRequestFactory>();
         serviceCollection.AddHttpClient<IDaktelaHttpClient, DaktelaHttpClient>((serviceProvider, httpClient) =>

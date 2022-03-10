@@ -22,7 +22,7 @@ public class IntegrationTests
         _testOutputHelper = testOutputHelper;
     }
 
-    [Fact]
+    [ManualFact]
     public void EmptyInfrastructureTest()
     {
         using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
