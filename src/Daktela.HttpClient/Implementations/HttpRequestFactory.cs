@@ -1,8 +1,10 @@
 using Daktela.HttpClient.Api.Requests;
+using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Specialized;
 using System.Linq;
@@ -13,9 +15,35 @@ namespace Daktela.HttpClient.Implementations;
 
 public class HttpRequestFactory : IHttpRequestFactory
 {
+    private readonly DaktelaOptions _daktelaOptions;
+
+    public HttpRequestFactory(IOptions<DaktelaOptions> daktelaOptions)
+    {
+        _daktelaOptions = daktelaOptions.Value;
+    }
+
     public HttpRequestMessage CreateHttpRequestMessage(
         HttpMethod method, Uri uri
-    ) => new(method, uri);
+    )
+    {
+        if (string.IsNullOrEmpty(_daktelaOptions.AccessToken))
+        {
+            throw new ArgumentException($"The {nameof(DaktelaOptions)}.{nameof(_daktelaOptions.AccessToken)} is required");
+        }
+
+        var parsedQuery = HttpUtility.ParseQueryString(uri.Query);
+
+        parsedQuery.Add("accessToken", _daktelaOptions.AccessToken);
+
+        var uriBuilder = new UriBuilder(uri)
+        {
+            Query = parsedQuery.ToString()
+        };
+
+        uri = uriBuilder.Uri;
+
+        return new HttpRequestMessage(method, uri);
+    }
 
     public HttpRequestMessage CreateHttpRequestMessage(
         HttpMethod method, Uri uri, IRequest request
