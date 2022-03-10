@@ -38,7 +38,7 @@ public class ContactEndpointTests
 
         _contactEndpoint = new ContactEndpoint(
             _daktelaHttpClientMock.Object,
-            new HttpResponseParser(_daktelaOptionsMock.Object),
+            new HttpResponseParser(new HttpJsonSerializerOptions(_daktelaOptionsMock.Object)),
             new PagedResponseProcessor<IContactEndpoint>()
         );
     }

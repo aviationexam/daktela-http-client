@@ -43,6 +43,7 @@ public static class DaktelaExtensions
 
         serviceCollection.TryAddSingleton(typeof(IPagedResponseProcessor<>), typeof(PagedResponseProcessor<>));
 
+        serviceCollection.TryAddSingleton<IHttpJsonSerializerOptions, HttpJsonSerializerOptions>();
         serviceCollection.TryAddSingleton<IHttpResponseParser, HttpResponseParser>();
 
         serviceCollection.AddScoped<IContactEndpoint, ContactEndpoint>();

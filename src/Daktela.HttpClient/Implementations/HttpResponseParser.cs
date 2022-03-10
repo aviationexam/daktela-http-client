@@ -12,13 +12,11 @@ namespace Daktela.HttpClient.Implementations;
 
 public class HttpResponseParser : IHttpResponseParser
 {
-    private readonly JsonSerializerOptions _jsonSerializerOptions;
+    private readonly IHttpJsonSerializerOptions _httpJsonSerializerOptions;
 
-    public HttpResponseParser(IOptions<DaktelaOptions> daktelaOptions)
+    public HttpResponseParser(IHttpJsonSerializerOptions httpJsonSerializerOptions)
     {
-        _jsonSerializerOptions = new JsonSerializerOptions();
-        _jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter(daktelaOptions));
-        _jsonSerializerOptions.Converters.Add(new EnumsConverterFactory());
+        _httpJsonSerializerOptions = httpJsonSerializerOptions;
     }
 
     public async Task<T> ParseResponseAsync<T>(
@@ -27,7 +25,7 @@ public class HttpResponseParser : IHttpResponseParser
     {
         await using var responseStream = await httpResponseContent.ReadAsStreamAsync(cancellationToken);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<T>(responseStream, _jsonSerializerOptions, cancellationToken);
+        var parsedObject = await JsonSerializer.DeserializeAsync<T>(responseStream, _httpJsonSerializerOptions.Value, cancellationToken);
 
         return parsedObject ?? throw new NullReferenceException(nameof(parsedObject));
     }
