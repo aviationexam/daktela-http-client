@@ -11,8 +11,8 @@ namespace Daktela.HttpClient.Tests.Requests;
 
 public class HttpRequestFactoryTests
 {
-    private const string DaktelaUrl = "https://daktela/api";
-    private const string DaktelaContractPath = "contract";
+    private const string DaktelaUrl = "https://daktela";
+    private const string DaktelaContractPath = "api/contract";
     private const string AccessToken = "my_secret_access_token";
 
     private readonly Mock<IOptions<DaktelaOptions>> _daktelaOptionsMock = new(MockBehavior.Strict);
