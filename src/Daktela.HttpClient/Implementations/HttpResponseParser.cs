@@ -1,7 +1,4 @@
-using Daktela.HttpClient.Configuration;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
-using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
 using System.Text.Json;
