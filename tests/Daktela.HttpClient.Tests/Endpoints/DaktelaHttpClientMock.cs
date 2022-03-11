@@ -2,12 +2,11 @@ using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Requests;
+using Daktela.HttpClient.Tests.Infrastructure;
 using Moq;
 using System;
-using System.IO;
 using System.Linq.Expressions;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,10 +17,7 @@ public static class DaktelaHttpClientMock
     public static IDisposable MockHttpGetResponse<TContract>(this Mock<IDaktelaHttpClient> mock, string uri, string resourceName)
         where TContract : class
     {
-        // disposed from httpResponseContent
-        var stream = LoadEmbeddedJson(resourceName);
-
-        var httpResponseContent = new StreamContent(stream);
+        var httpResponseContent = new StreamContent(resourceName.LoadEmbeddedJson());
 
         mock.Setup(x => x.GetAsync<TContract>(
             It.IsAny<IHttpResponseParser>(),
@@ -43,10 +39,7 @@ public static class DaktelaHttpClientMock
     )
         where TContract : class
     {
-        // disposed from httpResponseContent
-        var stream = LoadEmbeddedJson(resourceName);
-
-        var httpResponseContent = new StreamContent(stream);
+        var httpResponseContent = new StreamContent(resourceName.LoadEmbeddedJson());
 
         mock.Setup(x => x.GetListAsync<TContract>(
             It.IsAny<IHttpResponseParser>(),
@@ -65,10 +58,7 @@ public static class DaktelaHttpClientMock
     )
         where TRequest : class
     {
-        // disposed from httpResponseContent
-        var stream = LoadEmbeddedJson(resourceName);
-
-        var httpResponseContent = new StreamContent(stream);
+        var httpResponseContent = new StreamContent(resourceName.LoadEmbeddedJson());
 
         mock.Setup(x => x.PostAsync(
             It.IsAny<IHttpRequestSerializer>(),
@@ -96,12 +86,5 @@ public static class DaktelaHttpClientMock
             uri,
             It.IsAny<CancellationToken>()
         )).Returns(Task.CompletedTask);
-    }
-
-    private static Stream LoadEmbeddedJson(string name)
-    {
-        var resourceName = $"Daktela.HttpClient.Tests.json_responses.{name}.json";
-        var assembly = typeof(DaktelaHttpClientMock).GetTypeInfo().Assembly;
-        return assembly.GetManifestResourceStream(resourceName) ?? throw new NullReferenceException($"Resource {resourceName} was not found");
     }
 }
