@@ -1,5 +1,4 @@
 using Daktela.HttpClient.Api.Accounts;
-using Daktela.HttpClient.Api.Users;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -38,7 +37,7 @@ public class UpdateContact
     /// User
     /// </summary>
     [JsonPropertyName("user")]
-    public User? User { get; set; }
+    public string? User { get; set; }
 
     /// <summary>
     /// Description
