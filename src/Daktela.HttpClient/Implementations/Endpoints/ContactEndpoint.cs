@@ -14,16 +14,19 @@ namespace Daktela.HttpClient.Implementations.Endpoints;
 public class ContactEndpoint : IContactEndpoint
 {
     private readonly IDaktelaHttpClient _daktelaHttpClient;
+    private readonly IHttpRequestSerializer _httpRequestSerializer;
     private readonly IHttpResponseParser _httpResponseParser;
     private readonly IPagedResponseProcessor<IContactEndpoint> _pagedResponseProcessor;
 
     public ContactEndpoint(
         IDaktelaHttpClient daktelaHttpClient,
+        IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         IPagedResponseProcessor<IContactEndpoint> pagedResponseProcessor
     )
     {
         _daktelaHttpClient = daktelaHttpClient;
+        _httpRequestSerializer = httpRequestSerializer;
         _httpResponseParser = httpResponseParser;
         _pagedResponseProcessor = pagedResponseProcessor;
     }
@@ -71,6 +74,16 @@ public class ContactEndpoint : IContactEndpoint
         ),
         cancellationToken
     ).IteratingConfigureAwait(cancellationToken);
+
+    public async Task CreateContactAsync(
+        CreateContact contact, CancellationToken cancellationToken
+    ) => await _daktelaHttpClient.PostAsync(
+        _httpRequestSerializer,
+        _httpResponseParser,
+        $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
+        contact,
+        cancellationToken
+    ).ConfigureAwait(false);
 
     public async Task DeleteContactAsync(
         string name, CancellationToken cancellationToken
