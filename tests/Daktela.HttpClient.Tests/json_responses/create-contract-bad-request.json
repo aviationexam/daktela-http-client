@@ -5,9 +5,9 @@
     }
   },
   "result": {
-    "title": "Title testing_user_637825909875849707",
+    "title": "Title testing_user",
     "firstname": "Title",
-    "lastname": "testing_user_637825909875849707",
+    "lastname": "testing_user",
     "account": null,
     "user": null,
     "description": null,
@@ -30,7 +30,7 @@
     },
     "duplicateContacts": null,
     "notDuplicateContacts": null,
-    "name": "testing_user_637825909875849707",
+    "name": "testing_user",
     "_sys": {
       "hash": null,
       "model": "contacts"

@@ -1,7 +1,9 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Requests;
+using Daktela.HttpClient.Api.Responses.Errors;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Configuration;
+using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Interfaces;
@@ -36,9 +38,11 @@ public class ContactEndpointTests
                 DateTimeOffset = _dateTimeOffset,
             });
 
+        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(_daktelaOptionsMock.Object);
         _contactEndpoint = new ContactEndpoint(
             _daktelaHttpClientMock.Object,
-            new HttpResponseParser(new HttpJsonSerializerOptions(_daktelaOptionsMock.Object)),
+            new HttpRequestSerializer(httpJsonSerializerOptions),
+            new HttpResponseParser(httpJsonSerializerOptions),
             new PagedResponseProcessor<IContactEndpoint>()
         );
     }
@@ -178,6 +182,54 @@ public class ContactEndpointTests
         Assert.Equal(4, count);
         Assert.Equal(2, responseMetadata.TotalRecords.Count);
         Assert.All(responseMetadata.TotalRecords, x => Assert.Equal(4, x));
+    }
+
+    [Fact]
+    public async Task CreateContactsFailed_BadRequest()
+    {
+        const string name = "testing_user";
+
+        using var _ = _daktelaHttpClientMock.MockHttpPostResponse_BadRequest<CreateContact>(
+            $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
+            _ => true,
+            "create-contract-bad-request"
+        );
+
+        var contract = new CreateContact
+        {
+            Title = $"Title {name}",
+            FirstName = "Title",
+            LastName = "testing_user",
+            Account = null,
+            User = "administrator",
+            Description = null,
+            CustomFields = null,
+            Name = name
+        };
+
+        var exception = await Assert.ThrowsAsync<BadRequestException<CreateContact>>(() => _contactEndpoint.CreateContactAsync(contract));
+
+        Assert.NotNull(exception.Contract);
+        Assert.NotNull(exception.ErrorsResponse);
+
+        var result = exception.Contract;
+        Assert.Equal(contract.Title, result.Title);
+        Assert.Equal(contract.FirstName, result.FirstName);
+        Assert.Equal(contract.LastName, result.LastName);
+        Assert.Null(result.Account);
+        Assert.Null(result.User);
+        Assert.Equal(contract.Description, result.Description);
+        Assert.NotNull(result.CustomFields);
+        Assert.Equal(contract.Name, result.Name);
+
+        var error = Assert.IsType<ComplexErrorResponse>(exception.ErrorsResponse);
+
+        var errorForm = Assert.Single(error.Form);
+        Assert.Equal("user", errorForm.Key);
+        var errorFormMessage = Assert.IsType<ErrorFormMessage>(errorForm.Value);
+        Assert.Equal("Chyba cizího klíče", errorFormMessage.ErrorMessage);
+
+        Assert.Null(error.Primary);
     }
 
     [Fact]
