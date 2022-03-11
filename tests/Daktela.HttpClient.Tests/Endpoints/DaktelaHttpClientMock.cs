@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Responses;
+using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Requests;
 using Moq;
@@ -55,6 +56,36 @@ public static class DaktelaHttpClientMock
         )).Returns((
             IHttpResponseParser httpResponseParser, string _, IRequest _, CancellationToken cancellationToken
         ) => httpResponseParser.ParseResponseAsync<ListResponse<TContract>>(httpResponseContent, cancellationToken));
+
+        return httpResponseContent;
+    }
+
+    public static IDisposable MockHttpPostResponse_BadRequest<TRequest>(
+        this Mock<IDaktelaHttpClient> mock, string uri, Expression<Func<TRequest, bool>> requestFilter, string resourceName
+    )
+        where TRequest : class
+    {
+        // disposed from httpResponseContent
+        var stream = LoadEmbeddedJson(resourceName);
+
+        var httpResponseContent = new StreamContent(stream);
+
+        mock.Setup(x => x.PostAsync(
+            It.IsAny<IHttpRequestSerializer>(),
+            It.IsAny<IHttpResponseParser>(),
+            uri,
+            It.Is(requestFilter),
+            It.IsAny<CancellationToken>()
+        )).Returns(async (
+            IHttpRequestSerializer _,
+            IHttpResponseParser httpResponseParser,
+            string _, TRequest _,
+            CancellationToken cancellationToken
+        ) =>
+        {
+            var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TRequest>>(httpResponseContent, cancellationToken);
+            throw new BadRequestException<TRequest>(response.Result, response.Error);
+        });
 
         return httpResponseContent;
     }
