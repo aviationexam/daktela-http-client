@@ -16,5 +16,6 @@ public class HttpJsonSerializerOptions : IHttpJsonSerializerOptions
         Value.Converters.Add(new DateTimeOffsetConverter(daktelaOptions));
         Value.Converters.Add(new EnumsConverterFactory());
         Value.Converters.Add(new ErrorResponseConverter());
+        Value.Converters.Add(new ErrorFormConverter());
     }
 }
