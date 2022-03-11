@@ -1,5 +1,6 @@
 using Daktela.HttpClient.Api.Requests;
 using Daktela.HttpClient.Api.Responses;
+using Daktela.HttpClient.Api.Responses.Errors;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Queries;
@@ -41,7 +42,7 @@ public class PagedResponseProcessorTests
                     _
                 ) => Task.FromResult(new ListResponse<object>
                 {
-                    Error = Array.Empty<string>(),
+                    Error = new PlainErrorResponse(),
                     Result = new ListResponse<object>.ResultObject
                     {
                         Data = Enumerable.Range(0, take).Select(_ => new object()).ToList(),
@@ -103,7 +104,7 @@ public class PagedResponseProcessorTests
 
                     return Task.FromResult(new ListResponse<object>
                     {
-                        Error = Array.Empty<string>(),
+                        Error = new PlainErrorResponse(),
                         Result = new ListResponse<object>.ResultObject
                         {
                             Data = Enumerable.Range(

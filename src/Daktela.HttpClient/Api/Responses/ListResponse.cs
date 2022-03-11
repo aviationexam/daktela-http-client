@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.Responses.Errors;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,7 +10,7 @@ namespace Daktela.HttpClient.Api.Responses;
 public class ListResponse<T> where T : class
 {
     [JsonPropertyName("error")]
-    public ICollection<string> Error { get; set; } = null!;
+    public IErrorResponse Error { get; set; } = null!;
 
     [JsonPropertyName("result")]
     public ResultObject Result { get; set; } = null!;
