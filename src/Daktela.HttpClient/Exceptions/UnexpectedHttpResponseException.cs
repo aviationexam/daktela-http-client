@@ -1,9 +1,8 @@
-using System;
 using System.Net;
 
 namespace Daktela.HttpClient.Exceptions;
 
-public class UnexpectedHttpResponseException : Exception
+public class UnexpectedHttpResponseException : DaktelaException
 {
     public string Uri { get; }
 
