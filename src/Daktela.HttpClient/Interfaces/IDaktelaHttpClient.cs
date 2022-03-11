@@ -31,6 +31,7 @@ public interface IDaktelaHttpClient : IDisposable
 
     Task PostAsync<TRequest>(
         IHttpRequestSerializer httpRequestSerializer,
+        IHttpResponseParser httpResponseParser,
         string uri,
         TRequest request,
         CancellationToken cancellationToken

@@ -43,11 +43,13 @@ public class IntegrationTests
 
         var daktelaHttpClient = serviceProvider.GetRequiredService<IDaktelaHttpClient>();
         var httpRequestSerializer = serviceProvider.GetRequiredService<IHttpRequestSerializer>();
+        var httpResponseParser = serviceProvider.GetRequiredService<IHttpResponseParser>();
 
         var cancellationToken = CancellationToken.None;
 
         await daktelaHttpClient.PostAsync(
             httpRequestSerializer,
+            httpResponseParser,
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             new CreateContact
             {
@@ -55,7 +57,7 @@ public class IntegrationTests
                 FirstName = null,
                 LastName = null,
                 Account = null,
-                User = null,
+                User = "administrator",
                 Description = null,
                 CustomFields = null,
                 Name = name

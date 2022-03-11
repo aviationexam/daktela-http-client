@@ -89,6 +89,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
     public async Task PostAsync<TRequest>(
         IHttpRequestSerializer httpRequestSerializer,
+        IHttpResponseParser httpResponseParser,
         string path,
         TRequest request,
         CancellationToken cancellationToken
@@ -100,12 +101,18 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
             .ConfigureAwait(false);
 
-        if (httpResponse.StatusCode == HttpStatusCode.Created)
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+        switch (httpResponse.StatusCode)
         {
-            return;
-        }
+            case HttpStatusCode.Created:
+                return;
+            case HttpStatusCode.BadRequest:
+                var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TRequest>>(httpResponse.Content, cancellationToken);
 
-        throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+                throw new BadRequestException<TRequest>(badRequest.Result, badRequest.Error);
+            default:
+                throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+        }
     }
 
     public async Task DeleteAsync(string path, CancellationToken cancellationToken)
