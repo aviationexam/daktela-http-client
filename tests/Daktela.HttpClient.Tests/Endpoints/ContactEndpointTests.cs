@@ -223,13 +223,13 @@ public class ContactEndpointTests
         Assert.Equal(contract.Name, result.Name);
 
         var error = Assert.IsType<ComplexErrorResponse>(exception.ErrorsResponse);
+        Assert.NotNull(error.Form);
+        Assert.Null(error.Primary);
 
         var errorForm = Assert.Single(error.Form);
         Assert.Equal("user", errorForm.Key);
         var errorFormMessage = Assert.IsType<ErrorFormMessage>(errorForm.Value);
         Assert.Equal("Chyba cizího klíče", errorFormMessage.ErrorMessage);
-
-        Assert.Null(error.Primary);
     }
 
     [Fact]

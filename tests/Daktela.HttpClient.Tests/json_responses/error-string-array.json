@@ -1,5 +1,5 @@
 ﻿{
-  "error": "Object not exist",
+  "error": ["Object not exist"],
   "result": null,
   "_time": "2019-02-11 16:48:04"
 }
