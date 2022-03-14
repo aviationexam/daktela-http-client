@@ -56,11 +56,14 @@ public class IntegrationTests
                 Title = $"Title {name}",
                 FirstName = null,
                 LastName = null,
-                Account = null,
+                Account = "aviationexam",
                 User = "administrator",
                 Description = null,
-                CustomFields = null,
-                Name = name
+                CustomFields = new CustomFields
+                {
+                    ["number"] = new[] { "123456789" },
+                },
+                Name = name,
             },
             cancellationToken
         );

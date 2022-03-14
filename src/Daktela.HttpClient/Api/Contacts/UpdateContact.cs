@@ -31,7 +31,7 @@ public class UpdateContact
     /// Account
     /// </summary>
     [JsonPropertyName("account")]
-    public Account? Account { get; set; }
+    public string? Account { get; set; }
 
     /// <summary>
     /// User
