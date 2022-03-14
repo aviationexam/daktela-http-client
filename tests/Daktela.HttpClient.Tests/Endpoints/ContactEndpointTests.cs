@@ -207,7 +207,7 @@ public class ContactEndpointTests
             Name = name
         };
 
-        var exception = await Assert.ThrowsAsync<BadRequestException<CreateContact>>(() => _contactEndpoint.CreateContactAsync(contract));
+        var exception = await Assert.ThrowsAsync<BadRequestException<ReadContact>>(() => _contactEndpoint.CreateContactAsync(contract));
 
         Assert.NotNull(exception.Contract);
         Assert.NotNull(exception.ErrorsResponse);
