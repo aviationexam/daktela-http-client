@@ -254,4 +254,40 @@ public class HttpResponseParserTests
         var errors = Assert.IsType<PlainErrorResponse>(contactResponse.Error);
         Assert.Empty(errors);
     }
+
+    [Fact]
+    public async Task ParseUpdateContactBadRequest()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("update-contact-bad-request".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var contactResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadContact>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(contactResponse.Error);
+        Assert.NotNull(contactResponse.Result);
+
+        var contact = contactResponse.Result;
+
+        Assert.NotNull(contact);
+        Assert.Equal("testing_user_637828520552409483", contact.Name);
+        Assert.Equal(new DateTimeOffset(2022, 3, 14, 10, 54, 16, _dateTimeOffset), contact.Created);
+        Assert.Equal(new DateTimeOffset(2022, 3, 14, 10, 54, 30, _dateTimeOffset), contact.Edited);
+        Assert.Null(contact.User);
+        Assert.Null(contact.Account);
+
+        var error = Assert.IsType<ComplexErrorResponse>(contactResponse.Error);
+        Assert.NotNull(error.Form);
+        Assert.Null(error.Primary);
+
+        Assert.Equal(2, error.Form!.Count);
+        var titleError = Assert.Contains("title", error.Form);
+        var lastnameError = Assert.Contains("lastname", error.Form);
+
+        var titleErrorMessage = Assert.IsType<ErrorFormMessage>(titleError);
+        Assert.Equal("Vstup je povinn\u00fd", titleErrorMessage.ErrorMessage);
+        var lastnameErrorMessage = Assert.IsType<ErrorFormMessage>(lastnameError);
+        Assert.Equal("Vstup je povinn\u00fd", lastnameErrorMessage.ErrorMessage);
+    }
 }
