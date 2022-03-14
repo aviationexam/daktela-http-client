@@ -98,7 +98,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         }
     }
 
-    public async Task PutAsync<TRequest, TResponseContract>(
+    public async Task<TResponseContract> PutAsync<TRequest, TResponseContract>(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string path,
@@ -117,8 +117,10 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)
         {
-            case HttpStatusCode.Created:
-                return;
+            case HttpStatusCode.OK:
+                var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+
+                return response.Result;
             case HttpStatusCode.BadRequest:
                 var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
 

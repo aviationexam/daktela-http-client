@@ -31,7 +31,7 @@ public interface IDaktelaHttpClient : IDisposable
         where TRequest : class
         where TResponseContract : class;
 
-    Task PutAsync<TRequest, TResponseContract>(
+    Task<TResponseContract> PutAsync<TRequest, TResponseContract>(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string uri,

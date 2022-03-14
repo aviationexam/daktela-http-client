@@ -70,12 +70,13 @@ public class IntegrationTests
 
         var encodedName = HttpUtility.UrlEncode(name);
 
-        await daktelaHttpClient.PutAsync<UpdateContact, ReadContact>(
+        var updatedContract = await daktelaHttpClient.PutAsync<UpdateContact, ReadContact>(
             httpRequestSerializer,
             httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             new UpdateContact
             {
+                Title = $"Title {name}",
                 LastName = $"Last {name}",
                 CustomFields = new CustomFields
                 {
@@ -84,6 +85,8 @@ public class IntegrationTests
             },
             cancellationToken
         );
+
+        Assert.NotNull(updatedContract);
 
         await daktelaHttpClient.DeleteAsync($"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}", cancellationToken);
     }
