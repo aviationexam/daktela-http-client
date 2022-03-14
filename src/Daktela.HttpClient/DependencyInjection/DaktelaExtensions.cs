@@ -17,15 +17,39 @@ namespace Daktela.HttpClient.DependencyInjection;
 
 public static class DaktelaExtensions
 {
-    public static IServiceCollection AddDaktelaHttpClient(
+    public static OptionsBuilder<DaktelaOptions> AddDaktelaHttpClient(
         this IServiceCollection serviceCollection,
         Action<DaktelaOptions> configure
     )
     {
-        serviceCollection.AddOptions<DaktelaOptions>()
+        var optionsBuilder = serviceCollection.AddOptions<DaktelaOptions>()
             .Configure(configure)
             .ValidateDataAnnotations();
 
+        serviceCollection.AddDaktelaHttpClient();
+
+        return optionsBuilder;
+    }
+
+    public static OptionsBuilder<DaktelaOptions> AddDaktelaHttpClient<TDependency>(
+        this IServiceCollection serviceCollection,
+        Action<DaktelaOptions, TDependency> configure
+    )
+        where TDependency : class
+    {
+        var optionsBuilder = serviceCollection.AddOptions<DaktelaOptions>()
+            .Configure(configure)
+            .ValidateDataAnnotations();
+
+        serviceCollection.AddDaktelaHttpClient();
+
+        return optionsBuilder;
+    }
+
+    public static IServiceCollection AddDaktelaHttpClient(
+        this IServiceCollection serviceCollection
+    )
+    {
         serviceCollection.AddSingleton<IValidateOptions<DaktelaOptions>>(
             _ => new DataAnnotationValidateOptions<DaktelaOptions>(nameof(DaktelaOptions))
         );
