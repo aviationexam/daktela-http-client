@@ -19,21 +19,23 @@ public static class DaktelaExtensions
 {
     public static OptionsBuilder<DaktelaOptions> AddDaktelaHttpClient(
         this IServiceCollection serviceCollection,
-        Action<DaktelaOptions> configure
+        Action<DaktelaOptions> configure,
+        Action<IHttpClientBuilder>? configureHttpClientBuilder = null
     )
     {
         var optionsBuilder = serviceCollection.AddOptions<DaktelaOptions>()
             .Configure(configure)
             .ValidateDataAnnotations();
 
-        serviceCollection.AddDaktelaHttpClient();
+        serviceCollection.AddDaktelaHttpClient(configureHttpClientBuilder);
 
         return optionsBuilder;
     }
 
     public static OptionsBuilder<DaktelaOptions> AddDaktelaHttpClient<TDependency>(
         this IServiceCollection serviceCollection,
-        Action<DaktelaOptions, TDependency> configure
+        Action<DaktelaOptions, TDependency> configure,
+        Action<IHttpClientBuilder>? configureHttpClientBuilder = null
     )
         where TDependency : class
     {
@@ -41,13 +43,14 @@ public static class DaktelaExtensions
             .Configure(configure)
             .ValidateDataAnnotations();
 
-        serviceCollection.AddDaktelaHttpClient();
+        serviceCollection.AddDaktelaHttpClient(configureHttpClientBuilder);
 
         return optionsBuilder;
     }
 
     public static IServiceCollection AddDaktelaHttpClient(
-        this IServiceCollection serviceCollection
+        this IServiceCollection serviceCollection,
+        Action<IHttpClientBuilder>? configureHttpClientBuilder = null
     )
     {
         serviceCollection.AddSingleton<IValidateOptions<DaktelaOptions>>(
@@ -55,7 +58,7 @@ public static class DaktelaExtensions
         );
 
         serviceCollection.TryAddSingleton<IHttpRequestFactory, HttpRequestFactory>();
-        serviceCollection.AddHttpClient<IDaktelaHttpClient, DaktelaHttpClient>((serviceProvider, httpClient) =>
+        var httpClientBuilder = serviceCollection.AddHttpClient<IDaktelaHttpClient, DaktelaHttpClient>((serviceProvider, httpClient) =>
             {
                 var daktelaOptions = serviceProvider.GetRequiredService<IOptions<DaktelaOptions>>().Value;
 
@@ -67,6 +70,8 @@ public static class DaktelaExtensions
                 AllowAutoRedirect = false,
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
             });
+
+        configureHttpClientBuilder?.Invoke(httpClientBuilder);
 
         serviceCollection.TryAddSingleton(typeof(IPagedResponseProcessor<>), typeof(PagedResponseProcessor<>));
 
