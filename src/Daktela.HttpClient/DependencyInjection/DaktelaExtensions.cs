@@ -26,9 +26,11 @@ public static class DaktelaExtensions
             .Configure(configure)
             .ValidateDataAnnotations();
 
-        serviceCollection.AddSingleton<IValidateOptions<DaktelaOptions>>(new DataAnnotationValidateOptions<DaktelaOptions>(nameof(DaktelaOptions)));
+        serviceCollection.AddSingleton<IValidateOptions<DaktelaOptions>>(
+            _ => new DataAnnotationValidateOptions<DaktelaOptions>(nameof(DaktelaOptions))
+        );
 
-        serviceCollection.AddSingleton<IHttpRequestFactory, HttpRequestFactory>();
+        serviceCollection.TryAddSingleton<IHttpRequestFactory, HttpRequestFactory>();
         serviceCollection.AddHttpClient<IDaktelaHttpClient, DaktelaHttpClient>((serviceProvider, httpClient) =>
             {
                 var daktelaOptions = serviceProvider.GetRequiredService<IOptions<DaktelaOptions>>().Value;
@@ -48,7 +50,9 @@ public static class DaktelaExtensions
         serviceCollection.TryAddSingleton<IHttpResponseParser, HttpResponseParser>();
         serviceCollection.TryAddSingleton<IHttpRequestSerializer, HttpRequestSerializer>();
 
-        serviceCollection.AddScoped<IContactEndpoint, ContactEndpoint>();
+        serviceCollection.TryAddSingleton<IContractValidation, ContractValidation>();
+
+        serviceCollection.TryAddScoped<IContactEndpoint, ContactEndpoint>();
 
         return serviceCollection;
     }

@@ -7,6 +7,7 @@ using Daktela.HttpClient.Interfaces.Requests;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Specialized;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -15,10 +16,15 @@ namespace Daktela.HttpClient.Implementations;
 
 public class HttpRequestFactory : IHttpRequestFactory
 {
+    private readonly IContractValidation _contractValidation;
     private readonly DaktelaOptions _daktelaOptions;
 
-    public HttpRequestFactory(IOptions<DaktelaOptions> daktelaOptions)
+    public HttpRequestFactory(
+        IContractValidation contractValidation,
+        IOptions<DaktelaOptions> daktelaOptions
+    )
     {
+        _contractValidation = contractValidation;
         _daktelaOptions = daktelaOptions.Value;
     }
 
@@ -130,6 +136,20 @@ public class HttpRequestFactory : IHttpRequestFactory
     ) where TBody : class
     {
         var httpMessage = CreateHttpRequestMessage(method, path);
+
+        var validationResult = _contractValidation.Validate(body, method.Method switch
+        {
+            "GET" => EOperation.Read,
+            "POST" => EOperation.Create,
+            "PUT" => EOperation.Update,
+            "DELETE" => EOperation.Delete,
+            _ => throw new ArgumentOutOfRangeException(nameof(method), method, null),
+        });
+
+        if (validationResult != ValidationResult.Success)
+        {
+            throw new ValidationException(validationResult!, null, body);
+        }
 
         httpMessage.Content = httpRequestSerializer.SerializeRequest(body);
 

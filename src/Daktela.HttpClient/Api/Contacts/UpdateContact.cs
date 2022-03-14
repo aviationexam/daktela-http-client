@@ -1,5 +1,4 @@
-using Daktela.HttpClient.Api.Accounts;
-using System.ComponentModel.DataAnnotations;
+using Daktela.HttpClient.Attributes;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Contacts;
@@ -11,6 +10,7 @@ public class UpdateContact
     ///
     /// Formatted full name
     /// </summary>
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     [JsonPropertyName("title")]
     public string? Title { get; set; }
 
@@ -23,7 +23,7 @@ public class UpdateContact
     /// <summary>
     /// Last name
     /// </summary>
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     [JsonPropertyName("lastname")]
     public string? LastName { get; set; }
 

@@ -15,6 +15,7 @@ public class HttpRequestFactoryTests
     private const string DaktelaContractPath = "api/contract";
     private const string AccessToken = "my_secret_access_token";
 
+    private readonly Mock<IContractValidation> _contractValidationMock = new(MockBehavior.Strict);
     private readonly Mock<IOptions<DaktelaOptions>> _daktelaOptionsMock = new(MockBehavior.Strict);
     private readonly IHttpRequestFactory _httpRequestFactory;
 
@@ -26,7 +27,10 @@ public class HttpRequestFactoryTests
                 ApiDomain = DaktelaUrl,
                 AccessToken = AccessToken,
             });
-        _httpRequestFactory = new HttpRequestFactory(_daktelaOptionsMock.Object);
+        _httpRequestFactory = new HttpRequestFactory(
+            _contractValidationMock.Object,
+            _daktelaOptionsMock.Object
+        );
     }
 
     [Fact]
