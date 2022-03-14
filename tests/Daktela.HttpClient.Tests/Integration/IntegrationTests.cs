@@ -78,6 +78,7 @@ public class IntegrationTests
             {
                 Title = $"Title {name}",
                 LastName = $"Last {name}",
+                User = "administrator",
                 CustomFields = new CustomFields
                 {
                     ["email"] = new[] { "my@email.com" },
@@ -87,6 +88,7 @@ public class IntegrationTests
         );
 
         Assert.NotNull(updatedContract);
+        Assert.NotNull(updatedContract.User);
 
         await daktelaHttpClient.DeleteAsync($"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}", cancellationToken);
     }
