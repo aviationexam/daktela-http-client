@@ -68,32 +68,15 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         return response;
     }
 
-    public async Task<TResponse> PostAsync<TRequest, TResponse>(
+    public async Task PostAsync<TRequest, TResponseContract>(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string path,
         TRequest request,
         CancellationToken cancellationToken
-    ) where TRequest : class
-    {
-        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Post, path, request);
-
-        using var httpResponse = await _httpClient
-            .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
-            .ConfigureAwait(false);
-
-        var response = await httpResponseParser.ParseResponseAsync<TResponse>(httpResponse.Content, cancellationToken);
-
-        return response;
-    }
-
-    public async Task PostAsync<TRequest>(
-        IHttpRequestSerializer httpRequestSerializer,
-        IHttpResponseParser httpResponseParser,
-        string path,
-        TRequest request,
-        CancellationToken cancellationToken
-    ) where TRequest : class
+    )
+        where TRequest : class
+        where TResponseContract : class
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Post, path, request);
 
@@ -107,21 +90,23 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             case HttpStatusCode.Created:
                 return;
             case HttpStatusCode.BadRequest:
-                var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TRequest>>(httpResponse.Content, cancellationToken);
+                var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
 
-                throw new BadRequestException<TRequest>(badRequest.Result, badRequest.Error);
+                throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
             default:
                 throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
         }
     }
 
-    public async Task PutAsync<TRequest>(
+    public async Task PutAsync<TRequest, TResponseContract>(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string path,
         TRequest request,
         CancellationToken cancellationToken
-    ) where TRequest : class
+    )
+        where TRequest : class
+        where TResponseContract : class
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Put, path, request);
 
@@ -135,9 +120,9 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             case HttpStatusCode.Created:
                 return;
             case HttpStatusCode.BadRequest:
-                var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TRequest>>(httpResponse.Content, cancellationToken);
+                var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
 
-                throw new BadRequestException<TRequest>(badRequest.Result, badRequest.Error);
+                throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
             default:
                 throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
         }

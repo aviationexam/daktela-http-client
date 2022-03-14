@@ -47,7 +47,7 @@ public class IntegrationTests
 
         var cancellationToken = CancellationToken.None;
 
-        await daktelaHttpClient.PostAsync(
+        await daktelaHttpClient.PostAsync<CreateContact, ReadContact>(
             httpRequestSerializer,
             httpResponseParser,
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
@@ -55,7 +55,7 @@ public class IntegrationTests
             {
                 Title = $"Title {name}",
                 FirstName = null,
-                LastName = null,
+                LastName = $"Last {name}",
                 Account = "aviationexam",
                 User = "administrator",
                 Description = null,
@@ -69,6 +69,21 @@ public class IntegrationTests
         );
 
         var encodedName = HttpUtility.UrlEncode(name);
+
+        await daktelaHttpClient.PutAsync<UpdateContact, ReadContact>(
+            httpRequestSerializer,
+            httpResponseParser,
+            $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
+            new UpdateContact
+            {
+                LastName = $"Last {name}",
+                CustomFields = new CustomFields
+                {
+                    ["email"] = new[] { "my@email.com" },
+                },
+            },
+            cancellationToken
+        );
 
         await daktelaHttpClient.DeleteAsync($"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}", cancellationToken);
     }

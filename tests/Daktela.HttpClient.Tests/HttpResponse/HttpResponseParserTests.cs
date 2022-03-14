@@ -58,7 +58,7 @@ public class HttpResponseParserTests
         using var httpResponseContent = new StreamContent("create-contract-bad-request".LoadEmbeddedJson());
 
         var cancellationToken = CancellationToken.None;
-        var contactResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<CreateContact>>(httpResponseContent, cancellationToken);
+        var contactResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadContact>>(httpResponseContent, cancellationToken);
 
         Assert.NotNull(contactResponse.Error);
         Assert.NotNull(contactResponse.Result);

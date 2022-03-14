@@ -77,7 +77,7 @@ public class ContactEndpoint : IContactEndpoint
 
     public async Task CreateContactAsync(
         CreateContact contact, CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PostAsync(
+    ) => await _daktelaHttpClient.PostAsync<CreateContact, ReadContact>(
         _httpRequestSerializer,
         _httpResponseParser,
         $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
@@ -93,7 +93,7 @@ public class ContactEndpoint : IContactEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        await _daktelaHttpClient.PutAsync(
+        await _daktelaHttpClient.PutAsync<UpdateContact, ReadContact>(
             _httpRequestSerializer,
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",

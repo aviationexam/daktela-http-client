@@ -53,14 +53,15 @@ public static class DaktelaHttpClientMock
         return httpResponseContent;
     }
 
-    public static IDisposable MockHttpPostResponse_BadRequest<TRequest>(
+    public static IDisposable MockHttpPostResponse_BadRequest<TRequest, TResponseContract>(
         this Mock<IDaktelaHttpClient> mock, string uri, Expression<Func<TRequest, bool>> requestFilter, string resourceName
     )
         where TRequest : class
+        where TResponseContract : class
     {
         var httpResponseContent = new StreamContent(resourceName.LoadEmbeddedJson());
 
-        mock.Setup(x => x.PostAsync(
+        mock.Setup(x => x.PostAsync<TRequest, TResponseContract>(
             It.IsAny<IHttpRequestSerializer>(),
             It.IsAny<IHttpResponseParser>(),
             uri,
@@ -73,8 +74,8 @@ public static class DaktelaHttpClientMock
             CancellationToken cancellationToken
         ) =>
         {
-            var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TRequest>>(httpResponseContent, cancellationToken);
-            throw new BadRequestException<TRequest>(response.Result, response.Error);
+            var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponseContent, cancellationToken);
+            throw new BadRequestException<TResponseContract>(response.Result, response.Error);
         });
 
         return httpResponseContent;

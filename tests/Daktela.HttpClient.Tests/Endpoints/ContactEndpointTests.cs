@@ -189,7 +189,7 @@ public class ContactEndpointTests
     {
         const string name = "testing_user";
 
-        using var _ = _daktelaHttpClientMock.MockHttpPostResponse_BadRequest<CreateContact>(
+        using var _ = _daktelaHttpClientMock.MockHttpPostResponse_BadRequest<CreateContact, ReadContact>(
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             _ => true,
             "create-contract-bad-request"
