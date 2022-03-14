@@ -30,6 +30,12 @@ public interface IContactEndpoint
         CancellationToken cancellationToken = default
     );
 
+    Task UpdateContactAsync(
+        string name,
+        UpdateContact contact,
+        CancellationToken cancellationToken = default
+    );
+
     Task DeleteContactAsync(
         string name, CancellationToken cancellationToken = default
     );
