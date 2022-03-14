@@ -1,3 +1,7 @@
+[![Build Status](https://github.com/aviationexam/daktela-http-client/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/aviationexam/daktela-http-client/actions/workflows/build.yml)
+[![NuGet](https://img.shields.io/nuget/v/Daktela.HttpClient.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Daktela.HttpClient/)
+[![MyGet](https://img.shields.io/myget/daktela-http-client/vpre/Daktela.HttpClient?label=MyGet)](https://www.myget.org/feed/daktela-http-client/package/nuget/Daktela.HttpClient)
+
 # Daktela Http Client
 
 ## How to configure library
