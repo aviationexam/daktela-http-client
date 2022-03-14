@@ -198,4 +198,60 @@ public class HttpResponseParserTests
         var error = Assert.Single(errors);
         Assert.Equal("Object not exist", error);
     }
+
+    [Fact]
+    public async Task ParseSimpleContactWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("simple-contact".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var contactResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadContact>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(contactResponse.Error);
+        Assert.NotNull(contactResponse.Result);
+
+        var contact = contactResponse.Result;
+
+        Assert.NotNull(contact);
+        Assert.Equal("testing_user", contact.Name);
+        Assert.Equal(new DateTimeOffset(2022, 3, 2, 14, 6, 5, _dateTimeOffset), contact.Edited);
+        Assert.Equal(new DateTimeOffset(2022, 3, 2, 14, 6, 5, _dateTimeOffset), contact.Created);
+        Assert.Null(contact.User);
+        Assert.Null(contact.Account);
+
+        var errors = Assert.IsType<PlainErrorResponse>(contactResponse.Error);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public async Task ParseSimpleContactWithUserWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("simple-contact-with-user".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var contactResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadContact>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(contactResponse.Error);
+        Assert.NotNull(contactResponse.Result);
+
+        var contact = contactResponse.Result;
+
+        Assert.NotNull(contact);
+        Assert.Equal("test_user_with_user", contact.Name);
+        Assert.Equal(new DateTimeOffset(2022, 3, 2, 15, 51, 17, _dateTimeOffset), contact.Created);
+        Assert.Equal(new DateTimeOffset(2022, 3, 2, 16, 1, 27, _dateTimeOffset), contact.Edited);
+        Assert.NotNull(contact.User);
+        Assert.Null(contact.Account);
+
+        Assert.Equal("administrator", contact.User!.Name);
+        Assert.Equal("admin", contact.User.Role.Name);
+        Assert.Equal("admin", contact.User.Profile.Name);
+
+        var errors = Assert.IsType<PlainErrorResponse>(contactResponse.Error);
+        Assert.Empty(errors);
+    }
 }
