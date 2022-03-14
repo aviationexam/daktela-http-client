@@ -7,6 +7,7 @@ using Daktela.HttpClient.Tests.Infrastructure;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -253,6 +254,48 @@ public class HttpResponseParserTests
 
         var errors = Assert.IsType<PlainErrorResponse>(contactResponse.Error);
         Assert.Empty(errors);
+    }
+
+    [Fact]
+    public async Task ParseUpdateContactWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("update-contact".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var contactResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadContact>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(contactResponse.Error);
+        Assert.NotNull(contactResponse.Result);
+
+        var contact = contactResponse.Result;
+
+        Assert.NotNull(contact);
+        Assert.Equal("testing_user_637828625039351324", contact.Name);
+        Assert.Equal("Title testing_user_637828625039351324", contact.Title);
+        Assert.Equal("Last testing_user_637828625039351324", contact.LastName);
+        Assert.Equal(new DateTimeOffset(2022, 03, 14, 13, 48, 25, _dateTimeOffset), contact.Created);
+        Assert.Equal(new DateTimeOffset(2022, 03, 14, 13, 48, 28, _dateTimeOffset), contact.Edited);
+        Assert.Null(contact.User);
+        Assert.Null(contact.Account);
+        Assert.NotNull(contact.CustomFields);
+
+        IDictionary<string, ICollection<string>> customFields = contact.CustomFields!;
+        var customFieldsNumber = Assert.Contains("number", customFields);
+        var customFieldsAddress = Assert.Contains("address", customFields);
+        var customFieldsEmail = Assert.Contains("email", customFields);
+        var customFieldsNote = Assert.Contains("note", customFields);
+
+        var customFieldsNumberValue = Assert.Single(customFieldsNumber);
+        Assert.Equal("123456789", customFieldsNumberValue);
+        Assert.Empty(customFieldsAddress);
+        var customFieldsEmailValue = Assert.Single(customFieldsEmail);
+        Assert.Equal("my@email.com", customFieldsEmailValue);
+        Assert.Empty(customFieldsNote);
+
+        var error = Assert.IsType<PlainErrorResponse>(contactResponse.Error);
+        Assert.Empty(error);
     }
 
     [Fact]

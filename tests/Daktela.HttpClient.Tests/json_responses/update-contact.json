@@ -1,0 +1,58 @@
+﻿{
+  "error": [],
+  "result": {
+    "title": "Title testing_user_637828625039351324",
+    "firstname": "",
+    "lastname": "Last testing_user_637828625039351324",
+    "account": null,
+    "user": null,
+    "description": "",
+    "nps_score": 0,
+    "edited": "2022-03-14 13:48:28",
+    "created": "2022-03-14 13:48:25",
+    "customFields": {
+      "number": [
+        "123456789"
+      ],
+      "address": [],
+      "email": [
+        "my@email.com"
+      ],
+      "note": []
+    },
+    "duplicateContacts": null,
+    "notDuplicateContacts": null,
+    "name": "testing_user_637828625039351324",
+    "_sys": {
+      "hash": "103",
+      "model": "contacts",
+      "cfScheme": {
+        "number": {
+          "type": "PHONE",
+          "title": "Telefon",
+          "hidden": false,
+          "readonly": false
+        },
+        "address": {
+          "type": "ADDRESS",
+          "title": "Adresa",
+          "hidden": false,
+          "readonly": false
+        },
+        "email": {
+          "type": "EMAIL",
+          "title": "Email",
+          "hidden": false,
+          "readonly": false
+        },
+        "note": {
+          "type": "TEXTAREA",
+          "title": "Pozn\u00e1mka",
+          "hidden": false,
+          "readonly": false
+        }
+      }
+    }
+  },
+  "_time": "2022-03-14 13:48:28"
+}
