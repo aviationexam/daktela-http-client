@@ -23,6 +23,11 @@ public class NullableEnumsConverter<TTargetType, TEnum> : JsonConverter<TTargetT
     {
         Debug.Assert(typeToConvert == typeof(TTargetType), $"{typeToConvert} != {typeof(TTargetType)}");
 
+        if (reader.TokenType == JsonTokenType.Null)
+        {
+            return default;
+        }
+
         if (
             _innerConverter.Read(
                 ref reader,
