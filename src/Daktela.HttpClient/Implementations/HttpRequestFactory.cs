@@ -19,6 +19,9 @@ public class HttpRequestFactory : IHttpRequestFactory
     private readonly IContractValidation _contractValidation;
     private readonly DaktelaOptions _daktelaOptions;
 
+    private readonly EnumsConverter<ESortDirection> _sortDirectionSerializer = new();
+    private readonly EnumsConverter<EFilterOperator> _filterDirectionSerializer = new();
+
     public HttpRequestFactory(
         IContractValidation contractValidation,
         IOptions<DaktelaOptions> daktelaOptions
@@ -100,12 +103,10 @@ public class HttpRequestFactory : IHttpRequestFactory
     {
         if (request is ISortableQuery { Sorting: { } sorting })
         {
-            var sortDirectionSerializer = new EnumsConverter<ESortDirection>();
-
             for (var i = 0; i < sorting.Count; i++)
             {
                 var sortItem = sorting.ElementAt(i);
-                query.Add($"sort[{i}][dir]", sortDirectionSerializer.ReverseMapping[sortItem.Dir]);
+                query.Add($"sort[{i}][dir]", _sortDirectionSerializer.ReverseMapping[sortItem.Dir]);
                 query.Add($"sort[{i}][field]", sortItem.Field);
             }
         }
@@ -115,7 +116,42 @@ public class HttpRequestFactory : IHttpRequestFactory
     {
         if (request is IFilteringQuery { Filters: { } filters })
         {
-            // TODO filters
+            const string filterKey = "filter";
+
+            SerializeFilters(filters, query, filterKey);
+        }
+    }
+
+    private void SerializeFilters(IFilter filter, NameValueCollection query, string keyPrefix)
+    {
+        switch (filter)
+        {
+            case Filter coreFilter:
+                var operatorType = _filterDirectionSerializer.ReverseMapping[coreFilter.Operator];
+
+                query.Add($"{keyPrefix}[field]", coreFilter.Field);
+                query.Add($"{keyPrefix}[operator]", operatorType);
+                query.Add($"{keyPrefix}[value]", HttpUtility.HtmlEncode(coreFilter.Value));
+
+                if (!string.IsNullOrEmpty(coreFilter.Type))
+                {
+                    query.Add($"{keyPrefix}[type]", coreFilter.Type);
+                }
+
+                break;
+            case FilterGroup groupFilter:
+                query.Add($"{keyPrefix}[logic]", groupFilter.Logic == EFilterLogic.Or ? "or" : "and");
+
+                for (var i = 0; i < groupFilter.Filters.Count; i++)
+                {
+                    var innerFilter = groupFilter.Filters.ElementAt(i);
+
+                    SerializeFilters(innerFilter, query, $"{keyPrefix}[filters][{i}]");
+                }
+
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(filter), filter, null);
         }
     }
 

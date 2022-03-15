@@ -60,4 +60,62 @@ public class HttpRequestFactoryTests
         Assert.NotNull(httpRequestMessage.RequestUri);
         Assert.Equal($"{DaktelaUrl}/{DaktelaContractPath}?sort[0][dir]=asc&sort[0][field]=edited&accessToken={AccessToken}", httpRequestMessage.RequestUri!.ToString());
     }
+
+    [Fact]
+    public void FilteringWorks()
+    {
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+            HttpMethod.Get,
+            DaktelaContractPath,
+            request: RequestBuilder.CreateFiltering(new Filter("contact", EFilterOperator.Equal, "a value"))
+        );
+
+        Assert.Equal(HttpMethod.Get, httpRequestMessage.Method);
+        Assert.NotNull(httpRequestMessage.RequestUri);
+        Assert.Equal(
+            $"{DaktelaUrl}/{DaktelaContractPath}?filter[field]=contact&filter[operator]=eq&filter[value]=a+value&accessToken={AccessToken}",
+            httpRequestMessage.RequestUri!.ToString()
+        );
+    }
+
+    [Fact]
+    public void FilteringEscapedWorks()
+    {
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+            HttpMethod.Get,
+            DaktelaContractPath,
+            request: RequestBuilder.CreateFiltering(new Filter("contact", EFilterOperator.Equal, "a+value"))
+        );
+
+        Assert.Equal(HttpMethod.Get, httpRequestMessage.Method);
+        Assert.NotNull(httpRequestMessage.RequestUri);
+        Assert.Equal(
+            $"{DaktelaUrl}/{DaktelaContractPath}?filter[field]=contact&filter[operator]=eq&filter[value]=a%2bvalue&accessToken={AccessToken}",
+            httpRequestMessage.RequestUri!.ToString()
+        );
+    }
+
+    [Fact]
+    public void ComplexFilteringWorks()
+    {
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+            HttpMethod.Get,
+            DaktelaContractPath,
+            request: RequestBuilder.CreateFiltering(new FilterGroup(EFilterLogic.And, new[]
+            {
+                new Filter("name", EFilterOperator.Equal, "Johan"),
+                new Filter("email", EFilterOperator.EndsWith, "@gmail.com")
+            }))
+        );
+
+        Assert.Equal(HttpMethod.Get, httpRequestMessage.Method);
+        Assert.NotNull(httpRequestMessage.RequestUri);
+        Assert.Equal(
+            $"{DaktelaUrl}/{DaktelaContractPath}?filter[logic]=and"
+            + "&filter[filters][0][field]=name&filter[filters][0][operator]=eq&filter[filters][0][value]=Johan"
+            + "&filter[filters][1][field]=email&filter[filters][1][operator]=endswith&filter[filters][1][value]=%40gmail.com"
+            + $"&accessToken={AccessToken}",
+            httpRequestMessage.RequestUri!.ToString()
+        );
+    }
 }
