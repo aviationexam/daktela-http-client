@@ -62,6 +62,8 @@ public class IntegrationTests
                 CustomFields = new CustomFields
                 {
                     ["number"] = new[] { "123456789" },
+                    ["pps_id"] = new[] { "123", "124" },
+                    ["freshdesk_id"] = new[] { "12" },
                 },
                 Name = name,
             },
