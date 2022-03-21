@@ -25,7 +25,7 @@ namespace Daktela.HttpClient.Tests.Infrastructure
 
             var serviceCollection = new ServiceCollection();
 
-            serviceCollection.AddDaktelaHttpClient(c => configuration.Bind(c));
+            serviceCollection.AddDaktelaHttpClient(configure: c => configuration.Bind(c));
 
             serviceCollection.AddLogging(loggingBuilder =>
             {
