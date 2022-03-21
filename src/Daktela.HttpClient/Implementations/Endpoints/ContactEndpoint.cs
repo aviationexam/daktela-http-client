@@ -85,7 +85,7 @@ public class ContactEndpoint : IContactEndpoint
         cancellationToken
     ).ConfigureAwait(false);
 
-    public async Task UpdateContactAsync(
+    public async Task<ReadContact> UpdateContactAsync(
         string name,
         UpdateContact contact,
         CancellationToken cancellationToken
@@ -93,7 +93,7 @@ public class ContactEndpoint : IContactEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        await _daktelaHttpClient.PutAsync<UpdateContact, ReadContact>(
+        return await _daktelaHttpClient.PutAsync<UpdateContact, ReadContact>(
             _httpRequestSerializer,
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
