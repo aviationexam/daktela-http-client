@@ -1,9 +1,5 @@
-mode: Mainline
-branches:
-  main:
-    tag: ''
-    increment: Patch
-    is-mainline: true
+mode: ContinuousDeployment
+continuous-delivery-fallback-tag: nightly
 ignore:
   sha: []
 merge-message-formats: {}
