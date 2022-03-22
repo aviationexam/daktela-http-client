@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Users;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -5,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
 
-public class Ticket
+public class ReadTicket
 {
     /// <summary>
     /// Unique name
@@ -24,7 +25,7 @@ public class Ticket
     /// A merged ticket Id
     /// </summary>
     [JsonPropertyName("id_merge")]
-    public int MergeId { get; set; }
+    public int? MergeId { get; set; }
 
     /// <summary>
     /// Category
@@ -43,23 +44,19 @@ public class Ticket
     /// Email
     /// </summary>
     [JsonPropertyName("email")]
-    public string Email { get; set; } = null!;
+    public string? Email { get; set; }
 
     /// <summary>
     /// Contact
-    ///
-    /// -Contacts
     /// </summary>
     [JsonPropertyName("contact")]
-    public int Contact { get; set; }
+    public ReadContact? Contact { get; set; }
 
     /// <summary>
     /// Parent ticket
-    ///
-    /// -Tickets
     /// </summary>
     [JsonPropertyName("parentTicket")]
-    public int? ParentTicketId { get; set; }
+    public ReadTicket? ParentTicketId { get; set; }
 
     /// <summary>
     /// Is parent
@@ -75,7 +72,7 @@ public class Ticket
     /// Optional description
     /// </summary>
     [JsonPropertyName("description")]
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
 
     /// <summary>
     /// Stage

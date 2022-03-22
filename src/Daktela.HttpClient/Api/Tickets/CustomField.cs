@@ -1,6 +1,7 @@
+using System.Collections.Generic;
+
 namespace Daktela.HttpClient.Api.Tickets;
 
-public class CustomField
+public class CustomField : Dictionary<string, ICollection<string>>
 {
-    // TODO
 }

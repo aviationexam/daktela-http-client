@@ -82,6 +82,7 @@ public static class DaktelaExtensions
         serviceCollection.TryAddSingleton<IContractValidation, ContractValidation>();
 
         serviceCollection.TryAddScoped<IContactEndpoint, ContactEndpoint>();
+        serviceCollection.TryAddScoped<ITicketEndpoint, TicketEndpoint>();
 
         return serviceCollection;
     }
