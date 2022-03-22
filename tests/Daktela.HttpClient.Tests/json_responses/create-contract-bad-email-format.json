@@ -1,0 +1,44 @@
+{
+  "error": {
+    "form": {
+      "customFields": {
+        "email": [
+          "E-mail nen\u00ed ve spr\u00e1vn\u00e9m form\u00e1tu"
+        ]
+      }
+    }
+  },
+  "result": {
+    "title": "firstname lastname",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "account": null,
+    "user": null,
+    "description": null,
+    "nps_score": null,
+    "edited": "2022-03-22 13:39:42",
+    "created": "2022-03-22 13:39:42",
+    "customFields": {
+      "number": [
+        "0041796533279"
+      ],
+      "address": [
+        null
+      ],
+      "email": [
+        "email.@domain.fpp"
+      ],
+      "note": [
+        null
+      ]
+    },
+    "duplicateContacts": null,
+    "notDuplicateContacts": null,
+    "name": "name",
+    "_sys": {
+      "hash": null,
+      "model": "contacts"
+    }
+  },
+  "_time": "2022-03-22 13:39:42"
+}

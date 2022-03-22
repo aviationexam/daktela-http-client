@@ -52,6 +52,41 @@ public class HttpResponseParserTests
     }
 
     [Fact]
+    public async Task ParseCreateContactBadEmailFormatRequestWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("create-contract-bad-email-format".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var contactResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadContact>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(contactResponse.Error);
+        Assert.NotNull(contactResponse.Result);
+
+        var result = contactResponse.Result;
+        Assert.Equal("firstname lastname", result.Title);
+        Assert.Equal("firstname", result.FirstName);
+        Assert.Equal("lastname", result.LastName);
+        Assert.Null(result.Account);
+        Assert.Null(result.User);
+        Assert.Null(result.Description);
+        Assert.NotNull(result.CustomFields);
+        Assert.Equal("name", result.Name);
+
+        var error = Assert.IsType<ComplexErrorResponse>(contactResponse.Error);
+        Assert.NotNull(error.Form);
+        Assert.Null(error.Primary);
+
+        var errorForm = Assert.Single(error.Form!);
+        Assert.Equal("customFields", errorForm.Key);
+        var nestedErrorForm = Assert.IsType<NestedErrorForm>(errorForm.Value);
+        Assert.Single(nestedErrorForm.Keys, "email");
+        var errorFormMessage = Assert.IsType<ErrorFormMessages>(Assert.Single(nestedErrorForm.Values));
+        Assert.Single(errorFormMessage.ErrorMessages, "E-mail nen\u00ed ve spr\u00e1vn\u00e9m form\u00e1tu");
+    }
+
+    [Fact]
     public async Task ParseCreateContactBadRequestWorks()
     {
         var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
