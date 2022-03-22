@@ -23,12 +23,17 @@ public class ContractValidation : IContractValidation
 
             if (daktelaRequirementAttribute != null && daktelaRequirementAttribute.ApplyOnOperation.HasFlag(operation))
             {
-                var value = memberInfo switch
+                var (value, memberType) = memberInfo switch
                 {
-                    FieldInfo fieldInfo => fieldInfo.GetValue(contract),
-                    PropertyInfo propertyInfo => propertyInfo.GetValue(contract),
+                    FieldInfo fieldInfo => (fieldInfo.GetValue(contract), fieldInfo.FieldType),
+                    PropertyInfo propertyInfo => (propertyInfo.GetValue(contract), propertyInfo.PropertyType),
                     _ => throw new ArgumentOutOfRangeException(nameof(memberInfo.MemberType), memberInfo.MemberType, null),
                 };
+
+                if (memberType.IsEnum && value is not null)
+                {
+                    continue;
+                }
 
                 switch (value)
                 {
@@ -62,6 +67,7 @@ public class ContractValidation : IContractValidation
         {
             yield return fieldInfo;
         }
+
         foreach (var propertyInfo in type.GetProperties())
         {
             yield return propertyInfo;
