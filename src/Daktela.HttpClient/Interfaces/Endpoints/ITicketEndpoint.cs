@@ -18,18 +18,18 @@ public interface ITicketEndpoint
         CancellationToken cancellationToken = default
     );
 
-    IAsyncEnumerable<ReadTicket> GetContactsAsync(
+    IAsyncEnumerable<ReadTicket> GetTicketsAsync(
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken = default
     );
 
-    Task CreateContactAsync(
+    Task CreateTicketAsync(
         CreateTicket ticket, CancellationToken cancellationToken
     );
 
-    Task<ReadTicket> UpdateContactAsync(
+    Task<ReadTicket> UpdateTicketAsync(
         int name,
         UpdateTicket ticket,
         CancellationToken cancellationToken = default

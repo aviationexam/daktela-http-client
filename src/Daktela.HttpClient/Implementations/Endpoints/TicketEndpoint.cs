@@ -43,7 +43,7 @@ public class TicketEndpoint : ITicketEndpoint
         return contact.Result;
     }
 
-    public IAsyncEnumerable<ReadTicket> GetContactsAsync(
+    public IAsyncEnumerable<ReadTicket> GetTicketsAsync(
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
@@ -72,7 +72,7 @@ public class TicketEndpoint : ITicketEndpoint
         cancellationToken
     ).IteratingConfigureAwait(cancellationToken);
 
-    public async Task CreateContactAsync(
+    public async Task CreateTicketAsync(
         CreateTicket ticket, CancellationToken cancellationToken
     ) => await _daktelaHttpClient.PostAsync<CreateTicket, ReadTicket>(
         _httpRequestSerializer,
@@ -82,7 +82,7 @@ public class TicketEndpoint : ITicketEndpoint
         cancellationToken
     ).ConfigureAwait(false);
 
-    public async Task<ReadTicket> UpdateContactAsync(
+    public async Task<ReadTicket> UpdateTicketAsync(
         int name,
         UpdateTicket ticket,
         CancellationToken cancellationToken
