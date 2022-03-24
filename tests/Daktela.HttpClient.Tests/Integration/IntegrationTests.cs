@@ -1,10 +1,13 @@
 using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.Tickets;
+using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Tests.Infrastructure;
 using Daktela.HttpClient.Tests.Infrastructure.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -93,5 +96,32 @@ public class IntegrationTests
         Assert.NotNull(updatedContract.User);
 
         await daktelaHttpClient.DeleteAsync($"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}", cancellationToken);
+    }
+
+    [ManualFact]
+    public async Task GetTicketsCategories()
+    {
+        await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
+
+        var ticketsCategoriesEndpoint = serviceProvider.GetRequiredService<ITicketsCategoryEndpoint>();
+
+        var cancellationToken = CancellationToken.None;
+
+        var request = RequestBuilder.CreateEmpty();
+        var ticketCategories = new List<Category>();
+
+        var categories = ticketsCategoriesEndpoint.GetTicketsCategoriesAsync(
+            request,
+            RequestOptionBuilder.CreateAutoPagingRequestOption(false),
+            ResponseBehaviourBuilder.CreateEmpty(),
+            cancellationToken
+        ).WithCancellation(cancellationToken).ConfigureAwait(false);
+
+        await foreach (var category in categories)
+        {
+            ticketCategories.Add(category);
+        }
+
+        Assert.NotEmpty(ticketCategories);
     }
 }
