@@ -82,5 +82,5 @@ public class Category
     /// Number of days when ticket will remain closed. After <see cref="AutoArchiveTickets"/> days ticket will be archived automatically
     /// </summary>
     [JsonPropertyName("auto_archive_tickets")]
-    public int AutoArchiveTickets { get; set; }
+    public int? AutoArchiveTickets { get; set; }
 }
