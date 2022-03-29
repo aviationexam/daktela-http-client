@@ -124,4 +124,44 @@ public class IntegrationTests
 
         Assert.NotEmpty(ticketCategories);
     }
+
+    [ManualFact]
+    public async Task CreateTicket()
+    {
+        await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
+
+        var ticketEndpoint = serviceProvider.GetRequiredService<ITicketEndpoint>();
+        var activityEndpoint = serviceProvider.GetRequiredService<IActivityEndpoint>();
+
+        var cancellationToken = CancellationToken.None;
+
+        var createTicket = new CreateTicket
+        {
+            Category = "categories_618a5a3925976853354965",
+            Title = "Api test",
+            Contact = "dilbert11",
+            User = "ales",
+            Stage = EStage.Open,
+            SlaDeadTime = DateTimeOffset.Now.AddDays(1)
+        };
+
+        var ticket = await ticketEndpoint.CreateTicketAsync(createTicket, cancellationToken);
+        Assert.NotNull(ticket);
+
+        var createActivity = new CreateActivity
+        {
+            Ticket = ticket.Name,
+            Title = "Activity title",
+            Name = $"activities-{ticket.Name}-{DateTime.Now.Ticks}",
+            Type = EActivityType.Comment,
+            Description = "Text komentáře",
+            Action = EAction.Close,
+            User = "ales"
+        };
+
+        var activity = await activityEndpoint.CreateActivityAsync(createActivity, cancellationToken);
+        Assert.NotNull(activity);
+
+        await ticketEndpoint.DeleteTicketAsync(ticket.Name, cancellationToken);
+    }
 }
