@@ -58,7 +58,7 @@ public class Category
     /// Mark if status is required
     /// </summary>
     [JsonPropertyName("status_required")]
-    public bool StatusRequired { get; set; }
+    public bool? StatusRequired { get; set; }
 
     /// <summary>
     /// Multiple statuses

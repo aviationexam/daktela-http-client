@@ -25,7 +25,7 @@ public interface ITicketEndpoint
         CancellationToken cancellationToken = default
     );
 
-    Task CreateTicketAsync(
+    Task<ReadTicket> CreateTicketAsync(
         CreateTicket ticket, CancellationToken cancellationToken
     );
 

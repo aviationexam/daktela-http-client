@@ -1,5 +1,6 @@
 using Daktela.HttpClient.Attributes;
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -53,7 +54,7 @@ public class UpdateTicket
     /// </summary>
     [JsonPropertyName("stage")]
     [DaktelaRequirement(EOperation.Create | EOperation.Update)]
-    public EStage? Stage { get; set; }
+    public EStage Stage { get; set; }
 
     /// <summary>
     /// Priority
@@ -62,7 +63,7 @@ public class UpdateTicket
     /// </summary>
     [JsonPropertyName("priority")]
     [DaktelaRequirement(EOperation.Create | EOperation.Update)]
-    public EPriority? Priority { get; set; }
+    public EPriority Priority { get; set; }
 
     /// <summary>
     /// Deadline
@@ -78,7 +79,7 @@ public class UpdateTicket
     /// Date when the ticket will be automatically re-opened
     /// </summary>
     [JsonPropertyName("reopen")]
-    public DateTime? Reopen { get; set; }
+    public DateTimeOffset? Reopen { get; set; }
 
     /// <summary>
     /// Created by
@@ -98,7 +99,7 @@ public class UpdateTicket
     /// -Tickets\Mn_tickets_followers
     /// </summary>
     [JsonPropertyName("followers")]
-    public object Followers { get; set; } = null!;
+    public object? Followers { get; set; }
 
     /// <summary>
     /// Statuses
@@ -106,11 +107,11 @@ public class UpdateTicket
     /// -Statuses\Mn_statuses_tickets
     /// </summary>
     [JsonPropertyName("statuses")]
-    public object Statuses { get; set; } = null!;
+    public object? Statuses { get; set; }
 
     /// <summary>
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public CustomField CustomFields { get; set; } = null!;
+    public ICollection<CustomField>? CustomFields { get; set; }
 }

@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Users;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -104,7 +105,7 @@ public class ReadTicket
     /// If ticket is answered (first answer) the close deadline is shown. Otherwise the first answer deadline is shown.
     /// </summary>
     [JsonPropertyName("sla_deadtime")]
-    public DateTimeOffset SlaDeadTime { get; set; }
+    public DateTimeOffset? SlaDeadTime { get; set; }
 
     /// <summary>
     /// Ticket deadline
@@ -112,7 +113,7 @@ public class ReadTicket
     /// Time till when the ticket needs to be answered
     /// </summary>
     [JsonPropertyName("sla_close_deadline")]
-    public DateTimeOffset SlaCloseDeadline { get; set; }
+    public DateTimeOffset? SlaCloseDeadline { get; set; }
 
     /// <summary>
     /// Sla change
@@ -120,7 +121,7 @@ public class ReadTicket
     /// Auxiliary data for sla calculation
     /// </summary>
     [JsonPropertyName("sla_change")]
-    public DateTimeOffset SlaChange { get; set; }
+    public DateTimeOffset? SlaChange { get; set; }
 
     /// <summary>
     /// Sla duration
@@ -152,7 +153,7 @@ public class ReadTicket
     /// Date when the ticket will be automatically re-opened
     /// </summary>
     [JsonPropertyName("reopen")]
-    public DateTime? Reopen { get; set; }
+    public DateTimeOffset? Reopen { get; set; }
 
     /// <summary>
     /// Created
@@ -174,7 +175,7 @@ public class ReadTicket
     /// Date of last modification
     /// </summary>
     [JsonPropertyName("edited")]
-    public DateTime? Edited { get; set; }
+    public DateTimeOffset? Edited { get; set; }
 
     /// <summary>
     /// Edited by
@@ -188,7 +189,7 @@ public class ReadTicket
     /// Date of first answer
     /// </summary>
     [JsonPropertyName("first_answer")]
-    public DateTimeOffset FirstAnswer { get; set; }
+    public DateTimeOffset? FirstAnswer { get; set; }
 
     /// <summary>
     /// First answer duration
@@ -204,7 +205,7 @@ public class ReadTicket
     /// Time till when the ticket needs to be answered
     /// </summary>
     [JsonPropertyName("first_answer_deadline")]
-    public DateTimeOffset FirstAnswerDeadline { get; set; }
+    public DateTimeOffset? FirstAnswerDeadline { get; set; }
 
     /// <summary>
     /// First answer deadline
@@ -220,7 +221,7 @@ public class ReadTicket
     /// Date when the ticket was closed
     /// </summary>
     [JsonPropertyName("closed")]
-    public DateTimeOffset Closed { get; set; }
+    public DateTimeOffset? Closed { get; set; }
 
     /// <summary>
     /// Unread
@@ -260,7 +261,7 @@ public class ReadTicket
     /// Date and time of last activity of ticket
     /// </summary>
     [JsonPropertyName("last_activity")]
-    public int LastActivity { get; set; }
+    public int? LastActivity { get; set; }
 
     /// <summary>
     /// Last Activity of Opeartor
@@ -268,7 +269,7 @@ public class ReadTicket
     /// Date and time of last activity of ticket from operator
     /// </summary>
     [JsonPropertyName("last_activity_operator")]
-    public int LastActivityOperator { get; set; }
+    public int? LastActivityOperator { get; set; }
 
     /// <summary>
     /// Last Activity of Client
@@ -276,11 +277,11 @@ public class ReadTicket
     /// Date and time of last activity of ticket from client
     /// </summary>
     [JsonPropertyName("last_activity_client")]
-    public int LastActivityClient { get; set; }
+    public int? LastActivityClient { get; set; }
 
     /// <summary>
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public CustomField CustomFields { get; set; } = null!;
+    public ICollection<CustomField>? CustomFields { get; set; }
 }

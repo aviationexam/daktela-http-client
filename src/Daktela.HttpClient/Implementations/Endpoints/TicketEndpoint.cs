@@ -72,7 +72,7 @@ public class TicketEndpoint : ITicketEndpoint
         cancellationToken
     ).IteratingConfigureAwait(cancellationToken);
 
-    public async Task CreateTicketAsync(
+    public async Task<ReadTicket> CreateTicketAsync(
         CreateTicket ticket, CancellationToken cancellationToken
     ) => await _daktelaHttpClient.PostAsync<CreateTicket, ReadTicket>(
         _httpRequestSerializer,

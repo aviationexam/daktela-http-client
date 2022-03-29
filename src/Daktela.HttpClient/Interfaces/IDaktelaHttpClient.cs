@@ -21,7 +21,7 @@ public interface IDaktelaHttpClient : IDisposable
         CancellationToken cancellationToken
     ) where T : class;
 
-    Task PostAsync<TRequest, TResponseContract>(
+    Task<TResponseContract> PostAsync<TRequest, TResponseContract>(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string uri,

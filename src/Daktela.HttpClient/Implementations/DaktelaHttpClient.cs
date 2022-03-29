@@ -68,7 +68,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         return response;
     }
 
-    public async Task PostAsync<TRequest, TResponseContract>(
+    public async Task<TResponseContract> PostAsync<TRequest, TResponseContract>(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string path,
@@ -88,7 +88,9 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         switch (httpResponse.StatusCode)
         {
             case HttpStatusCode.Created:
-                return;
+                var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+
+                return response.Result;
             case HttpStatusCode.BadRequest:
                 var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
 
