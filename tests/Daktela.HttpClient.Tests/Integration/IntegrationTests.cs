@@ -144,7 +144,7 @@ public class IntegrationTests
             Stage = EStage.Close,
             SlaDeadTime = new DateTimeOffset(2019, 11, 24, 18, 19, 15, TimeSpan.Zero),
             Description = "FreshdeskId: 16",
-            Statuses = new List<string> {"statuses_618a6b822ecbc476078482"}
+            Statuses = new List<string> { "statuses_618a6b822ecbc476078482" }
         };
 
         var ticket = await ticketEndpoint.CreateTicketAsync(createTicket, cancellationToken);
