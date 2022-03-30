@@ -65,7 +65,7 @@ public class ReadTicket
     /// Parent flag
     /// </summary>
     [JsonPropertyName("isParent")]
-    public bool IsParent { get; set; }
+    public bool? IsParent { get; set; }
 
     /// <summary>
     /// Description
@@ -197,7 +197,7 @@ public class ReadTicket
     /// How long does it take until the ticket has been answered
     /// </summary>
     [JsonPropertyName("first_answer_duration")]
-    public int FirstAnswerDuration { get; set; }
+    public int? FirstAnswerDuration { get; set; }
 
     /// <summary>
     /// First answer deadline
@@ -213,7 +213,7 @@ public class ReadTicket
     /// First answer overdue in seconds
     /// </summary>
     [JsonPropertyName("first_answer_overdue")]
-    public int FirstAnswerOverdueInSec { get; set; }
+    public int? FirstAnswerOverdueInSec { get; set; }
 
     /// <summary>
     /// Closed
@@ -237,7 +237,7 @@ public class ReadTicket
     /// Flag if the ticket has attachment
     /// </summary>
     [JsonPropertyName("has_attachment")]
-    public bool HasAttachment { get; set; }
+    public bool? HasAttachment { get; set; }
 
     /// <summary>
     /// Followers

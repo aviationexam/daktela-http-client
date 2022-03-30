@@ -141,8 +141,10 @@ public class IntegrationTests
             Title = "Api test",
             Contact = "dilbert11",
             User = "ales",
-            Stage = EStage.Open,
-            SlaDeadTime = DateTimeOffset.Now.AddDays(1)
+            Stage = EStage.Close,
+            SlaDeadTime = new DateTimeOffset(2019, 11, 24, 18, 19, 15, TimeSpan.Zero),
+            Description = "FreshdeskId: 16",
+            Statuses = new List<string> { "statuses_618a6b822ecbc476078482"}
         };
 
         var ticket = await ticketEndpoint.CreateTicketAsync(createTicket, cancellationToken);
@@ -151,7 +153,7 @@ public class IntegrationTests
         var createActivity = new CreateActivity
         {
             Ticket = ticket.Name,
-            Title = "Activity title",
+            Title = "Test of SPF & DKIM",
             Name = $"activities-{ticket.Name}-{DateTime.Now.Ticks}",
             Type = EActivityType.Comment,
             Description = "Text komentáře",
