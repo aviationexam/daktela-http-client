@@ -28,4 +28,3 @@ public enum EStage : byte
     [EnumMember(Value = "ARCHIVE")]
     Archive = 3,
 }
-

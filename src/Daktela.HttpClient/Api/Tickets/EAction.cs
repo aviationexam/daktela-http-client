@@ -23,7 +23,7 @@ public enum EAction : byte
     Open = 2,
 
     /// <summary>
-    /// Open
+    /// Postpone
     /// </summary>
     [EnumMember(Value = "POSTPONE")]
     Postpone = 3,

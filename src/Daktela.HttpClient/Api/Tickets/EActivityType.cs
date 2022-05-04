@@ -35,7 +35,7 @@ public enum EActivityType : byte
     Sms = 4,
 
     /// <summary>
-    /// Web chat
+    /// Facebook messenger
     /// </summary>
     [EnumMember(Value = "FBM")]
     Messenger = 5,
