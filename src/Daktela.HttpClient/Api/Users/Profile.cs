@@ -1,5 +1,5 @@
+using Daktela.HttpClient.Attributes;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Users;
@@ -26,8 +26,8 @@ public class Profile
     /// <summary>
     /// Title
     /// </summary>
-    [Required]
     [JsonPropertyName("title")]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
 
     /// <summary>
@@ -49,9 +49,9 @@ public class Profile
     ///
     /// Maximum allowed number of concurrently open outgoing records
     /// </summary>
-    [Required]
     [JsonPropertyName("maxOutRecords")]
-    public int MaxOutRecords { get; set; }
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
+    public int? MaxOutRecords { get; set; }
 
     /// <summary>
     /// Can Delete Missed Activity
@@ -70,8 +70,8 @@ public class Profile
     ///
     /// These settings apply only to call transfers from the Daktela GUI or made using the API. Users will be able to transfer calls from SIP devices regardless of the settings here
     /// </summary>
-    [Required]
     [JsonPropertyName("canTransferCall")]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public ECanTransferCall CanTransferCall { get; set; }
 
     /// <summary>

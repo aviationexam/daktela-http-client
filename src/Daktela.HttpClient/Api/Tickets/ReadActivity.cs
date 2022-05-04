@@ -2,7 +2,6 @@ using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Attributes;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -15,14 +14,14 @@ public class ReadActivity
     /// Unique name
     /// </summary>
     [JsonPropertyName("name")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Name { get; set; } = null!;
 
     /// <summary>
     /// Ticket
     /// </summary>
     [JsonPropertyName("ticket")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public ReadTicket Ticket { get; set; } = null!;
 
     /// <summary>
@@ -43,15 +42,14 @@ public class ReadActivity
     /// Actual state of the activity
     /// </summary>
     [JsonPropertyName("action")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public EAction Action { get; set; }
 
     /// <summary>
-    /// Type of the activity
+    /// Specific item of the activity (e.g. Call, Email, Chat,..)
     /// </summary>
-    [JsonPropertyName("type")]
-    [DaktelaRequirement(EOperation.Create)]
-    public EActivityType? Type { get; set; }
+    [JsonPropertyName("item")]
+    public int Item { get; set; }
 
     /// <summary>
     /// Queue
@@ -70,6 +68,18 @@ public class ReadActivity
     /// </summary>
     [JsonPropertyName("contact")]
     public ReadContact? Contact { get; set; }
+
+    /// <summary>
+    /// NPS survey
+    /// </summary>
+    [JsonPropertyName("survey")]
+    public object? Survey { get; set; }
+
+    /// <summary>
+    /// Campaign record
+    /// </summary>
+    [JsonPropertyName("record")]
+    public object? Record { get; set; }
 
     /// <summary>
     /// Priority
@@ -114,6 +124,38 @@ public class ReadActivity
     /// </summary>
     [JsonPropertyName("time_close")]
     public DateTimeOffset? TimeClose { get; set; }
+
+    /// <summary>
+    /// Before activity work time
+    ///
+    /// Time sec
+    /// </summary>
+    [JsonPropertyName("baw")]
+    public TimeSpan BeforeActivityWork { get; set; }
+
+    /// <summary>
+    /// After activity work time
+    ///
+    /// Time sec
+    /// </summary>
+    [JsonPropertyName("aaw")]
+    public TimeSpan AfterActivityWork { get; set; }
+
+    /// <summary>
+    /// Duration of activity
+    ///
+    /// Time sec
+    /// </summary>
+    [JsonPropertyName("duration")]
+    public TimeSpan Duration { get; set; }
+
+    /// <summary>
+    /// Duration of activity's ringing
+    ///
+    /// Time sec
+    /// </summary>
+    [JsonPropertyName("ringing_time")]
+    public TimeSpan RingingTime { get; set; }
 
     /// <summary>
     /// Created by user

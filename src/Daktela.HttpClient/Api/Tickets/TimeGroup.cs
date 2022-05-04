@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using Daktela.HttpClient.Attributes;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -19,7 +19,7 @@ public class TimeGroup
     /// Formatted full name
     /// </summary>
     [JsonPropertyName("title")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
 
     /// <summary>

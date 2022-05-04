@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using Daktela.HttpClient.Attributes;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Integrations;
@@ -17,8 +17,8 @@ public class Config
     /// <summary>
     /// Title
     /// </summary>
-    [Required]
     [JsonPropertyName("title")]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
 
     /// <summary>

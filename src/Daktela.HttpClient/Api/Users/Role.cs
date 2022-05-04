@@ -1,5 +1,5 @@
+using Daktela.HttpClient.Attributes;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Users;
@@ -20,8 +20,8 @@ public class Role
     /// <summary>
     /// Title
     /// </summary>
-    [Required]
     [JsonPropertyName("title")]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
 
     /// <summary>

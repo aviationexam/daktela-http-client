@@ -1,5 +1,5 @@
 using Daktela.HttpClient.Attributes;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -12,14 +12,14 @@ public class CreateActivity
     /// Unique name
     /// </summary>
     [JsonPropertyName("name")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Name { get; set; } = null!;
 
     /// <summary>
     /// Ticket
     /// </summary>
     [JsonPropertyName("ticket")]
-    [Required]
+    [DaktelaNonZeroValue(EOperation.Create | EOperation.Update)]
     public int Ticket { get; set; }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class CreateActivity
     /// Actual state of the activity
     /// </summary>
     [JsonPropertyName("action")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public EAction Action { get; set; }
 
     /// <summary>
@@ -94,5 +94,5 @@ public class CreateActivity
     /// -Statuses\Mn_statuses_tickets
     /// </summary>
     [JsonPropertyName("statuses")]
-    public object Statuses { get; set; } = null!;
+    public ICollection<string> Statuses { get; set; } = null!;
 }

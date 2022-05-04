@@ -1,6 +1,6 @@
 using Daktela.HttpClient.Api.Integrations;
+using Daktela.HttpClient.Attributes;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Users;
@@ -24,7 +24,7 @@ public class User
     /// Display name
     /// </summary>
     [JsonPropertyName("title")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
 
     /// <summary>

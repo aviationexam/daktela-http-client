@@ -1,8 +1,8 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Users;
+using Daktela.HttpClient.Attributes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -19,7 +19,7 @@ public class ReadTicket
     /// Subject of ticket
     /// </summary>
     [JsonPropertyName("title")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
 
     /// <summary>
@@ -32,7 +32,7 @@ public class ReadTicket
     /// Category
     /// </summary>
     [JsonPropertyName("category")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public Category Category { get; set; } = null!;
 
     /// <summary>

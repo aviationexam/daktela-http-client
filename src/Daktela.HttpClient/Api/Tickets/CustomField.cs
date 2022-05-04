@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using Daktela.HttpClient.Attributes;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -9,6 +9,6 @@ public class CustomField
     /// Name
     /// </summary>
     [JsonPropertyName("name")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Name { get; set; } = null!;
 }

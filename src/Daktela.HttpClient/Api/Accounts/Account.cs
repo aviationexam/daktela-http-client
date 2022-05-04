@@ -1,7 +1,7 @@
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Api.Users;
+using Daktela.HttpClient.Attributes;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Accounts;
@@ -22,8 +22,8 @@ public class Account
     ///
     /// Display name
     /// </summary>
-    [Required]
     [JsonPropertyName("title")]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
 
     /// <summary>

@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using Daktela.HttpClient.Attributes;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -15,49 +15,49 @@ public class Sla
     /// Title
     /// </summary>
     [JsonPropertyName("title")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
 
     /// <summary>
     /// Low response
     /// </summary>
     [JsonPropertyName("response_low")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public int ResponseLow { get; set; }
 
     /// <summary>
     /// Normal response
     /// </summary>
     [JsonPropertyName("response_normal")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public int ResponseNormal { get; set; }
 
     /// <summary>
     /// High response
     /// </summary>
     [JsonPropertyName("response_high")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public int ResponseHigh { get; set; }
 
     /// <summary>
     /// Low solution
     /// </summary>
     [JsonPropertyName("solution_low")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public int SolutionLow { get; set; }
 
     /// <summary>
     /// Normal solution
     /// </summary>
     [JsonPropertyName("solution_normal")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public int SolutionNormal { get; set; }
 
     /// <summary>
     /// High solution
     /// </summary>
     [JsonPropertyName("solution_high")]
-    [Required]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public int SolutionHigh { get; set; }
 
     /// <summary>
