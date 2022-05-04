@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Responses.Errors;
+using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Tests.Infrastructure;
@@ -367,5 +368,84 @@ public class HttpResponseParserTests
         Assert.Equal("Vstup je povinn\u00fd", titleErrorMessage.ErrorMessage);
         var lastnameErrorMessage = Assert.IsType<ErrorFormMessage>(lastnameError);
         Assert.Equal("Vstup je povinn\u00fd", lastnameErrorMessage.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task ParseTicketWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("ticket-read".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var ticketResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadTicket>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(ticketResponse.Error);
+        Assert.NotNull(ticketResponse.Result);
+
+        var ticket = ticketResponse.Result;
+
+        Assert.NotNull(ticket);
+        Assert.Equal(9672, ticket.Name);
+        Assert.Equal(EStage.Open, ticket.Stage);
+        Assert.Equal(EPriority.Low, ticket.Priority);
+        Assert.Equal(new DateTimeOffset(2022, 5, 4, 14, 39, 13, _dateTimeOffset), ticket.Created);
+        Assert.Equal(new DateTimeOffset(2022, 5, 4, 14, 39, 13, _dateTimeOffset), ticket.Edited);
+        Assert.Null(ticket.User);
+        Assert.NotNull(ticket.Contact);
+
+        var errors = Assert.IsType<PlainErrorResponse>(ticketResponse.Error);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public async Task ParseTicketBadRequest()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("ticket-read-bad-request".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var ticketResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadTicket>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(ticketResponse.Error);
+        Assert.NotNull(ticketResponse.Result);
+
+        var ticket = ticketResponse.Result;
+
+        Assert.NotNull(ticket);
+        Assert.Equal(9674, ticket.Name);
+        Assert.Equal(EStage.Open, ticket.Stage);
+        Assert.Equal(EPriority.Low, ticket.Priority);
+        Assert.Equal(new DateTimeOffset(2022, 5, 4, 14, 57, 53, _dateTimeOffset), ticket.Created);
+        Assert.Equal(new DateTimeOffset(2022, 5, 4, 14, 57, 53, _dateTimeOffset), ticket.Edited);
+        Assert.Null(ticket.User);
+        Assert.NotNull(ticket.Contact);
+
+        var error = Assert.IsType<ComplexErrorResponse>(ticketResponse.Error);
+        Assert.NotNull(error.Form);
+        Assert.Null(error.Primary);
+
+        Assert.Equal(1, error.Form!.Count);
+        var titleError = Assert.Contains("title", error.Form);
+
+        var titleErrorMessage = Assert.IsType<ErrorFormMessage>(titleError);
+        Assert.Equal("Entry is required", titleErrorMessage.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task ParseTicketsWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("tickets-response".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var contactsResponse = await httpResponseParser.ParseResponseAsync<ListResponse<ReadTicket>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(contactsResponse.Error);
+        Assert.NotNull(contactsResponse.Result);
+        Assert.NotEmpty(contactsResponse.Result.Data);
+        Assert.Equal(1, contactsResponse.Result.Total);
     }
 }

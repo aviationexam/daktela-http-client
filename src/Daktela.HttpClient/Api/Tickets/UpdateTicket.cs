@@ -71,7 +71,7 @@ public class UpdateTicket
     /// If ticket is answered (first answer) the close deadline is shown. Otherwise the first answer deadline is shown.
     /// </summary>
     [JsonPropertyName("sla_deadtime")]
-    public DateTimeOffset SlaDeadTime { get; set; }
+    public DateTimeOffset? SlaDeadTime { get; set; }
 
     /// <summary>
     /// Reopen
@@ -95,19 +95,15 @@ public class UpdateTicket
 
     /// <summary>
     /// Followers
-    ///
-    /// -Tickets\Mn_tickets_followers
     /// </summary>
     [JsonPropertyName("followers")]
-    public object? Followers { get; set; }
+    public ICollection<string>? Followers { get; set; }
 
     /// <summary>
     /// Statuses
-    ///
-    /// -Statuses\Mn_statuses_tickets
     /// </summary>
     [JsonPropertyName("statuses")]
-    public object? Statuses { get; set; }
+    public ICollection<string>? Statuses { get; set; }
 
     /// <summary>
     /// Custom fields

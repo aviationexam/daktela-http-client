@@ -1,0 +1,131 @@
+{
+  "error": [],
+  "result": {
+    "title": "Api test",
+    "id_merge": null,
+    "category": {
+      "title": "Customer Support",
+      "sla": {
+        "title": "Info",
+        "unit": "HOURS",
+        "response_low": 4,
+        "response_normal": 2,
+        "response_high": 2,
+        "solution_low": 4,
+        "solution_normal": 4,
+        "solution_high": 2,
+        "name": "sla_56cb1bb63c2fa380751433",
+        "_sys": {
+          "hash": null,
+          "model": "ticketsSla"
+        }
+      },
+      "timecondition": null,
+      "email_queue": null,
+      "call_queue": null,
+      "sms_queue": null,
+      "status_required": true,
+      "multiple_statuses": false,
+      "closeCheckChilds": true,
+      "auto_archive_tickets": null,
+      "name": "categories_618a5a3925976853354965",
+      "_sys": {
+        "hash": null,
+        "model": "ticketsCategories",
+        "queues": []
+      }
+    },
+    "user": null,
+    "email": "",
+    "contact": {
+      "title": "Title testing_user_637872717018821366",
+      "firstname": "Title",
+      "lastname": "Last testing_user_637872717018821366",
+      "account": null,
+      "user": null,
+      "description": "",
+      "nps_score": 0,
+      "edited": "2022-05-04 14:35:09",
+      "created": "2022-05-04 14:35:09",
+      "customFields": {
+        "number": [
+          "123456789"
+        ]
+      },
+      "duplicateContacts": null,
+      "notDuplicateContacts": null,
+      "name": "testing_user_637872717018821366",
+      "_sys": {
+        "hash": "439413",
+        "model": "contacts",
+        "cfScheme": {
+          "number": {
+            "type": "PHONE",
+            "title": "Telefon",
+            "hidden": false,
+            "readonly": false
+          }
+        }
+      }
+    },
+    "parentTicket": null,
+    "description": "",
+    "statuses": [
+      {
+        "title": "Support",
+        "description": null,
+        "validation": false,
+        "nextcall": false,
+        "blacklist_database": null,
+        "blacklist_expiration_time": null,
+        "color": "",
+        "name": "statuses_618a6b822ecbc476078482",
+        "_sys": {
+          "hash": null,
+          "model": "statuses"
+        }
+      }
+    ],
+    "followers": [],
+    "stage": "OPEN",
+    "priority": "LOW",
+    "sla_overdue": 0,
+    "sla_deadtime": "2022-05-04 18:39:13",
+    "sla_change": "2022-05-04 14:39:13",
+    "sla_duration": 0,
+    "sla_custom": false,
+    "interaction_activity_count": 0,
+    "reopen": null,
+    "created": "2022-05-04 14:39:13",
+    "created_by": {
+      "title": "A user",
+      "alias": "user"
+    },
+    "edited": "2022-05-04 14:39:13",
+    "edited_by": {
+      "title": "A user",
+      "alias": "user"
+    },
+    "first_answer": null,
+    "first_answer_duration": 0,
+    "closed": null,
+    "unread": false,
+    "has_attachment": false,
+    "isParent": false,
+    "customFields": [],
+    "last_activity": null,
+    "last_activity_operator": null,
+    "last_activity_client": null,
+    "first_answer_deadline": "2022-05-04 18:39:13",
+    "first_answer_overdue": 0,
+    "sla_close_deadline": "2022-05-04 22:39:13",
+    "name": 9672,
+    "_sys": {
+      "hash": null,
+      "model": "tickets"
+    },
+    "_access": true,
+    "isFollowed": false
+  },
+  "_time": "2022-05-04 14:39:13"
+}

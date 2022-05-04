@@ -77,8 +77,6 @@ public class ReadTicket
 
     /// <summary>
     /// Stage
-    ///
-    /// OPEN, WAIT, CLOSE
     /// </summary>
     [JsonPropertyName("stage")]
     public EStage Stage { get; set; }
@@ -137,7 +135,7 @@ public class ReadTicket
     /// Flag if ticket's deadline was set up manually
     /// </summary>
     [JsonPropertyName("sla_custom")]
-    public bool SlaCustom { get; set; }
+    public bool? SlaCustom { get; set; }
 
     /// <summary>
     /// Activity count
