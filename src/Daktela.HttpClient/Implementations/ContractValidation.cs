@@ -19,37 +19,13 @@ public class ContractValidation : IContractValidation
 
         foreach (var memberInfo in GetMembers(type))
         {
-            var daktelaRequirementAttribute = memberInfo.GetCustomAttribute<DaktelaRequirementAttribute>();
+            var daktelaRequirementAttributes = memberInfo.GetCustomAttributes()
+                .OfType<DaktelaRequirementAttribute>()
+                .Where(x => x.ApplyOnOperation.HasFlag(operation));
 
-            if (daktelaRequirementAttribute != null && daktelaRequirementAttribute.ApplyOnOperation.HasFlag(operation))
+            foreach (var daktelaRequirementAttribute in daktelaRequirementAttributes)
             {
-                var (value, memberType) = memberInfo switch
-                {
-                    FieldInfo fieldInfo => (fieldInfo.GetValue(contract), fieldInfo.FieldType),
-                    PropertyInfo propertyInfo => (propertyInfo.GetValue(contract), propertyInfo.PropertyType),
-                    _ => throw new ArgumentOutOfRangeException(nameof(memberInfo.MemberType), memberInfo.MemberType, null),
-                };
-
-                if (memberType.IsEnum && value is not null)
-                {
-                    continue;
-                }
-
-                switch (value)
-                {
-                    case null:
-                        errors.Add(memberInfo.Name);
-                        break;
-                    case string stringValue:
-                        if (string.IsNullOrEmpty(stringValue))
-                        {
-                            errors.Add(memberInfo.Name);
-                        }
-
-                        break;
-                    default:
-                        throw new NotSupportedException($"The {nameof(value)} type {value.GetType()} is not supported");
-                }
+                Validate(contract, memberInfo, daktelaRequirementAttribute, errors);
             }
         }
 
@@ -59,6 +35,54 @@ public class ContractValidation : IContractValidation
         }
 
         return ValidationResult.Success;
+    }
+
+    private void Validate<TContract>(
+        TContract contract,
+        MemberInfo memberInfo,
+        DaktelaRequirementAttribute attribute,
+        ICollection<string> errors
+    ) where TContract : class
+    {
+        var (value, memberType) = memberInfo switch
+        {
+            FieldInfo fieldInfo => (fieldInfo.GetValue(contract), fieldInfo.FieldType),
+            PropertyInfo propertyInfo => (propertyInfo.GetValue(contract), propertyInfo.PropertyType),
+            _ => throw new ArgumentOutOfRangeException(nameof(memberInfo.MemberType), memberInfo.MemberType, null),
+        };
+
+        if (memberType.IsEnum && value is not null)
+        {
+            return;
+        }
+
+        switch (attribute)
+        {
+            case DaktelaNonZeroValueAttribute daktelaNonZeroValueAttribute:
+                if (daktelaNonZeroValueAttribute.IsValid(value))
+                {
+                    return;
+                }
+
+                errors.Add(memberInfo.Name);
+                return;
+        }
+
+        switch (value)
+        {
+            case null:
+                errors.Add(memberInfo.Name);
+                break;
+            case string stringValue:
+                if (string.IsNullOrEmpty(stringValue))
+                {
+                    errors.Add(memberInfo.Name);
+                }
+
+                break;
+            default:
+                throw new NotSupportedException($"The {nameof(value)} type {value.GetType()} is not supported");
+        }
     }
 
     private IEnumerable<MemberInfo> GetMembers(Type type)
