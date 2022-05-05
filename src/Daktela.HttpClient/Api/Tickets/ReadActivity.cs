@@ -46,10 +46,11 @@ public class ReadActivity
     public EAction Action { get; set; }
 
     /// <summary>
-    /// Specific item of the activity (e.g. Call, Email, Chat,..)
+    /// Type of the activity
     /// </summary>
-    [JsonPropertyName("item")]
-    public object? Item { get; set; }
+    [JsonPropertyName("type")]
+    [DaktelaRequirement(EOperation.Create)]
+    public EActivityType Type { get; set; }
 
     /// <summary>
     /// Queue
@@ -170,4 +171,14 @@ public class ReadActivity
     /// </summary>
     [JsonPropertyName("statuses")]
     public object? Statuses { get; set; }
+}
+
+public class ReadActivity<TActivity> : ReadActivity
+    where TActivity : class
+{
+    /// <summary>
+    /// Specific item of the activity (e.g. Call, Email, Chat,..)
+    /// </summary>
+    [JsonPropertyName("item")]
+    public TActivity? Item { get; set; }
 }
