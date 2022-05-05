@@ -49,7 +49,7 @@ public class ReadActivity
     /// Specific item of the activity (e.g. Call, Email, Chat,..)
     /// </summary>
     [JsonPropertyName("item")]
-    public int? Item { get; set; }
+    public object? Item { get; set; }
 
     /// <summary>
     /// Queue

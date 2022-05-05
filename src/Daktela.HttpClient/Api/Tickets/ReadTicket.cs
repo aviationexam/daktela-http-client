@@ -259,7 +259,7 @@ public class ReadTicket
     /// Date and time of last activity of ticket
     /// </summary>
     [JsonPropertyName("last_activity")]
-    public int? LastActivity { get; set; }
+    public DateTimeOffset? LastActivity { get; set; }
 
     /// <summary>
     /// Last Activity of Opeartor
@@ -267,7 +267,7 @@ public class ReadTicket
     /// Date and time of last activity of ticket from operator
     /// </summary>
     [JsonPropertyName("last_activity_operator")]
-    public int? LastActivityOperator { get; set; }
+    public DateTimeOffset? LastActivityOperator { get; set; }
 
     /// <summary>
     /// Last Activity of Client
@@ -275,7 +275,7 @@ public class ReadTicket
     /// Date and time of last activity of ticket from client
     /// </summary>
     [JsonPropertyName("last_activity_client")]
-    public int? LastActivityClient { get; set; }
+    public DateTimeOffset? LastActivityClient { get; set; }
 
     /// <summary>
     /// Custom fields
