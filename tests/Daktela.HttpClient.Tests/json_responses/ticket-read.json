@@ -112,7 +112,11 @@
     "unread": false,
     "has_attachment": false,
     "isParent": false,
-    "customFields": [],
+    "customFields": {
+      "conversation_id": [
+        "123"
+      ]
+    },
     "last_activity": null,
     "last_activity_operator": null,
     "last_activity_client": null,
@@ -122,7 +126,15 @@
     "name": 9672,
     "_sys": {
       "hash": null,
-      "model": "tickets"
+      "model": "tickets",
+      "cfScheme": {
+        "conversation_id": {
+          "type": "TEXT",
+          "title": "Conversation id",
+          "hidden": false,
+          "readonly": false
+        }
+      }
     },
     "_access": true,
     "isFollowed": false

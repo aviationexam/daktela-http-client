@@ -1,14 +1,7 @@
-using Daktela.HttpClient.Attributes;
-using System.Text.Json.Serialization;
+using System.Collections.Generic;
 
 namespace Daktela.HttpClient.Api.Tickets;
 
-public class CustomField
+public class TicketCustomFields : Dictionary<string, ICollection<string>>
 {
-    /// <summary>
-    /// Name
-    /// </summary>
-    [JsonPropertyName("name")]
-    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
-    public string Name { get; set; } = null!;
 }

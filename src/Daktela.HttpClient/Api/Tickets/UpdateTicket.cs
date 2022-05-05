@@ -109,5 +109,5 @@ public class UpdateTicket
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public ICollection<CustomField>? CustomFields { get; set; }
+    public TicketCustomFields? CustomFields { get; set; }
 }
