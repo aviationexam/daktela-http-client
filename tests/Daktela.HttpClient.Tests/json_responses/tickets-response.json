@@ -37,7 +37,7 @@
           }
         },
         "user": {
-          "title": "A user",
+          "title": "An user",
           "alias": "user"
         },
         "email": "",
@@ -62,7 +62,7 @@
         ],
         "followers": [
           {
-            "title": "A user",
+            "title": "An user",
             "alias": "user"
           }
         ],
@@ -77,12 +77,12 @@
         "reopen": "2021-12-13 00:30:00",
         "created": "2021-12-10 16:50:19",
         "created_by": {
-          "title": "A user",
+          "title": "An user",
           "alias": "user"
         },
         "edited": "2021-12-10 16:50:19",
         "edited_by": {
-          "title": "A user",
+          "title": "An user",
           "alias": "user"
         },
         "first_answer": null,

@@ -83,12 +83,12 @@
       "reopen": null,
       "created": "2022-05-04 14:55:07",
       "created_by": {
-        "title": "A user",
+        "title": "An user",
         "alias": "user"
       },
       "edited": "2022-05-04 16:23:40",
       "edited_by": {
-        "title": "A user",
+        "title": "An user",
         "alias": "user"
       },
       "first_answer": null,
@@ -116,7 +116,7 @@
     "item": null,
     "queue": null,
     "user": {
-      "title": "A user",
+      "title": "An user",
       "alias": "user"
     },
     "contact": null,
@@ -136,7 +136,7 @@
     "duration": 0,
     "ringing_time": 0,
     "created_by": {
-      "title": "A user",
+      "title": "An user",
       "alias": "user"
     },
     "customFields": [],

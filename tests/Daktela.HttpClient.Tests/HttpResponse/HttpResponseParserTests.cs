@@ -475,4 +475,20 @@ public class HttpResponseParserTests
         var errors = Assert.IsType<PlainErrorResponse>(ticketActivityResponse.Error);
         Assert.Empty(errors);
     }
+
+    [Fact]
+    public async Task ParseTicketActivitiesWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("ticket-activities-read".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var ticketActivitiesResponse = await httpResponseParser.ParseResponseAsync<ListResponse<ReadActivity>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(ticketActivitiesResponse.Error);
+        Assert.NotNull(ticketActivitiesResponse.Result);
+        Assert.NotEmpty(ticketActivitiesResponse.Result.Data);
+        Assert.Equal(1, ticketActivitiesResponse.Result.Total);
+    }
 }
