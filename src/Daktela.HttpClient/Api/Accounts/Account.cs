@@ -66,5 +66,5 @@ public class Account
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public CustomFields CustomFields { get; set; } = null!;
+    public AccountCustomFields? CustomFields { get; set; } = null!;
 }

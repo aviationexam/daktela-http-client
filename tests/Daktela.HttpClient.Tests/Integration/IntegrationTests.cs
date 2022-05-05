@@ -62,7 +62,7 @@ public class IntegrationTests
                 Account = "aviationexam",
                 User = "administrator",
                 Description = null,
-                CustomFields = new CustomFields
+                CustomFields = new ContactCustomFields
                 {
                     ["number"] = new[] { "123456789" },
                     ["pps_id"] = new[] { "123", "124" },
@@ -84,7 +84,7 @@ public class IntegrationTests
                 Title = $"Title {name}",
                 LastName = $"Last {name}",
                 User = "administrator",
-                CustomFields = new CustomFields
+                CustomFields = new ContactCustomFields
                 {
                     ["email"] = new[] { "my@email.com" },
                 },

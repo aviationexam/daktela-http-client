@@ -51,5 +51,5 @@ public class UpdateContact
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public CustomFields? CustomFields { get; set; }
+    public ContactCustomFields? CustomFields { get; set; }
 }

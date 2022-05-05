@@ -99,5 +99,5 @@ public class ReadContact
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public CustomFields? CustomFields { get; set; }
+    public ContactCustomFields? CustomFields { get; set; }
 }

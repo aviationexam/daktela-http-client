@@ -2,6 +2,6 @@ using System.Collections.Generic;
 
 namespace Daktela.HttpClient.Api.Accounts;
 
-public class CustomFields : Dictionary<string, ICollection<string>>
+public class AccountCustomFields : Dictionary<string, ICollection<string>>
 {
 }
