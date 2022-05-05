@@ -448,4 +448,31 @@ public class HttpResponseParserTests
         Assert.NotEmpty(contactsResponse.Result.Data);
         Assert.Equal(1, contactsResponse.Result.Total);
     }
+
+    [Fact]
+    public async Task ParseTicketActivityWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("ticket-activity-read".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var ticketActivityResponse = await httpResponseParser.ParseResponseAsync<SingleResponse<ReadActivity>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(ticketActivityResponse.Error);
+        Assert.NotNull(ticketActivityResponse.Result);
+
+        var ticketActivity = ticketActivityResponse.Result;
+
+        Assert.NotNull(ticketActivity);
+        Assert.Equal("activities-9673-637872782126648454", ticketActivity.Name);
+        Assert.Equal(EAction.Close, ticketActivity.Action);
+        Assert.Equal(0,ticketActivity.Priority);
+        Assert.Equal(new DateTimeOffset(2022, 5, 4, 16, 23, 40, _dateTimeOffset), ticketActivity.TimeOpen);
+        Assert.NotNull(ticketActivity.User);
+        Assert.Null(ticketActivity.Contact);
+
+        var errors = Assert.IsType<PlainErrorResponse>(ticketActivityResponse.Error);
+        Assert.Empty(errors);
+    }
 }

@@ -3,7 +3,7 @@ using System;
 namespace Daktela.HttpClient.Attributes;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-public class DaktelaNonZeroValueAttribute : DaktelaRequirementAttribute
+public sealed class DaktelaNonZeroValueAttribute : DaktelaRequirementAttribute
 {
     public double Epsilon { get; set; } = 0.000001;
 
