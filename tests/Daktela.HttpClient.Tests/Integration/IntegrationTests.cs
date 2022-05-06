@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Interfaces;
@@ -62,7 +63,7 @@ public class IntegrationTests
                 Account = "aviationexam",
                 User = "administrator",
                 Description = null,
-                CustomFields = new ContactCustomFields
+                CustomFields = new CustomFields
                 {
                     ["number"] = new[] { "123456789" },
                     ["pps_id"] = new[] { "123", "124" },
@@ -84,7 +85,7 @@ public class IntegrationTests
                 Title = $"Title {name}",
                 LastName = $"Last {name}",
                 User = "administrator",
-                CustomFields = new ContactCustomFields
+                CustomFields = new CustomFields
                 {
                     ["email"] = new[] { "my@email.com" },
                 },
@@ -125,8 +126,9 @@ public class IntegrationTests
         Assert.NotEmpty(ticketCategories);
     }
 
-    [ManualFact]
-    public async Task CreateTicket()
+    [Theory]
+    [ManualInlineData("testing_user_637872717018821366", null!)]
+    public async Task CreateTicket(string contact, string? user)
     {
         await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
 
@@ -137,14 +139,16 @@ public class IntegrationTests
 
         var createTicket = new CreateTicket
         {
-            Category = "categories_618a5a3925976853354965",
+            Category = "categories_62726c1c9efa6180321068",
             Title = "Api test",
-            Contact = "dilbert11",
-            User = "ales",
-            Stage = EStage.Close,
-            SlaDeadTime = new DateTimeOffset(2019, 11, 24, 18, 19, 15, TimeSpan.Zero),
-            Description = "FreshdeskId: 16",
-            Statuses = new List<string> { "statuses_618a6b822ecbc476078482" }
+            Contact = contact,
+            User = user,
+            Stage = EStage.Open,
+            Statuses = new List<string> { "statuses_62726da982f92110000280" },
+            CustomFields = new CustomFields
+            {
+                ["pps_conversation_id"] = new[] { "123" },
+            }
         };
 
         var ticket = await ticketEndpoint.CreateTicketAsync(createTicket, cancellationToken);
@@ -157,13 +161,38 @@ public class IntegrationTests
             Name = $"activities-{ticket.Name}-{DateTime.Now.Ticks}",
             Type = EActivityType.Comment,
             Description = "Text komentáře",
-            Action = EAction.Close,
-            User = "ales"
+            Action = EAction.Open,
+            User = user
         };
 
         var activity = await activityEndpoint.CreateActivityAsync(createActivity, cancellationToken);
         Assert.NotNull(activity);
 
         await ticketEndpoint.DeleteTicketAsync(ticket.Name, cancellationToken);
+    }
+
+    [Theory]
+    [ManualInlineData(9673, null!)]
+    public async Task CreateTicketActivity(int ticketId, string? user)
+    {
+        await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
+
+        var activityEndpoint = serviceProvider.GetRequiredService<IActivityEndpoint>();
+
+        var cancellationToken = CancellationToken.None;
+
+        var createActivity = new CreateActivity
+        {
+            Ticket = ticketId,
+            Title = "Activity test",
+            Name = $"activities-{ticketId}-{DateTime.Now.Ticks}",
+            Type = EActivityType.Comment,
+            Description = "Text komentáře",
+            Action = EAction.Open,
+            User = user,
+        };
+
+        var activity = await activityEndpoint.CreateActivityAsync(createActivity, cancellationToken);
+        Assert.NotNull(activity);
     }
 }
