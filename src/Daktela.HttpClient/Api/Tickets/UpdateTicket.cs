@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Attributes;
 using System;
 using System.Collections.Generic;
@@ -109,5 +110,5 @@ public class UpdateTicket
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public TicketCustomFields? CustomFields { get; set; }
+    public ICustomFields? CustomFields { get; set; }
 }

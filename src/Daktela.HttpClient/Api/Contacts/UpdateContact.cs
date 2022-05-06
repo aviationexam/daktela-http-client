@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Attributes;
 using System.Text.Json.Serialization;
 
@@ -51,5 +52,5 @@ public class UpdateContact
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public ContactCustomFields? CustomFields { get; set; }
+    public ICustomFields? CustomFields { get; set; }
 }

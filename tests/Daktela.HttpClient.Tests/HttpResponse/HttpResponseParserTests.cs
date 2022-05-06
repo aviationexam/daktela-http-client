@@ -393,6 +393,10 @@ public class HttpResponseParserTests
         Assert.Equal(new DateTimeOffset(2022, 5, 4, 14, 39, 13, _dateTimeOffset), ticket.Edited);
         Assert.Null(ticket.User);
         Assert.NotNull(ticket.Contact);
+        Assert.NotNull(ticket.CustomFields);
+        var customField = Assert.Single(ticket.CustomFields!);
+        Assert.Equal("conversation_id", customField.Key);
+        Assert.Equal("123", Assert.Single(customField.Value));
 
         var errors = Assert.IsType<PlainErrorResponse>(ticketResponse.Error);
         Assert.Empty(errors);
@@ -467,7 +471,7 @@ public class HttpResponseParserTests
         Assert.NotNull(ticketActivity);
         Assert.Equal("activities-9673-637872782126648454", ticketActivity.Name);
         Assert.Equal(EAction.Close, ticketActivity.Action);
-        Assert.Equal(0,ticketActivity.Priority);
+        Assert.Equal(0, ticketActivity.Priority);
         Assert.Equal(new DateTimeOffset(2022, 5, 4, 16, 23, 40, _dateTimeOffset), ticketActivity.TimeOpen);
         Assert.NotNull(ticketActivity.User);
         Assert.Null(ticketActivity.Contact);

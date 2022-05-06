@@ -1,5 +1,4 @@
 using Daktela.HttpClient.Api.CustomFields;
-using Daktela.HttpClient.Api.Responses.Errors;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -48,12 +47,17 @@ public class CustomFieldsConverter : JsonConverter<ICustomFields>
         JsonSerializerOptions options
     )
     {
-        var type = typeof(CustomFields);
-        var innerJsonConverter = (JsonConverter<CustomFields>) options.GetConverter(type);
+        var type = typeof(IDictionary<string, ICollection<string>>);
+        var innerJsonConverter = (JsonConverter<IDictionary<string, ICollection<string>>>) options.GetConverter(type);
 
         var customFields = innerJsonConverter.Read(ref reader, type, options);
 
-        return customFields;
+        if (customFields is null)
+        {
+            return null;
+        }
+
+        return new CustomFields(customFields);
     }
 
     public override void Write(

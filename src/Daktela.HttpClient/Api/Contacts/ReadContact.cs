@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Accounts;
+using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Attributes;
 using System;
@@ -99,5 +100,5 @@ public class ReadContact
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public ContactCustomFields? CustomFields { get; set; }
+    public ICustomFields? CustomFields { get; set; }
 }

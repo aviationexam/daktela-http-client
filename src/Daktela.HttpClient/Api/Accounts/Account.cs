@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Attributes;
@@ -66,5 +67,5 @@ public class Account
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public AccountCustomFields? CustomFields { get; set; } = null!;
+    public ICustomFields? CustomFields { get; set; } = null!;
 }

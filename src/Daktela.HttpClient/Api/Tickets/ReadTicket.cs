@@ -1,8 +1,8 @@
 using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Attributes;
 using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -281,5 +281,5 @@ public class ReadTicket
     /// Custom fields
     /// </summary>
     [JsonPropertyName("customFields")]
-    public TicketCustomFields? CustomFields { get; set; }
+    public ICustomFields? CustomFields { get; set; }
 }
