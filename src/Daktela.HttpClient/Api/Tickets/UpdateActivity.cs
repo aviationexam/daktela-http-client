@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Attributes;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -67,4 +68,10 @@ public class UpdateActivity
     /// </summary>
     [JsonPropertyName("statuses")]
     public ICollection<string> Statuses { get; set; } = null!;
+
+    /// <summary>
+    /// Custom fields
+    /// </summary>
+    [JsonPropertyName("customFields")]
+    public ICustomFields? CustomFields { get; set; }
 }

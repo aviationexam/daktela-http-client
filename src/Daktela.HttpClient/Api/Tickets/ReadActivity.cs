@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Attributes;
 using System;
@@ -171,6 +172,12 @@ public class ReadActivity
     /// </summary>
     [JsonPropertyName("statuses")]
     public object? Statuses { get; set; }
+
+    /// <summary>
+    /// Custom fields
+    /// </summary>
+    [JsonPropertyName("customFields")]
+    public ICustomFields? CustomFields { get; set; }
 }
 
 public class ReadActivity<TActivity> : ReadActivity
