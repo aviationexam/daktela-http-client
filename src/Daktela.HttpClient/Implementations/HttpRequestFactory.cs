@@ -68,24 +68,18 @@ public class HttpRequestFactory : IHttpRequestFactory
     }
 
     public HttpRequestMessage CreateHttpRequestMessage(
-        HttpMethod method, string path, IRequest request
+        HttpMethod method, string path, NameValueCollection queryParameters
     )
     {
         var uri = CreateUri(path);
 
-        var queryDictionary = new NameValueCollection();
-
-        ApplySorting(request, queryDictionary);
-        ApplyFilters(request, queryDictionary);
-        ApplyPagination(request, queryDictionary);
-
-        if (queryDictionary.HasKeys())
+        if (queryParameters.HasKeys())
         {
             var parsedQuery = HttpUtility.ParseQueryString(uri.Query);
 
-            foreach (string key in queryDictionary.Keys)
+            foreach (string key in queryParameters.Keys)
             {
-                parsedQuery[key] = queryDictionary[key];
+                parsedQuery[key] = queryParameters[key];
             }
 
             var uriBuilder = new UriBuilder(uri)
@@ -97,6 +91,19 @@ public class HttpRequestFactory : IHttpRequestFactory
         }
 
         return CreateHttpRequestMessage(method, uri);
+    }
+
+    public HttpRequestMessage CreateHttpRequestMessage(
+        HttpMethod method, string path, IRequest request
+    )
+    {
+        var queryDictionary = new NameValueCollection();
+
+        ApplySorting(request, queryDictionary);
+        ApplyFilters(request, queryDictionary);
+        ApplyPagination(request, queryDictionary);
+
+        return CreateHttpRequestMessage(method, path, queryDictionary);
     }
 
     private void ApplySorting(IRequest request, NameValueCollection query)
