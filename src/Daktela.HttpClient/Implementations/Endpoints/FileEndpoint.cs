@@ -26,7 +26,7 @@ public class FileEndpoint : IFileEndpoint
 
     public async Task<string> UploadFileAsync(Stream fileStream, string name, string fileName, CancellationToken cancellationToken)
     {
-        var path = IFileEndpoint.UriPrefix;
+        const string path = IFileEndpoint.UriPrefix;
 
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Post,
