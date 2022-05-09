@@ -56,9 +56,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(HttpMethod.Get, path);
 
-        using var httpResponse = await _httpClient
-            .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
-            .ConfigureAwait(false);
+        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
         var response = await httpResponseParser.ParseResponseAsync<SingleResponse<T>>(httpResponse.Content, cancellationToken);
 
@@ -74,9 +72,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(HttpMethod.Get, path, request);
 
-        using var httpResponse = await _httpClient
-            .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
-            .ConfigureAwait(false);
+        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
         var response = await httpResponseParser.ParseResponseAsync<ListResponse<T>>(httpResponse.Content, cancellationToken);
 
@@ -95,9 +91,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Post, path, request);
 
-        using var httpResponse = await _httpClient
-            .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
-            .ConfigureAwait(false);
+        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)
@@ -127,9 +121,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Put, path, request);
 
-        using var httpResponse = await _httpClient
-            .SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
-            .ConfigureAwait(false);
+        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)
@@ -151,8 +143,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(HttpMethod.Delete, path);
 
-        using var httpResponse = await _httpClient.SendAsync(httpRequestMessage, cancellationToken)
-            .ConfigureAwait(false);
+        using var httpResponse = await RawSendAsync(httpRequestMessage, cancellationToken);
 
         if (httpResponse.StatusCode == HttpStatusCode.NoContent)
         {
