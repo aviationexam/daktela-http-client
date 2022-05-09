@@ -58,9 +58,16 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
         using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
-        var response = await httpResponseParser.ParseResponseAsync<SingleResponse<T>>(httpResponse.Content, cancellationToken);
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+        switch (httpResponse.StatusCode)
+        {
+            case HttpStatusCode.OK:
+                var response = await httpResponseParser.ParseResponseAsync<SingleResponse<T>>(httpResponse.Content, cancellationToken);
 
-        return response;
+                return response;
+            default:
+                throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+        }
     }
 
     public async Task<ListResponse<T>> GetListAsync<T>(
@@ -74,9 +81,16 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
         using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
-        var response = await httpResponseParser.ParseResponseAsync<ListResponse<T>>(httpResponse.Content, cancellationToken);
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+        switch (httpResponse.StatusCode)
+        {
+            case HttpStatusCode.OK:
+                var response = await httpResponseParser.ParseResponseAsync<ListResponse<T>>(httpResponse.Content, cancellationToken);
 
-        return response;
+                return response;
+            default:
+                throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+        }
     }
 
     public async Task<TResponseContract> PostAsync<TRequest, TResponseContract>(
