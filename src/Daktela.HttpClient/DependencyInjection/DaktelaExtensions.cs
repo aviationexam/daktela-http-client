@@ -83,6 +83,7 @@ public static class DaktelaExtensions
 
         serviceCollection.TryAddScoped<IActivityEndpoint, ActivityEndpoint>();
         serviceCollection.TryAddScoped<IContactEndpoint, ContactEndpoint>();
+        serviceCollection.TryAddScoped<IFileEndpoint, FileEndpoint>();
         serviceCollection.TryAddScoped<ITicketEndpoint, TicketEndpoint>();
         serviceCollection.TryAddScoped<ITicketsCategoryEndpoint, TicketsCategoryEndpoint>();
 
