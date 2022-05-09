@@ -185,7 +185,7 @@ public class IntegrationTests
         {
             Ticket = ticketId,
             Title = "Activity test",
-            Name = $"activities-{ticketId}-{DateTime.Now.Ticks}",
+            // Name = $"activities-{ticketId}-{DateTime.Now.Ticks}",
             Type = EActivityType.Comment,
             Description = "Text komentáře",
             Action = EAction.Open,
