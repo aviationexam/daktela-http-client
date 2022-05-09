@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.CustomFields;
+using Daktela.HttpClient.Api.Files;
 using Daktela.HttpClient.Attributes;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -74,4 +75,10 @@ public class UpdateActivity
     /// </summary>
     [JsonPropertyName("customFields")]
     public ICustomFields? CustomFields { get; set; }
+
+    /// <summary>
+    /// Files
+    /// </summary>
+    [JsonPropertyName("add_files")]
+    public ICollection<File>? AddFiles { get; set; }
 }
