@@ -49,11 +49,16 @@ public class FileEndpoint : IFileEndpoint
         switch (httpResponse.StatusCode)
         {
             case HttpStatusCode.OK:
-                var response = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+                var response = await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                    .ConfigureAwait(false);
 
                 return response;
             default:
-                throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+                throw new UnexpectedHttpResponseException(
+                    path, httpResponse.StatusCode,
+                    await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                        .ConfigureAwait(false)
+                );
         }
     }
 }

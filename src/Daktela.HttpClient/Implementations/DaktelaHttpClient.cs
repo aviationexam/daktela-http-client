@@ -66,7 +66,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
                 return response;
             default:
-                throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+                throw new UnexpectedHttpResponseException(
+                    path, httpResponse.StatusCode,
+                    await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                        .ConfigureAwait(false)
+                );
         }
     }
 
@@ -89,7 +93,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
                 return response;
             default:
-                throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+                throw new UnexpectedHttpResponseException(
+                    path, httpResponse.StatusCode,
+                    await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                        .ConfigureAwait(false)
+                );
         }
     }
 
@@ -119,7 +127,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
                 throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
             default:
-                throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+                throw new UnexpectedHttpResponseException(
+                    path, httpResponse.StatusCode,
+                    await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                        .ConfigureAwait(false)
+                );
         }
     }
 
@@ -149,7 +161,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
 
                 throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
             default:
-                throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+                throw new UnexpectedHttpResponseException(
+                    path, httpResponse.StatusCode,
+                    await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                        .ConfigureAwait(false)
+                );
         }
     }
 
@@ -164,6 +180,10 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             return;
         }
 
-        throw new UnexpectedHttpResponseException(path, httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(cancellationToken));
+        throw new UnexpectedHttpResponseException(
+            path, httpResponse.StatusCode,
+            await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false)
+        );
     }
 }
