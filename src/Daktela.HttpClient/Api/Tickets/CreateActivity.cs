@@ -11,8 +11,7 @@ public class CreateActivity : UpdateActivity
     /// Unique name
     /// </summary>
     [JsonPropertyName("name")]
-    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
     /// <summary>
     /// Type of the activity
