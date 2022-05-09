@@ -282,4 +282,23 @@ public class ReadTicket
     /// </summary>
     [JsonPropertyName("customFields")]
     public ICustomFields? CustomFields { get; set; }
+
+    public UpdateTicket ToUpdateTicket() => new()
+    {
+        Title = Title,
+        Category = Category.Name,
+        User = User.Name,
+        Contact = Contact?.Name,
+        ParentTicketId = ParentTicketId?.Name,
+        Description = Description,
+        Stage = Stage,
+        Priority = Priority,
+        SlaDeadTime = SlaDeadTime,
+        Reopen = Reopen,
+        CreatedBy = CreatedBy.Name,
+        EditedBy = EditedBy?.Name,
+        // Followers = Followers.Select(x => x.Name).ToList(),
+        // Statuses = Statuses.Select(x => x.Name).ToList(),
+        CustomFields = CustomFields,
+    };
 }
