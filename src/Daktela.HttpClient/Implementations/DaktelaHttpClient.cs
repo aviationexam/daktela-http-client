@@ -35,6 +35,21 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         }
     }
 
+    public async Task<HttpResponseMessage> RawSendAsync(
+        HttpRequestMessage httpRequestMessage,
+        CancellationToken cancellationToken
+    ) => await _httpClient
+        .SendAsync(httpRequestMessage, cancellationToken)
+        .ConfigureAwait(false);
+
+    public async Task<HttpResponseMessage> RawSendAsync(
+        HttpRequestMessage httpRequestMessage,
+        HttpCompletionOption httpCompletionOption,
+        CancellationToken cancellationToken
+    ) => await _httpClient
+        .SendAsync(httpRequestMessage, httpCompletionOption, cancellationToken)
+        .ConfigureAwait(false);
+
     public async Task<SingleResponse<T>> GetAsync<T>(
         IHttpResponseParser httpResponseParser, string path, CancellationToken cancellationToken
     ) where T : class
