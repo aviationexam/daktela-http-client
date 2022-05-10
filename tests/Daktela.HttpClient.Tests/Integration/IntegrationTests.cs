@@ -213,6 +213,7 @@ public class IntegrationTests
             User = user,
             AddFiles = new[]
             {
+                // this part does not work for comments...
                 new File
                 {
                     FileIdentifier = fileIdentifier,
@@ -225,6 +226,55 @@ public class IntegrationTests
 
         var activity = await activityEndpoint.CreateActivityAsync(createActivity, cancellationToken);
         Assert.NotNull(activity);
+    }
+
+    [Theory]
+    [ManualInlineData(9673, "https://www.daktela.com/wp-content/uploads/2020/04/cropped-512x512-32x32.png", "favicon.png")]
+    public async Task CreateTicketActivityThroughTicket(int ticketId, string fileUrl, string fileName)
+    {
+        await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
+
+        var daktelaHttpClient = serviceProvider.GetRequiredService<IDaktelaHttpClient>();
+        var fileEndpoint = serviceProvider.GetRequiredService<IFileEndpoint>();
+        var ticketEndpoint = serviceProvider.GetRequiredService<ITicketEndpoint>();
+
+        var cancellationToken = CancellationToken.None;
+
+        #region UploadFile
+
+        using var sourceHttpRequest = new HttpRequestMessage(HttpMethod.Get, new Uri(fileUrl, UriKind.Absolute));
+
+        using var sourceHttpResponseMessage = await daktelaHttpClient.RawSendAsync(sourceHttpRequest, cancellationToken);
+
+        var sourceStream = await sourceHttpResponseMessage.Content.ReadAsStreamAsync(cancellationToken);
+
+        var streamLength = sourceStream.Length;
+        var fileIdentifier = await fileEndpoint.UploadFileAsync(
+            sourceStream,
+            fileName,
+            cancellationToken
+        );
+
+        #endregion
+
+        var originalTicket = await ticketEndpoint.GetTicketAsync(ticketId, cancellationToken);
+        Assert.NotNull(originalTicket);
+
+        var updateTicket = originalTicket.ToUpdateTicket();
+        updateTicket.Comment = $"Text komentáře {DateTime.Now.Date}";
+        updateTicket.AddFiles = new[]
+        {
+            new File
+            {
+                FileIdentifier = fileIdentifier,
+                FileName = fileName,
+                Size = streamLength,
+                Type = null,
+            }
+        };
+
+        var updatedTicket = await ticketEndpoint.UpdateTicketAsync(ticketId, updateTicket, cancellationToken);
+        Assert.NotNull(updatedTicket);
     }
 
     [Theory]

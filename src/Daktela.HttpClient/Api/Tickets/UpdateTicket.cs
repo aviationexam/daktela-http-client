@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.CustomFields;
+using Daktela.HttpClient.Api.Files;
 using Daktela.HttpClient.Attributes;
 using System;
 using System.Collections.Generic;
@@ -111,4 +112,16 @@ public class UpdateTicket
     /// </summary>
     [JsonPropertyName("customFields")]
     public ICustomFields? CustomFields { get; set; }
+
+    /// <summary>
+    /// Comment
+    /// </summary>
+    [JsonPropertyName("comment")]
+    public string? Comment { get; set; }
+
+    /// <summary>
+    /// Comment files
+    /// </summary>
+    [JsonPropertyName("comment_add_files")]
+    public ICollection<File>? AddFiles { get; set; }
 }
