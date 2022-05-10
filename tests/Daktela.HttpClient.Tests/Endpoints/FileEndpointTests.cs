@@ -38,8 +38,7 @@ public class FileEndpointTests
         Stream uploadFileStream = new MemoryStream(new byte[] { 0, 1, 2 }, false);
 #pragma warning restore CA2000
 
-        const string uploadName = "name";
-        const string uploadFileName = "filename";
+        const string uploadFileName = "filename.png";
 
         const string remoteFileIdentifier = "fileIdentifier";
 
@@ -72,7 +71,6 @@ public class FileEndpointTests
 
         var fileIdentifier = await _fileEndpoint.UploadFileAsync(
             uploadFileStream,
-            uploadName,
             uploadFileName
         );
 

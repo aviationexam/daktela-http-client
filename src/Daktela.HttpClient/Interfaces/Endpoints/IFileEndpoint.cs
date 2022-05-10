@@ -10,7 +10,6 @@ public interface IFileEndpoint
 
     Task<string> UploadFileAsync(
         Stream fileStream,
-        string name,
         string fileName,
         CancellationToken cancellationToken = default
     );

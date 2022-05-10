@@ -9,6 +9,7 @@ using Daktela.HttpClient.Tests.Infrastructure.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -194,5 +195,32 @@ public class IntegrationTests
 
         var activity = await activityEndpoint.CreateActivityAsync(createActivity, cancellationToken);
         Assert.NotNull(activity);
+    }
+
+    [Theory]
+    [ManualInlineData("https://www.daktela.com/wp-content/uploads/2020/04/cropped-512x512-32x32.png", ".png")]
+    public async Task UploadFileWorks(string fileUrl, string fileExtension)
+    {
+        await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
+
+        var daktelaHttpClient = serviceProvider.GetRequiredService<IDaktelaHttpClient>();
+        var fileEndpoint = serviceProvider.GetRequiredService<IFileEndpoint>();
+
+        var cancellationToken = CancellationToken.None;
+
+        using var sourceHttpRequest = new HttpRequestMessage(HttpMethod.Get, new Uri(fileUrl, UriKind.Absolute));
+
+        using var sourceHttpResponseMessage = await daktelaHttpClient.RawSendAsync(sourceHttpRequest, cancellationToken);
+
+        var sourceStream = await sourceHttpResponseMessage.Content.ReadAsStreamAsync(cancellationToken);
+
+        var fileIdentifier = await fileEndpoint.UploadFileAsync(
+            sourceStream,
+            $"favicon{fileExtension}",
+            cancellationToken
+        );
+
+        Assert.NotNull(fileIdentifier);
+        Assert.EndsWith(fileExtension, fileIdentifier);
     }
 }

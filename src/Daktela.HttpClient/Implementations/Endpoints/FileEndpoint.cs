@@ -24,7 +24,7 @@ public class FileEndpoint : IFileEndpoint
         _httpRequestFactory = httpRequestFactory;
     }
 
-    public async Task<string> UploadFileAsync(Stream fileStream, string name, string fileName, CancellationToken cancellationToken)
+    public async Task<string> UploadFileAsync(Stream fileStream, string fileName, CancellationToken cancellationToken)
     {
         const string path = IFileEndpoint.UriPrefix;
 
@@ -38,8 +38,11 @@ public class FileEndpoint : IFileEndpoint
         );
 
         using var content = new MultipartFormDataContent();
+
         using var fileStreamContent = new StreamContent(fileStream);
-        content.Add(fileStreamContent, name, fileName);
+        fileStreamContent.Headers.Add("Content-Transfer-Encoding", "binary");
+
+        content.Add(fileStreamContent, "files", fileName);
 
         httpRequestMessage.Content = content;
 
@@ -52,7 +55,9 @@ public class FileEndpoint : IFileEndpoint
                 var response = await httpResponse.Content.ReadAsStringAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return response;
+                return response
+                    .TrimStart('"')
+                    .TrimEnd('"');
             default:
                 throw new UnexpectedHttpResponseException(
                     path, httpResponse.StatusCode,
