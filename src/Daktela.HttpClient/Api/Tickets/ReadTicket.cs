@@ -1,8 +1,12 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.CustomFields;
+using Daktela.HttpClient.Api.Statuses;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Attributes;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -239,11 +243,9 @@ public class ReadTicket
 
     /// <summary>
     /// Followers
-    ///
-    /// -Tickets\Mn_tickets_followers
     /// </summary>
     [JsonPropertyName("followers")]
-    public object Followers { get; set; } = null!;
+    public ICollection<User> Followers { get; set; } = null!;
 
     /// <summary>
     /// Statuses
@@ -251,7 +253,7 @@ public class ReadTicket
     /// -Statuses\Mn_statuses_tickets
     /// </summary>
     [JsonPropertyName("statuses")]
-    public object Statuses { get; set; } = null!;
+    public ICollection<ReadStatus> Statuses { get; set; } = null!;
 
     /// <summary>
     /// Last Activity
@@ -297,8 +299,8 @@ public class ReadTicket
         Reopen = Reopen,
         CreatedBy = CreatedBy.Name,
         EditedBy = EditedBy?.Name,
-        // Followers = Followers.Select(x => x.Name).ToList(),
-        // Statuses = Statuses.Select(x => x.Name).ToList(),
+        Followers = Followers.Select(x => x.Name).ToList(),
+        Statuses = Statuses.Select(x => x.Name).ToList(),
         CustomFields = CustomFields,
     };
 }
