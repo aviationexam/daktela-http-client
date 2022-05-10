@@ -66,4 +66,44 @@ public class FileEndpoint : IFileEndpoint
                 );
         }
     }
+
+    public async Task<bool> RemoveFileAsync(string fileName, CancellationToken cancellationToken)
+    {
+        const string path = IFileEndpoint.UriPrefix;
+
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+            HttpMethod.Post,
+            path,
+            new NameValueCollection
+            {
+                ["type"] = "remove",
+            }
+        );
+
+        using var content = new MultipartFormDataContent();
+
+#pragma warning disable CA2000
+        content.Add(new StringContent("fileNames"), fileName);
+#pragma warning restore CA2000
+
+        httpRequestMessage.Content = content;
+
+        using var httpResponse = await _daktelaHttpClient.RawSendAsync(httpRequestMessage, cancellationToken);
+
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+        switch (httpResponse.StatusCode)
+        {
+            case HttpStatusCode.OK:
+                var response = await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+                return response == "1";
+            default:
+                throw new UnexpectedHttpResponseException(
+                    path, httpResponse.StatusCode,
+                    await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                        .ConfigureAwait(false)
+                );
+        }
+    }
 }

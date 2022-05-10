@@ -13,4 +13,9 @@ public interface IFileEndpoint
         string fileName,
         CancellationToken cancellationToken = default
     );
+
+    Task<bool> RemoveFileAsync(
+        string fileName,
+        CancellationToken cancellationToken = default
+    );
 }
