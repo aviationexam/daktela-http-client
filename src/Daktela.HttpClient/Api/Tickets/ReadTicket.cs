@@ -43,7 +43,7 @@ public class ReadTicket
     /// User
     /// </summary>
     [JsonPropertyName("user")]
-    public User User { get; set; } = null!;
+    public User? User { get; set; }
 
     /// <summary>
     /// Email
@@ -289,7 +289,7 @@ public class ReadTicket
     {
         Title = Title,
         Category = Category.Name,
-        User = User.Name,
+        User = User?.Name,
         Contact = Contact?.Name,
         ParentTicketId = ParentTicketId?.Name,
         Description = Description,
