@@ -32,7 +32,8 @@ public class ActivityEndpoint : IActivityEndpoint
     }
 
     public async Task<ReadActivity> GetActivityAsync(
-        string name, CancellationToken cancellationToken
+        string name,
+        CancellationToken cancellationToken
     )
     {
         var encodedName = HttpUtility.UrlEncode(name);
@@ -101,4 +102,39 @@ public class ActivityEndpoint : IActivityEndpoint
             cancellationToken
         ).ConfigureAwait(false);
     }
+
+    #region External relations
+
+    public IAsyncEnumerable<ReadActivityAttachment> GetActivityAttachmentsAsync(
+        string name,
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => _pagedResponseProcessor.InvokeAsync(
+        request,
+        requestOption,
+        responseBehaviour,
+        new
+        {
+            daktelaHttpClient = _daktelaHttpClient,
+            httpResponseParser = _httpResponseParser,
+            name,
+        },
+        async static (
+            request,
+            _,
+            _,
+            ctx,
+            cancellationToken
+        ) => await ctx.daktelaHttpClient.GetListAsync<ReadActivityAttachment>(
+            ctx.httpResponseParser,
+            $"{IActivityEndpoint.UriPrefix}/{ctx.name}/attachments{IActivityEndpoint.UriPostfix}",
+            request,
+            cancellationToken
+        ),
+        cancellationToken
+    ).IteratingConfigureAwait(cancellationToken);
+
+    #endregion
 }

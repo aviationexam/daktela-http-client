@@ -35,4 +35,16 @@ public interface IActivityEndpoint
         UpdateActivity ticket,
         CancellationToken cancellationToken = default
     );
+
+    #region External relations
+
+    IAsyncEnumerable<ReadActivityAttachment> GetActivityAttachmentsAsync(
+        string name,
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    );
+
+    #endregion
 }

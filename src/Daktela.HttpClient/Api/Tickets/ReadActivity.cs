@@ -7,6 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
 
+/// <summary>
+/// <a href="https://www.daktela.com/apihelp/v6/models/activities">Object</a> represents Activity of a Ticket. One activity have single ticket, one ticket can have many activities.
+/// </summary>
 public class ReadActivity
 {
     /// <summary>

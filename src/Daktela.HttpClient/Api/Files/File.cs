@@ -32,13 +32,11 @@ public class File
     /// </summary>
     [JsonPropertyName("size")]
     [DaktelaNonZeroValue(EOperation.Create | EOperation.Update)]
-
     public long Size { get; set; }
 
     /// <summary>
     /// MIME type
     /// </summary>
     [JsonPropertyName("type")]
-    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string? Type { get; set; }
 }
