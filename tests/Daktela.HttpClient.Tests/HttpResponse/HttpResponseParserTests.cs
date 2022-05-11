@@ -495,4 +495,20 @@ public class HttpResponseParserTests
         Assert.NotEmpty(ticketActivitiesResponse.Result.Data);
         Assert.Equal(1, ticketActivitiesResponse.Result.Total);
     }
+
+    [Fact]
+    public async Task ParseTicketActivityAttachmentWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("read-activity-attachment".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var ticketActivityAttachmentResponse = await httpResponseParser.ParseResponseAsync<ListResponse<ReadActivityAttachment>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(ticketActivityAttachmentResponse.Error);
+        Assert.NotNull(ticketActivityAttachmentResponse.Result);
+        Assert.NotEmpty(ticketActivityAttachmentResponse.Result.Data);
+        Assert.Equal(1, ticketActivityAttachmentResponse.Result.Total);
+    }
 }

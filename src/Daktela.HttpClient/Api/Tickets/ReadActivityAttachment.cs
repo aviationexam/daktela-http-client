@@ -56,5 +56,5 @@ public class ReadActivityAttachment
     /// Undocumented property
     /// </summary>
     [JsonPropertyName("file")]
-    public string? FileId { get; set; }
+    public long? FileId { get; set; }
 }
