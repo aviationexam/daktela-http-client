@@ -12,7 +12,7 @@ public class ReadActivityAttachment
     /// Activities
     /// </summary>
     [JsonPropertyName("activity")]
-    public ReadActivity Activity { get; set; } = null!;
+    public ReadActivity? Activity { get; set; }
 
     /// <summary>
     /// Is inline
