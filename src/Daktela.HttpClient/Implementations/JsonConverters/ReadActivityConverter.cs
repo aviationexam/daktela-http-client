@@ -69,12 +69,7 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
 
     private ReadActivity<T>? Read<T>(ref Utf8JsonReader reader, JsonSerializerOptions options)
         where T : class
-    {
-        var type = typeof(ReadActivity<T>);
-        var converter = (JsonConverter<ReadActivity<T>>) options.GetConverter(type);
-
-        return converter.Read(ref reader, type, options);
-    }
+        => JsonSerializer.Deserialize<ReadActivity<T>>(ref reader, options);
 
     public override void Write(
         Utf8JsonWriter writer, ReadActivity value, JsonSerializerOptions options
