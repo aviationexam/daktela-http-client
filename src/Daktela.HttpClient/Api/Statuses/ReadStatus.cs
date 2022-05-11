@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Attributes;
+using Daktela.HttpClient.Attributes;
 using System;
 using System.Text.Json.Serialization;
 

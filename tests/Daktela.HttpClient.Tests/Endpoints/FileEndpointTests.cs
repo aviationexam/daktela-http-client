@@ -1,4 +1,4 @@
-﻿using Daktela.HttpClient.Implementations.Endpoints;
+using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Moq;
