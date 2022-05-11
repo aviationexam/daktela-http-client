@@ -49,11 +49,12 @@ public class TicketEndpointTests
         var ticket = await _ticketEndpoint.GetTicketAsync(name);
 
         Assert.NotNull(ticket);
+        Assert.NotNull(ticket.User);
         Assert.Equal(name, ticket.Name);
         Assert.Equal(new DateTimeOffset(2021, 12, 10, 16, 50, 19, _dateTimeOffset), ticket.Edited);
         Assert.Equal(new DateTimeOffset(2021, 12, 10, 16, 50, 19, _dateTimeOffset), ticket.Created);
         Assert.Equal("Customer Support", ticket.Category.Title);
-        Assert.Equal("Administrator", ticket.User.Title);
+        Assert.Equal("Administrator", ticket.User!.Title);
         Assert.Equal(EStage.Open, ticket.Stage);
         Assert.NotNull(ticket.Statuses);
     }
