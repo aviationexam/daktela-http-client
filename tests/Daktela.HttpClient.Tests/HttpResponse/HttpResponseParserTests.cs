@@ -493,7 +493,7 @@ public class HttpResponseParserTests
         Assert.NotNull(ticketActivitiesResponse.Error);
         Assert.NotNull(ticketActivitiesResponse.Result);
         Assert.NotEmpty(ticketActivitiesResponse.Result.Data);
-        Assert.Equal(1, ticketActivitiesResponse.Result.Total);
+        Assert.Equal(2, ticketActivitiesResponse.Result.Total);
     }
 
     [Fact]

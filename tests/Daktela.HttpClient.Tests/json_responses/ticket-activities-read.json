@@ -287,9 +287,295 @@
           "hash": "33644",
           "model": "activities"
         }
+      },
+      {
+        "ticket": {
+          "title": "*SPAM*",
+          "id_merge": null,
+          "category": {
+            "title": "Customer Support",
+            "sla": {
+              "title": "Info",
+              "unit": "HOURS",
+              "response_low": 4,
+              "response_normal": 2,
+              "response_high": 2,
+              "solution_low": 4,
+              "solution_normal": 4,
+              "solution_high": 2,
+              "name": "sla_56cb1bb63c2fa380751433",
+              "_sys": {
+                "hash": null,
+                "model": "ticketsSla"
+              }
+            },
+            "timecondition": null,
+            "email_queue": null,
+            "call_queue": null,
+            "sms_queue": null,
+            "status_required": true,
+            "multiple_statuses": false,
+            "closeCheckChilds": true,
+            "auto_archive_tickets": null,
+            "name": "categories_618a5a3925976853354965",
+            "_sys": {
+              "hash": null,
+              "model": "ticketsCategories"
+            }
+          },
+          "user": {
+            "title": "An user",
+            "alias": "user"
+          },
+          "email": "an@email.com",
+          "contact": {
+            "title": "Report",
+            "firstname": "",
+            "lastname": "Report",
+            "account": null,
+            "user": null,
+            "description": "",
+            "nps_score": 0,
+            "edited": "2022-03-28 09:51:11",
+            "created": "2022-03-28 09:51:11",
+            "customFields": {
+              "number": []
+            },
+            "duplicateContacts": null,
+            "notDuplicateContacts": null,
+            "name": "report",
+            "_sys": {
+              "hash": "199196",
+              "model": "contacts",
+              "cfScheme": {
+                "number": {
+                  "type": "PHONE",
+                  "title": "Telefon",
+                  "hidden": false,
+                  "readonly": false
+                }
+              }
+            }
+          },
+          "parentTicket": null,
+          "description": "",
+          "statuses": [
+            {
+              "title": "title",
+              "description": "desc",
+              "validation": false,
+              "nextcall": false,
+              "blacklist_database": null,
+              "blacklist_expiration_time": null,
+              "color": "",
+              "name": "statuses_624563025dbf5739978497",
+              "_sys": {
+                "hash": null,
+                "model": "statuses"
+              }
+            }
+          ],
+          "followers": [],
+          "stage": "CLOSE",
+          "priority": "LOW",
+          "sla_overdue": 0,
+          "sla_deadtime": "2022-05-05 13:55:16",
+          "sla_change": "2022-05-05 10:04:40",
+          "sla_duration": 564,
+          "sla_custom": false,
+          "interaction_activity_count": 1,
+          "reopen": null,
+          "created": "2022-05-05 09:55:16",
+          "created_by": null,
+          "edited": "2022-05-05 10:04:40",
+          "edited_by": {
+            "title": "An user",
+            "alias": "user"
+          },
+          "first_answer": null,
+          "first_answer_duration": 0,
+          "closed": "2022-05-05 10:04:40",
+          "unread": false,
+          "has_attachment": true,
+          "isParent": false,
+          "customFields": [],
+          "last_activity": "2022-05-05 09:55:16",
+          "last_activity_operator": null,
+          "last_activity_client": "2022-05-05 09:55:16",
+          "first_answer_deadline": "2022-05-05 13:55:16",
+          "first_answer_overdue": 0,
+          "sla_close_deadline": "2022-05-05 17:55:16",
+          "name": 9686,
+          "_sys": {
+            "hash": null,
+            "model": "tickets"
+          }
+        },
+        "title": "*SPAM*",
+        "action": "CLOSE",
+        "type": "EMAIL",
+        "item": {
+          "queue": {
+            "title": "support@aviationexam.com",
+            "alias": "",
+            "description": "",
+            "call_steering_description": "",
+            "type": "email",
+            "direction": "in",
+            "options": {
+              "address": "support@aviationexam.com"
+            },
+            "deactivated": false,
+            "name": 3001,
+            "_sys": {
+              "hash": null,
+              "model": "queues"
+            }
+          },
+          "user": null,
+          "contact": {
+            "title": "Report",
+            "firstname": "",
+            "lastname": "Report",
+            "account": null,
+            "user": null,
+            "description": "",
+            "nps_score": 0,
+            "edited": "2022-03-28 09:51:11",
+            "created": "2022-03-28 09:51:11",
+            "customFields": {
+              "number": []
+            },
+            "duplicateContacts": null,
+            "notDuplicateContacts": null,
+            "name": "report",
+            "_sys": {
+              "hash": "199196",
+              "model": "contacts",
+              "cfScheme": {
+                "number": {
+                  "type": "PHONE",
+                  "title": "Telefon",
+                  "hidden": false,
+                  "readonly": false
+                }
+              }
+            }
+          },
+          "title": "*SPAM*",
+          "address": "an@email.com",
+          "direction": "in",
+          "wait_time": null,
+          "duration": null,
+          "answered": false,
+          "text": "<br \/>",
+          "options": {
+            "headers": {
+              "cc": "",
+              "to": [
+                {
+                  "address": "support@aviationexam.com",
+                  "display": "support@aviationexam.com",
+                  "is_group": false
+                }
+              ],
+              "date": "2022-05-05 09:11:25",
+              "from": [
+                {
+                  "address": "an@email.com",
+                  "display": "an@email.com",
+                  "is_group": false
+                }
+              ],
+              "ticket": null,
+              "reply-to": "",
+              "message-id": "<20220505071125.D6167111FB5@email.com>",
+              "references": "",
+              "return-path": "<support@aviationexam.com>",
+              "auto-submitted": false
+            }
+          },
+          "time": "2022-05-05 09:55:16",
+          "state": null,
+          "name": "emails_627382e403bf3828500591",
+          "_sys": {
+            "hash": null,
+            "model": "activitiesEmail"
+          },
+          "files": [
+            {
+              "file": 272,
+              "inline": "0",
+              "cid": "",
+              "title": "abc.xls",
+              "type": "application\/octet-stream",
+              "size": 35328,
+              "time": "2022-05-05 09:55:16",
+              "_sys": {
+                "hash": null,
+                "model": "activitiesEmailFiles"
+              }
+            }
+          ]
+        },
+        "queue": {
+          "title": "support@aviationexam.com"
+        },
+        "user": null,
+        "contact": {
+          "title": "Report",
+          "firstname": "",
+          "lastname": "Report",
+          "account": null,
+          "user": null,
+          "description": "",
+          "nps_score": 0,
+          "edited": "2022-03-28 09:51:11",
+          "created": "2022-03-28 09:51:11",
+          "customFields": {
+            "number": []
+          },
+          "duplicateContacts": null,
+          "notDuplicateContacts": null,
+          "name": "report",
+          "_sys": {
+            "hash": "199196",
+            "model": "contacts",
+            "cfScheme": {
+              "number": {
+                "type": "PHONE",
+                "title": "Telefon",
+                "hidden": false,
+                "readonly": false
+              }
+            }
+          }
+        },
+        "survey": null,
+        "record": null,
+        "statuses": [],
+        "priority": 0,
+        "options": null,
+        "description": "",
+        "important": false,
+        "time": "2022-05-05 09:55:16",
+        "time_wait": null,
+        "time_open": null,
+        "time_close": "2022-05-05 09:55:16",
+        "baw": 0,
+        "aaw": 0,
+        "duration": 0,
+        "ringing_time": 0,
+        "created_by": null,
+        "customFields": [],
+        "name": "activities_627382e40611a356276396",
+        "_sys": {
+          "hash": "33644",
+          "model": "activities"
+        }
       }
     ],
-    "total": 1
+    "total": 2
   },
   "_time": "2022-05-05 11:16:41"
 }
