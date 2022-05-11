@@ -3,6 +3,7 @@ using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Attributes;
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
@@ -181,6 +182,12 @@ public class ReadActivity
     /// </summary>
     [JsonPropertyName("customFields")]
     public ICustomFields? CustomFields { get; set; }
+
+    /// <summary>
+    /// Attachment
+    /// </summary>
+    [JsonPropertyName("attachments")]
+    public ICollection<ReadActivityAttachment>? Attachments { get; set; }
 }
 
 public class ReadActivity<TActivity> : ReadActivity
