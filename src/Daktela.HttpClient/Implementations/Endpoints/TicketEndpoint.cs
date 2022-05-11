@@ -31,7 +31,8 @@ public class TicketEndpoint : ITicketEndpoint
     }
 
     public async Task<ReadTicket> GetTicketAsync(
-        int name, CancellationToken cancellationToken
+        int name,
+        CancellationToken cancellationToken
     )
     {
         var contact = await _daktelaHttpClient.GetAsync<ReadTicket>(
@@ -100,4 +101,39 @@ public class TicketEndpoint : ITicketEndpoint
         $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
         cancellationToken
     ).ConfigureAwait(false);
+
+    #region External relations
+
+    public IAsyncEnumerable<ReadActivity> GetTicketActivitiesAsync(
+        int name,
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => _pagedResponseProcessor.InvokeAsync(
+        request,
+        requestOption,
+        responseBehaviour,
+        new
+        {
+            daktelaHttpClient = _daktelaHttpClient,
+            httpResponseParser = _httpResponseParser,
+            name,
+        },
+        async static (
+            request,
+            _,
+            _,
+            ctx,
+            cancellationToken
+        ) => await ctx.daktelaHttpClient.GetListAsync<ReadActivity>(
+            ctx.httpResponseParser,
+            $"{ITicketEndpoint.UriPrefix}/{ctx.name}/activities{ITicketEndpoint.UriPostfix}",
+            request,
+            cancellationToken
+        ),
+        cancellationToken
+    ).IteratingConfigureAwait(cancellationToken);
+
+    #endregion
 }

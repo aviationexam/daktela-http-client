@@ -25,6 +25,7 @@ public interface ITicketEndpoint
         CancellationToken cancellationToken = default
     );
 
+
     Task<ReadTicket> CreateTicketAsync(
         CreateTicket ticket, CancellationToken cancellationToken
     );
@@ -38,4 +39,16 @@ public interface ITicketEndpoint
     Task DeleteTicketAsync(
         int name, CancellationToken cancellationToken = default
     );
+
+    #region External relations
+
+    IAsyncEnumerable<ReadActivity> GetTicketActivitiesAsync(
+        int name,
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    #endregion
 }
