@@ -1,6 +1,9 @@
+using Daktela.HttpClient.Api.Files;
 using Daktela.HttpClient.Exceptions;
+using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
@@ -15,6 +18,8 @@ public class FileEndpoint : IFileEndpoint
     private readonly IDaktelaHttpClient _daktelaHttpClient;
     private readonly IHttpRequestFactory _httpRequestFactory;
 
+    private readonly EnumsConverter<EFileSource> _fileSourceSerializer = new();
+
     public FileEndpoint(
         IDaktelaHttpClient daktelaHttpClient,
         IHttpRequestFactory httpRequestFactory
@@ -24,9 +29,57 @@ public class FileEndpoint : IFileEndpoint
         _httpRequestFactory = httpRequestFactory;
     }
 
-    public async Task<string> UploadFileAsync(Stream fileStream, string fileName, CancellationToken cancellationToken)
+    public async Task DownloadFileAsync<TCtx>(
+        EFileSource fileSource,
+        long fileName,
+        Func<Stream, TCtx, CancellationToken, Task> handleResponse,
+        TCtx ctx,
+        CancellationToken cancellationToken
+    )
     {
-        const string path = IFileEndpoint.UriPrefix;
+        const string path = IFileEndpoint.UriDownload;
+
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+            HttpMethod.Post,
+            path,
+            new NameValueCollection
+            {
+                ["mapper"] = _fileSourceSerializer.ReverseMapping[fileSource],
+                ["name"] = fileName.ToString(),
+                ["download"] = "1",
+            }
+        );
+
+        using var httpResponse = await _daktelaHttpClient.RawSendAsync(
+            httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken
+        );
+
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+        switch (httpResponse.StatusCode)
+        {
+            case HttpStatusCode.OK:
+                var responseStream = await httpResponse.Content.ReadAsStreamAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+                await handleResponse(responseStream, ctx, cancellationToken);
+
+                break;
+            default:
+                throw new UnexpectedHttpResponseException(
+                    path, httpResponse.StatusCode,
+                    await httpResponse.Content.ReadAsStringAsync(cancellationToken)
+                        .ConfigureAwait(false)
+                );
+        }
+    }
+
+    public async Task<string> UploadFileAsync(
+        Stream fileStream,
+        string fileName,
+        CancellationToken cancellationToken
+    )
+    {
+        const string path = IFileEndpoint.UriUpload;
 
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Post,
@@ -67,9 +120,12 @@ public class FileEndpoint : IFileEndpoint
         }
     }
 
-    public async Task<bool> RemoveFileAsync(string fileName, CancellationToken cancellationToken)
+    public async Task<bool> RemoveUploadedFileAsync(
+        string fileName,
+        CancellationToken cancellationToken
+    )
     {
-        const string path = IFileEndpoint.UriPrefix;
+        const string path = IFileEndpoint.UriUpload;
 
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Post,

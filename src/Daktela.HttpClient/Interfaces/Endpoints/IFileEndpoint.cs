@@ -1,3 +1,5 @@
+using Daktela.HttpClient.Api.Files;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,7 +8,16 @@ namespace Daktela.HttpClient.Interfaces.Endpoints;
 
 public interface IFileEndpoint
 {
-    protected internal const string UriPrefix = "/file/upload.php";
+    protected internal const string UriUpload = "/file/upload.php";
+    protected internal const string UriDownload = "/file/download.php";
+
+    Task DownloadFileAsync<TCtx>(
+        EFileSource fileSource,
+        long fileName,
+        Func<Stream, TCtx, CancellationToken, Task> handleResponse,
+        TCtx ctx,
+        CancellationToken cancellationToken = default
+    );
 
     Task<string> UploadFileAsync(
         Stream fileStream,
@@ -14,7 +25,7 @@ public interface IFileEndpoint
         CancellationToken cancellationToken = default
     );
 
-    Task<bool> RemoveFileAsync(
+    Task<bool> RemoveUploadedFileAsync(
         string fileName,
         CancellationToken cancellationToken = default
     );

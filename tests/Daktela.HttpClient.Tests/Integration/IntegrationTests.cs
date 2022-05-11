@@ -304,7 +304,7 @@ public class IntegrationTests
         Assert.NotNull(fileIdentifier);
         Assert.EndsWith(fileExtension, fileIdentifier);
 
-        var removeFileSuccess = await fileEndpoint.RemoveFileAsync(
+        var removeFileSuccess = await fileEndpoint.RemoveUploadedFileAsync(
             fileName,
             cancellationToken
         );
