@@ -123,5 +123,5 @@ public class UpdateTicket
     /// Comment files
     /// </summary>
     [JsonPropertyName("comment_add_files")]
-    public ICollection<File>? AddFiles { get; set; }
+    public ICollection<CreateFile>? AddFiles { get; set; }
 }

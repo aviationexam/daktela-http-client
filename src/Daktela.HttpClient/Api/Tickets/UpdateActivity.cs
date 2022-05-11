@@ -80,5 +80,5 @@ public class UpdateActivity
     /// Files
     /// </summary>
     [JsonPropertyName("add_files")]
-    public ICollection<File>? AddFiles { get; set; }
+    public ICollection<CreateFile>? AddFiles { get; set; }
 }

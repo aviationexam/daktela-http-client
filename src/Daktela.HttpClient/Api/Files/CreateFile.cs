@@ -7,7 +7,7 @@ namespace Daktela.HttpClient.Api.Files;
 /// <summary>
 /// <a href="https://www.daktela.com/apihelp/v6/working-with/tickets#create-ticket-with-comment-and-attachment">Object</a> represents File structure.
 /// </summary>
-public class File
+public class CreateFile
 {
     /// <summary>
     /// Name

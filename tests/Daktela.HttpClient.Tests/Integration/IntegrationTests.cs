@@ -10,6 +10,7 @@ using Daktela.HttpClient.Tests.Infrastructure.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -214,7 +215,7 @@ public class IntegrationTests
             AddFiles = new[]
             {
                 // this part does not work for comments...
-                new File
+                new CreateFile
                 {
                     FileIdentifier = fileIdentifier,
                     FileName = fileName,
@@ -264,7 +265,7 @@ public class IntegrationTests
         updateTicket.Comment = $"Text komentáře {DateTime.Now.Date}";
         updateTicket.AddFiles = new[]
         {
-            new File
+            new CreateFile
             {
                 FileIdentifier = fileIdentifier,
                 FileName = fileName,
@@ -310,5 +311,33 @@ public class IntegrationTests
         );
 
         Assert.True(removeFileSuccess);
+    }
+
+    [Theory]
+    [ManualInlineData(EFileSource.ActivitiesComment, 3)]
+    public async Task DownloadFileWorks(EFileSource fileSource, long fileName)
+    {
+        await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
+
+        var fileEndpoint = serviceProvider.GetRequiredService<IFileEndpoint>();
+
+        var cancellationToken = CancellationToken.None;
+
+        using var outputStream = new MemoryStream();
+
+        await fileEndpoint.DownloadFileAsync(
+            fileSource,
+            fileName,
+            static async (stream, ctx, cancellationToken) => await stream.CopyToAsync(ctx.outputStream, cancellationToken),
+            new
+            {
+                outputStream,
+            },
+            cancellationToken
+        );
+
+        outputStream.Seek(0, SeekOrigin.Begin);
+
+        Assert.True(outputStream.Length > 100);
     }
 }
