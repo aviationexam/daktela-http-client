@@ -39,7 +39,7 @@ public class UpdateTicket
     /// Parent ticket
     /// </summary>
     [JsonPropertyName("parentTicket")]
-    public int? ParentTicketId { get; set; }
+    public long? ParentTicketId { get; set; }
 
     /// <summary>
     /// Description

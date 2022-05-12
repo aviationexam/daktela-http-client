@@ -17,7 +17,7 @@ public class ReadTicket
     /// Unique name
     /// </summary>
     [JsonPropertyName("name")]
-    public int Name { get; set; }
+    public long Name { get; set; }
 
     /// <summary>
     /// Subject of ticket

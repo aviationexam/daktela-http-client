@@ -13,7 +13,7 @@ public class UpdateActivity
     /// </summary>
     [JsonPropertyName("ticket")]
     [DaktelaNonZeroValue(EOperation.Create | EOperation.Update)]
-    public int Ticket { get; set; }
+    public long Ticket { get; set; }
 
     /// <summary>
     /// Title

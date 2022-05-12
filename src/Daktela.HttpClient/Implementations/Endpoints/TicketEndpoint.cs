@@ -31,7 +31,7 @@ public class TicketEndpoint : ITicketEndpoint
     }
 
     public async Task<ReadTicket> GetTicketAsync(
-        int name,
+        long name,
         CancellationToken cancellationToken
     )
     {
@@ -84,7 +84,7 @@ public class TicketEndpoint : ITicketEndpoint
     ).ConfigureAwait(false);
 
     public async Task<ReadTicket> UpdateTicketAsync(
-        int name,
+        long name,
         UpdateTicket ticket,
         CancellationToken cancellationToken
     ) => await _daktelaHttpClient.PutAsync<UpdateTicket, ReadTicket>(
@@ -96,7 +96,7 @@ public class TicketEndpoint : ITicketEndpoint
     ).ConfigureAwait(false);
 
     public async Task DeleteTicketAsync(
-        int name, CancellationToken cancellationToken
+        long name, CancellationToken cancellationToken
     ) => await _daktelaHttpClient.DeleteAsync(
         $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
         cancellationToken
@@ -105,7 +105,7 @@ public class TicketEndpoint : ITicketEndpoint
     #region External relations
 
     public IAsyncEnumerable<ReadActivity> GetTicketActivitiesAsync(
-        int name,
+        long name,
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,

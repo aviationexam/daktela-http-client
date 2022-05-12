@@ -14,7 +14,7 @@ public interface ITicketEndpoint
     protected internal const string UriPostfix = ".json";
 
     Task<ReadTicket> GetTicketAsync(
-        int name,
+        long name,
         CancellationToken cancellationToken = default
     );
 
@@ -31,19 +31,19 @@ public interface ITicketEndpoint
     );
 
     Task<ReadTicket> UpdateTicketAsync(
-        int name,
+        long name,
         UpdateTicket ticket,
         CancellationToken cancellationToken = default
     );
 
     Task DeleteTicketAsync(
-        int name, CancellationToken cancellationToken = default
+        long name, CancellationToken cancellationToken = default
     );
 
     #region External relations
 
     IAsyncEnumerable<ReadActivity> GetTicketActivitiesAsync(
-        int name,
+        long name,
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
