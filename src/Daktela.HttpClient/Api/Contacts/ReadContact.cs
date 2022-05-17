@@ -101,4 +101,15 @@ public class ReadContact
     /// </summary>
     [JsonPropertyName("customFields")]
     public ICustomFields? CustomFields { get; set; }
+
+    public UpdateContact ToUpdateContact() => new()
+    {
+        Title = Title,
+        FirstName = FirstName,
+        LastName = LastName,
+        Account = Account?.Name,
+        User = User?.Name,
+        Description = Description,
+        CustomFields = CustomFields,
+    };
 }
