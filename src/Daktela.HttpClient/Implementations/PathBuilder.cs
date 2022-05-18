@@ -66,8 +66,18 @@ internal static class PathBuilder<TContract>
 
         if (method.Name == "get_Item")
         {
-            var itemName = expression.Arguments.OfType<ConstantExpression>().Where(x => x.Type == typeof(string)).Select(x => x.Value).Single()?.ToString()
-                           ?? throw new Exception($"Not found argument of the method: {method.Name}");
+            var argument = expression.Arguments.Single();
+
+            var itemName = argument switch
+            {
+                ConstantExpression constantExpression => constantExpression.Type == typeof(string)
+                    ? constantExpression.Value?.ToString() ?? throw new ArgumentNullException(nameof(constantExpression.Value))
+                    : throw new Exception($"Not supported {nameof(ConstantExpression)} type {constantExpression.Type}"),
+                MemberExpression memberExpression => memberExpression.Type == typeof(string)
+                    ? Expression.Lambda(memberExpression).Compile().DynamicInvoke()?.ToString() ?? throw new ArgumentNullException(nameof(memberExpression.Member))
+                    : throw new Exception($"Not supported {nameof(ConstantExpression)} type {memberExpression.Type}"),
+                _ => throw new Exception($"Not found known argument type of the method: {method.Name}, found {argument.Type}"),
+            };
 
             path.Add(itemName);
             return expression.Object;

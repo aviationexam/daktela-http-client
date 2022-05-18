@@ -7,6 +7,8 @@ namespace Daktela.HttpClient.Tests.Requests;
 
 public class PathBuilderTests
 {
+    private const string CustomFieldKey = "abcd";
+
     [Fact]
     public void BuildSimpleWorks()
     {
@@ -42,6 +44,27 @@ public class PathBuilderTests
     public void BuildNestedCustomFieldsWorks()
     {
         Assert.Equal("ticket.customFields.abc", PathBuilder<ReadActivity>.Build(x => x.Ticket.CustomFields!["abc"]));
+    }
+
+    [Fact]
+    public void BuildNestedCustomFieldsConstWorks()
+    {
+        Assert.Equal("ticket.customFields.abcd", PathBuilder<ReadActivity>.Build(x => x.Ticket.CustomFields![CustomFieldKey]));
+
+        Assert.Equal("ticket.customFields.abcd", PathBuilder<ReadActivity>.Build(x => x.Ticket.CustomFields![
+            // ReSharper disable once ArrangeStaticMemberQualifier
+            PathBuilderTests.CustomFieldKey
+        ]));
+    }
+
+    [Fact]
+    public void BuildNestedCustomFieldsVariableWorks()
+    {
+        // ReSharper disable once HeapView.ClosureAllocation
+        // ReSharper disable once ConvertToConstant.Local
+        var variable = "abce";
+
+        Assert.Equal("ticket.customFields.abce", PathBuilder<ReadActivity>.Build(x => x.Ticket.CustomFields![variable]));
     }
 
     private class BaseWithAttribute
