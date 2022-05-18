@@ -170,18 +170,35 @@ public class PagedResponseProcessorTests
     private class ProcessRequestHooksResponseBehaviour : TotalRecordsResponseBehaviour, IProcessRequestHooksResponseBehaviour
     {
         public ICollection<Paging?> BeforePages { get; } = new List<Paging?>();
+
         public int AfterPage { get; private set; }
 
-        public Task BeforePageAsync(Paging? paging, CancellationToken cancellationToken)
+        public Task<IAfterPageHookProcessRequestResponseBehaviour> BeforePageAsync(Paging? paging, CancellationToken cancellationToken)
         {
             BeforePages.Add(paging);
-            return Task.CompletedTask;
+
+            return Task.FromResult<IAfterPageHookProcessRequestResponseBehaviour>(new AfterPageHookProcessRequestResponseBehaviour(this));
         }
 
-        public Task AfterPageAsync(CancellationToken cancellationToken)
+        private class AfterPageHookProcessRequestResponseBehaviour : IAfterPageHookProcessRequestResponseBehaviour
         {
-            AfterPage++;
-            return Task.CompletedTask;
+            private readonly ProcessRequestHooksResponseBehaviour _processRequestHooksResponseBehaviour;
+
+            public AfterPageHookProcessRequestResponseBehaviour(
+                ProcessRequestHooksResponseBehaviour processRequestHooksResponseBehaviour
+            )
+            {
+                _processRequestHooksResponseBehaviour = processRequestHooksResponseBehaviour;
+            }
+
+            public Task AfterPageAsync(CancellationToken cancellationToken)
+            {
+                _processRequestHooksResponseBehaviour.AfterPage++;
+
+                return Task.CompletedTask;
+            }
+
+            public ValueTask DisposeAsync() => ValueTask.CompletedTask;
         }
     }
 }

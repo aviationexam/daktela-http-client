@@ -6,7 +6,5 @@ namespace Daktela.HttpClient.Interfaces.ResponseBehaviours;
 
 public interface IProcessRequestHooksResponseBehaviour : IResponseBehaviour
 {
-    Task BeforePageAsync(Paging? paging, CancellationToken cancellationToken);
-
-    Task AfterPageAsync(CancellationToken cancellationToken);
+    Task<IAfterPageHookProcessRequestResponseBehaviour> BeforePageAsync(Paging? paging, CancellationToken cancellationToken);
 }

@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Responses;
+using Daktela.HttpClient.Implementations.ResponseBehaviours;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
@@ -68,20 +69,18 @@ public class PagedResponseProcessor<TEndpoint> : IPagedResponseProcessor<TEndpoi
 
             totalRecordsResponseBehaviour?.SetTotalRecords(totalItemCount);
 
-            if (processRequestHooksResponseBehaviour != null)
+            await using var afterPageHookProcessRequestResponseBehaviour = processRequestHooksResponseBehaviour switch
             {
-                await processRequestHooksResponseBehaviour.BeforePageAsync(pagedQuery?.Paging, cancellationToken).ConfigureAwait(false);
-            }
+                not null => await processRequestHooksResponseBehaviour.BeforePageAsync(pagedQuery?.Paging, cancellationToken).ConfigureAwait(false),
+                _ => new EmptyAfterPageHookProcessRequestResponseBehaviour(),
+            };
 
             foreach (var item in response.Result.Data)
             {
                 yield return item;
             }
 
-            if (processRequestHooksResponseBehaviour != null)
-            {
-                await processRequestHooksResponseBehaviour.AfterPageAsync(cancellationToken).ConfigureAwait(false);
-            }
+            await afterPageHookProcessRequestResponseBehaviour.AfterPageAsync(cancellationToken).ConfigureAwait(false);
 
             if (autoPaging && pagedQuery != null)
             {
