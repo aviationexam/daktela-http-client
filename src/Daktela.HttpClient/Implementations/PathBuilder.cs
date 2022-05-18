@@ -30,6 +30,7 @@ internal static class PathBuilder<TContract>
     {
         ParameterExpression => null, // exit condition
         MemberExpression memberExpression => ParseMemberExpression(memberExpression, path),
+        MethodCallExpression methodCallExpression => ParseMethodCallExpression(methodCallExpression, path),
         _ => throw new ArgumentOutOfRangeException(nameof(expression), expression, "Unknown type of expression"),
     };
 
@@ -57,5 +58,21 @@ internal static class PathBuilder<TContract>
         }
 
         throw new Exception($"Unable to parse {nameof(MemberExpression)}");
+    }
+
+    private static Expression? ParseMethodCallExpression(MethodCallExpression expression, ICollection<string> path)
+    {
+        var method = expression.Method;
+
+        if (method.Name == "get_Item")
+        {
+            var itemName = expression.Arguments.OfType<ConstantExpression>().Where(x => x.Type == typeof(string)).Select(x => x.Value).Single()?.ToString()
+                           ?? throw new Exception($"Not found argument of the method: {method.Name}");
+
+            path.Add(itemName);
+            return expression.Object;
+        }
+
+        throw new Exception($"Unknown method name {method.Name} while processing {nameof(MethodCallExpression)}");
     }
 }

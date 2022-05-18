@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Implementations;
 using System.Text.Json.Serialization;
 using Xunit;
@@ -35,6 +36,12 @@ public class PathBuilderTests
     public void BuildComplexWorks()
     {
         Assert.Equal("inner.name", PathBuilder<ComplexType>.Build(x => x.InnerType.Name));
+    }
+
+    [Fact]
+    public void BuildNestedCustomFieldsWorks()
+    {
+        Assert.Equal("ticket.customFields.abc", PathBuilder<ReadActivity>.Build(x => x.Ticket.CustomFields!["abc"]));
     }
 
     private class BaseWithAttribute
