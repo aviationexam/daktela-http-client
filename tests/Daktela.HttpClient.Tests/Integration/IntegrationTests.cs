@@ -325,10 +325,14 @@ public class IntegrationTests
 
         using var outputStream = new MemoryStream();
 
-        await fileEndpoint.DownloadFileAsync(
+        var response = await fileEndpoint.DownloadFileAsync(
             fileSource,
             fileName,
-            static async (stream, ctx, cancellationToken) => await stream.CopyToAsync(ctx.outputStream, cancellationToken),
+            static async (stream, ctx, cancellationToken) =>
+            {
+                await stream.CopyToAsync(ctx.outputStream, cancellationToken);
+                return true;
+            },
             new
             {
                 outputStream,
@@ -339,5 +343,6 @@ public class IntegrationTests
         outputStream.Seek(0, SeekOrigin.Begin);
 
         Assert.True(outputStream.Length > 100);
+        Assert.True(response);
     }
 }

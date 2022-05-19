@@ -77,7 +77,7 @@ public class FileEndpointTests
 
         var cancellationToken = CancellationToken.None;
 
-        await _fileEndpoint.DownloadFileAsync(
+        var response = await _fileEndpoint.DownloadFileAsync(
             EFileSource.ActivitiesComment,
             fileId,
             static async (fileStream, ctx, cancellationToken) =>
@@ -89,6 +89,8 @@ public class FileEndpointTests
 
                 Assert.Equal(ctx.downloadedMessage.Length, memoryStream.Length);
                 Assert.True(ctx.downloadedMessage.SequenceEqual(memoryStream.ToArray()));
+
+                return true;
             },
             new
             {
@@ -102,6 +104,7 @@ public class FileEndpointTests
 
         Assert.NotNull(downloadStream);
         Assert.False(downloadStream.CanRead);
+        Assert.True(response);
     }
 
     [Fact]

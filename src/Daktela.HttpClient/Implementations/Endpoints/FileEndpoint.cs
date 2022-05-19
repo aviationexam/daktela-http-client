@@ -29,10 +29,10 @@ public class FileEndpoint : IFileEndpoint
         _httpRequestFactory = httpRequestFactory;
     }
 
-    public async Task DownloadFileAsync<TCtx>(
+    public async Task<TResponse> DownloadFileAsync<TCtx, TResponse>(
         EFileSource fileSource,
         long fileName,
-        Func<Stream, TCtx, CancellationToken, Task> handleResponse,
+        Func<Stream, TCtx, CancellationToken, Task<TResponse>> handleResponse,
         TCtx ctx,
         CancellationToken cancellationToken
     )
@@ -61,9 +61,7 @@ public class FileEndpoint : IFileEndpoint
                 var responseStream = await httpResponse.Content.ReadAsStreamAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                await handleResponse(responseStream, ctx, cancellationToken);
-
-                break;
+                return await handleResponse(responseStream, ctx, cancellationToken);
             default:
                 throw new UnexpectedHttpResponseException(
                     path, httpResponse.StatusCode,

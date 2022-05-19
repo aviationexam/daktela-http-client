@@ -11,10 +11,10 @@ public interface IFileEndpoint
     protected internal const string UriUpload = "/file/upload.php";
     protected internal const string UriDownload = "/file/download.php";
 
-    Task DownloadFileAsync<TCtx>(
+    Task<TResponse> DownloadFileAsync<TCtx, TResponse>(
         EFileSource fileSource,
         long fileName,
-        Func<Stream, TCtx, CancellationToken, Task> handleResponse,
+        Func<Stream, TCtx, CancellationToken, Task<TResponse>> handleResponse,
         TCtx ctx,
         CancellationToken cancellationToken = default
     );
