@@ -5,20 +5,20 @@ using System.Linq.Expressions;
 
 namespace Daktela.HttpClient.Implementations;
 
-public static class FilterBuilder<TContract>
+public class FilterBuilderInstance<TContract>
     where TContract : class
 {
-    public static IFilter WithValue<T>(
+    public IFilter WithValue<T>(
         Expression<Func<TContract, T>> propertySelector, EFilterOperator filterOperator, string value, string? type = null
-    ) => new FilterBuilderInstance<TContract>().WithValue(propertySelector, filterOperator, value, type);
+    ) => new Filter(PathBuilder<TContract>.Build(propertySelector), filterOperator, value, type);
 
-    public static IFilter WithGroupOfValue(
+    public IFilter WithGroupOfValue(
         EFilterLogic filterLogic,
         IReadOnlyCollection<IFilter> filters
-    ) => new FilterBuilderInstance<TContract>().WithGroupOfValue(filterLogic, filters);
+    ) => new FilterGroup(filterLogic, filters);
 
-    public static IFilter WithGroupOfValue(
+    public IFilter WithGroupOfValue(
         EFilterLogic filterLogic,
         Func<FilterBuilderInstance<TContract>, IReadOnlyCollection<IFilter>> filters
-    ) => new FilterBuilderInstance<TContract>().WithGroupOfValue(filterLogic, filters);
+    ) => new FilterGroup(filterLogic, filters(this));
 }
