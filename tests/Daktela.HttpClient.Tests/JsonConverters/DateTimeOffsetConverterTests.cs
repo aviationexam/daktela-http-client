@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ public class DateTimeOffsetConverterTests
 
     [Theory]
     [ClassData(typeof(TimeSpans))]
-    public async Task DeserializeContractWorks(TimeSpan timeSpan)
+    public async Task DeserializeContractTimeSpanWorks(TimeSpan timeSpan)
     {
         AddDateTimeOffsetConverter(timeSpan);
 
@@ -81,8 +82,32 @@ public class DateTimeOffsetConverterTests
     }
 
     [Theory]
+    [ClassData(typeof(TimeZones))]
+    public async Task DeserializeContractTimeZoneWorks(string timeZone)
+    {
+        AddDateTimeZoneConverter(timeZone);
+
+        var timeZoneInstance = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+
+        await using var memoryStream = new MemoryStream();
+        await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
+        await streamWriter.WriteAsync(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}");
+        await streamWriter.FlushAsync();
+        streamWriter.Close();
+
+        memoryStream.Seek(0, SeekOrigin.Begin);
+
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+
+        Assert.NotNull(parsedObject);
+        var dateTimeOffset = timeZoneInstance.GetUtcOffset(DateTimeOffset.Now);
+        Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset), parsedObject!.DateTime);
+        Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset), parsedObject.NullableDateTime);
+    }
+
+    [Theory]
     [ClassData(typeof(TimeSpans))]
-    public async Task SerializeContractWorks(TimeSpan timeSpan)
+    public async Task SerializeContractTimeSpanWorks(TimeSpan timeSpan)
     {
         AddDateTimeOffsetConverter(timeSpan);
 
@@ -103,11 +128,45 @@ public class DateTimeOffsetConverterTests
         Assert.Equal(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}", jsonContract);
     }
 
+    [Theory]
+    [ClassData(typeof(TimeZones))]
+    public async Task SerializeContractTimeZoneWorks(string timeZone)
+    {
+        AddDateTimeZoneConverter(timeZone);
+
+        var timeZoneInstance = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+
+        await using var memoryStream = new MemoryStream();
+
+        var dateTimeOffset = timeZoneInstance.GetUtcOffset(DateTimeOffset.Now);
+        await JsonSerializer.SerializeAsync(memoryStream, new Contract
+        {
+            DateTime = new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset),
+            NullableDateTime = new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset),
+        }, _jsonSerializerOptions);
+
+        memoryStream.Seek(0, SeekOrigin.Begin);
+
+        using var streamReader = new StreamReader(memoryStream);
+        var jsonContract = await streamReader.ReadToEndAsync();
+
+        Assert.NotNull(jsonContract);
+        Assert.Equal(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}", jsonContract);
+    }
+
     private void AddDateTimeOffsetConverter(TimeSpan dateTimeOffset)
     {
         _jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter(new OptionsWrapper<DaktelaOptions>(new DaktelaOptions
         {
             DateTimeOffset = dateTimeOffset,
+        })));
+    }
+
+    private void AddDateTimeZoneConverter(string dateTimeZone)
+    {
+        _jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter(new OptionsWrapper<DaktelaOptions>(new DaktelaOptions
+        {
+            DateTimeTimezone = dateTimeZone,
         })));
     }
 
@@ -118,6 +177,28 @@ public class DateTimeOffsetConverterTests
             yield return new object[] { TimeSpan.FromMinutes(-90) };
             yield return new object[] { TimeSpan.Zero };
             yield return new object[] { TimeSpan.FromMinutes(90) };
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    private class TimeZones : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[] { "UTC" };
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                yield return new object[] { "Central Europe Standard Time" };
+                yield return new object[] { "Eastern Standard Time" };
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                yield return new object[] { "America/New_York" };
+                yield return new object[] { "Europe/Prague" };
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
