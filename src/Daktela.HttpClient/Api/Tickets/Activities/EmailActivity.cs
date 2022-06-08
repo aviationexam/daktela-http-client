@@ -98,7 +98,7 @@ public class EmailActivity
     /// Additional email items, like headers
     /// </summary>
     [JsonPropertyName("options")]
-    public object? Options { get; set; }
+    public EmailActivityOptions? Options { get; set; }
 
     /// <summary>
     /// Time
