@@ -1,5 +1,6 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Requests;
+using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Implementations;
 using Xunit;
 
@@ -23,6 +24,20 @@ public class FilterBuilderTests
 
     [Theory]
     [InlineData(EFilterOperator.Equal)]
+    [InlineData(EFilterOperator.NotEqual)]
+    public void SimpleEnumFilterWithWorks(EFilterOperator filterOperator)
+    {
+        var filter = FilterBuilder<ReadActivity>.WithEnumValue(x => x.Type, filterOperator, EActivityType.Email);
+
+        var filterImpl = Assert.IsType<Filter>(filter);
+        Assert.Equal("type", filterImpl.Field);
+        Assert.Equal(filterOperator, filterImpl.Operator);
+        Assert.Equal("EMAIL", filterImpl.Value);
+        Assert.Null(filterImpl.Type);
+    }
+
+    [Theory]
+    [InlineData(EFilterOperator.Equal)]
     [InlineData(EFilterOperator.EndsWith)]
     public void SimpleFilterInstanceWithWorks(EFilterOperator filterOperator)
     {
@@ -32,6 +47,20 @@ public class FilterBuilderTests
         Assert.Equal("name", filterImpl.Field);
         Assert.Equal(filterOperator, filterImpl.Operator);
         Assert.Equal("a value", filterImpl.Value);
+        Assert.Null(filterImpl.Type);
+    }
+
+    [Theory]
+    [InlineData(EFilterOperator.Equal)]
+    [InlineData(EFilterOperator.NotEqual)]
+    public void SimpleEnumFilterInstanceWithWorks(EFilterOperator filterOperator)
+    {
+        var filter = new FilterBuilderInstance<ReadActivity>().WithEnumValue(x => x.Type, filterOperator, EActivityType.Email);
+
+        var filterImpl = Assert.IsType<Filter>(filter);
+        Assert.Equal("type", filterImpl.Field);
+        Assert.Equal(filterOperator, filterImpl.Operator);
+        Assert.Equal("EMAIL", filterImpl.Value);
         Assert.Null(filterImpl.Type);
     }
 
