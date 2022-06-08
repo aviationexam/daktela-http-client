@@ -1,0 +1,555 @@
+{
+  "error": [],
+  "result": {
+    "data": [
+      {
+        "ticket": {
+          "title": "Api test",
+          "id_merge": null,
+          "category": {
+            "title": "Customer Support",
+            "sla": {
+              "title": "Info",
+              "unit": "HOURS",
+              "response_low": 4,
+              "response_normal": 2,
+              "response_high": 2,
+              "solution_low": 4,
+              "solution_normal": 4,
+              "solution_high": 2,
+              "name": "sla_56cb1bb63c2fa380751433",
+              "_sys": {
+                "hash": null,
+                "model": "ticketsSla"
+              }
+            },
+            "timecondition": null,
+            "email_queue": null,
+            "call_queue": null,
+            "sms_queue": null,
+            "status_required": true,
+            "multiple_statuses": false,
+            "closeCheckChilds": true,
+            "auto_archive_tickets": null,
+            "name": "categories_618a5a3925976853354965",
+            "_sys": {
+              "hash": null,
+              "model": "ticketsCategories"
+            }
+          },
+          "user": null,
+          "email": "",
+          "contact": {
+            "title": "Title testing_user_637872717018821366",
+            "firstname": "Title",
+            "lastname": "Last testing_user_637872717018821366",
+            "account": null,
+            "user": null,
+            "description": "",
+            "nps_score": 0,
+            "edited": "2022-05-04 14:35:09",
+            "created": "2022-05-04 14:35:09",
+            "customFields": {
+              "number": [
+                "123456789"
+              ]
+            },
+            "duplicateContacts": null,
+            "notDuplicateContacts": null,
+            "name": "testing_user_637872717018821366",
+            "_sys": {
+              "hash": "439413",
+              "model": "contacts",
+              "cfScheme": {
+                "number": {
+                  "type": "PHONE",
+                  "title": "Telefon",
+                  "hidden": false,
+                  "readonly": false
+                }
+              }
+            }
+          },
+          "parentTicket": null,
+          "description": "",
+          "statuses": [],
+          "followers": [],
+          "stage": "OPEN",
+          "priority": "LOW",
+          "sla_overdue": 0,
+          "sla_deadtime": "2022-05-04 18:55:07",
+          "sla_change": "2022-05-04 14:55:07",
+          "sla_duration": 0,
+          "sla_custom": false,
+          "interaction_activity_count": 0,
+          "reopen": null,
+          "created": "2022-05-04 14:55:07",
+          "created_by": {
+            "title": "An user",
+            "alias": "user"
+          },
+          "edited": "2022-05-04 16:23:40",
+          "edited_by": {
+            "title": "An user",
+            "alias": "user"
+          },
+          "first_answer": null,
+          "first_answer_duration": 0,
+          "closed": null,
+          "unread": false,
+          "has_attachment": false,
+          "isParent": false,
+          "customFields": [],
+          "last_activity": null,
+          "last_activity_operator": null,
+          "last_activity_client": null,
+          "first_answer_deadline": "2022-05-04 18:55:07",
+          "first_answer_overdue": 0,
+          "sla_close_deadline": "2022-05-04 22:55:07",
+          "name": 9673,
+          "_sys": {
+            "hash": null,
+            "model": "tickets"
+          }
+        },
+        "title": "Support issue",
+        "action": "CLOSE",
+        "type": "EMAIL",
+        "item": {
+          "queue": {
+            "title": "customer@email.com",
+            "alias": "",
+            "description": "",
+            "call_steering_description": "",
+            "type": "email",
+            "direction": "in",
+            "options": {
+              "power": true,
+              "in_ssl": true,
+              "address": "customer@email.com",
+              "in_name": "daktela",
+              "in_type": "imap",
+              "respond": null,
+              "helpdesk": "aviationexam",
+              "out_name": "daktela",
+              "out_port": "587",
+              "reply_to": "",
+              "username": "",
+              "in_server": "mail.com",
+              "oauthToken": [],
+              "out_server": "mail.com",
+              "wrapuptime": "",
+              "npstemplate": null,
+              "ssl_trusted": true,
+              "signtemplate": null,
+              "_has_statuses": true,
+              "timecondition": "timegroups_6082cf6a2ed22171670511",
+              "exclude_emails": "",
+              "multiple_statuses": false,
+              "crm_ticket_category": "categories_618a5a3925976853354965",
+              "no_keep_on_mailserver": false,
+              "respond_outside_timecondition": "templates_624548ebf1bc3971163722"
+            },
+            "deactivated": false,
+            "name": 3001,
+            "_sys": {
+              "hash": null,
+              "model": "queues"
+            }
+          },
+          "user": null,
+          "contact": null,
+          "title": "Support issue",
+          "address": "customer@email.com",
+          "direction": "in",
+          "wait_time": null,
+          "duration": null,
+          "answered": false,
+          "text": "API test<br \/>",
+          "options": {
+            "headers": {
+              "cc": "",
+              "to": [
+                {
+                  "address": "daktela@email.com",
+                  "display": "Support",
+                  "is_group": false
+                }
+              ],
+              "date": "2022-06-07 15:18:03",
+              "from": [
+                {
+                  "address": "customer@email.com",
+                  "display": "A customer",
+                  "is_group": false
+                }
+              ],
+              "ticket": "10361",
+              "reply-to": "",
+              "message-id": "<O9ZMNQIE1HU4.8TOBNHPMYJLP2@email.com>",
+              "references": "",
+              "return-path": "<support@mail.com>",
+              "auto-submitted": false
+            }
+          },
+          "time": "2022-06-07 15:18:24",
+          "state": null,
+          "name": "emails_629f5020a368b296701928",
+          "_sys": {
+            "hash": null,
+            "model": "activitiesEmail"
+          },
+          "files": [
+            {
+              "file": 660,
+              "inline": "0",
+              "cid": "",
+              "title": "device.log",
+              "type": "text\/plain",
+              "size": 93,
+              "time": "2022-06-07 15:18:24",
+              "_sys": {
+                "hash": null,
+                "model": "activitiesEmailFiles"
+              }
+            }
+          ]
+        },
+        "queue": {
+          "title": "customer@email.com",
+          "alias": "",
+          "description": "",
+          "call_steering_description": "",
+          "type": "email",
+          "direction": "in",
+          "options": {
+            "power": true,
+            "in_ssl": true,
+            "address": "customer@email.com",
+            "in_name": "daktela",
+            "in_type": "imap",
+            "respond": null,
+            "helpdesk": "aviationexam",
+            "out_name": "daktela",
+            "out_port": "587",
+            "reply_to": "",
+            "username": "",
+            "in_server": "mail.com",
+            "oauthToken": [],
+            "out_server": "mail.com",
+            "wrapuptime": "",
+            "npstemplate": null,
+            "ssl_trusted": true,
+            "signtemplate": null,
+            "_has_statuses": true,
+            "timecondition": "timegroups_6082cf6a2ed22171670511",
+            "exclude_emails": "",
+            "multiple_statuses": false,
+            "crm_ticket_category": "categories_618a5a3925976853354965",
+            "no_keep_on_mailserver": false,
+            "respond_outside_timecondition": "templates_624548ebf1bc3971163722"
+          },
+          "deactivated": false,
+          "name": 3001,
+          "_sys": {
+            "hash": null,
+            "model": "queues"
+          }
+        },
+        "user": null,
+        "contact": null,
+        "survey": null,
+        "record": null,
+        "statuses": [],
+        "priority": 0,
+        "options": null,
+        "description": "",
+        "important": false,
+        "time": "2022-06-07 15:18:24",
+        "time_wait": null,
+        "time_open": null,
+        "time_close": "2022-06-07 15:18:24",
+        "baw": 0,
+        "aaw": 0,
+        "duration": 0,
+        "ringing_time": 0,
+        "created_by": null,
+        "customFields": [],
+        "name": "activities_629f5020a5988094907979",
+        "_sys": {
+          "hash": "46212",
+          "model": "activities"
+        }
+      },
+      {
+        "ticket": {
+          "title": "Api test",
+          "id_merge": null,
+          "category": {
+            "title": "Customer Support",
+            "sla": {
+              "title": "Info",
+              "unit": "HOURS",
+              "response_low": 4,
+              "response_normal": 2,
+              "response_high": 2,
+              "solution_low": 4,
+              "solution_normal": 4,
+              "solution_high": 2,
+              "name": "sla_56cb1bb63c2fa380751433",
+              "_sys": {
+                "hash": null,
+                "model": "ticketsSla"
+              }
+            },
+            "timecondition": null,
+            "email_queue": null,
+            "call_queue": null,
+            "sms_queue": null,
+            "status_required": true,
+            "multiple_statuses": false,
+            "closeCheckChilds": true,
+            "auto_archive_tickets": null,
+            "name": "categories_618a5a3925976853354965",
+            "_sys": {
+              "hash": null,
+              "model": "ticketsCategories"
+            }
+          },
+          "user": null,
+          "email": "",
+          "contact": {
+            "title": "Title testing_user_637872717018821366",
+            "firstname": "Title",
+            "lastname": "Last testing_user_637872717018821366",
+            "account": null,
+            "user": null,
+            "description": "",
+            "nps_score": 0,
+            "edited": "2022-05-04 14:35:09",
+            "created": "2022-05-04 14:35:09",
+            "customFields": {
+              "number": [
+                "123456789"
+              ]
+            },
+            "duplicateContacts": null,
+            "notDuplicateContacts": null,
+            "name": "testing_user_637872717018821366",
+            "_sys": {
+              "hash": "439413",
+              "model": "contacts",
+              "cfScheme": {
+                "number": {
+                  "type": "PHONE",
+                  "title": "Telefon",
+                  "hidden": false,
+                  "readonly": false
+                }
+              }
+            }
+          },
+          "parentTicket": null,
+          "description": "",
+          "statuses": [],
+          "followers": [],
+          "stage": "OPEN",
+          "priority": "LOW",
+          "sla_overdue": 0,
+          "sla_deadtime": "2022-05-04 18:55:07",
+          "sla_change": "2022-05-04 14:55:07",
+          "sla_duration": 0,
+          "sla_custom": false,
+          "interaction_activity_count": 0,
+          "reopen": null,
+          "created": "2022-05-04 14:55:07",
+          "created_by": {
+            "title": "An user",
+            "alias": "user"
+          },
+          "edited": "2022-05-04 16:23:40",
+          "edited_by": {
+            "title": "An user",
+            "alias": "user"
+          },
+          "first_answer": null,
+          "first_answer_duration": 0,
+          "closed": null,
+          "unread": false,
+          "has_attachment": false,
+          "isParent": false,
+          "customFields": [],
+          "last_activity": null,
+          "last_activity_operator": null,
+          "last_activity_client": null,
+          "first_answer_deadline": "2022-05-04 18:55:07",
+          "first_answer_overdue": 0,
+          "sla_close_deadline": "2022-05-04 22:55:07",
+          "name": 9673,
+          "_sys": {
+            "hash": null,
+            "model": "tickets"
+          }
+        },
+        "title": "Support issue",
+        "action": "CLOSE",
+        "type": "EMAIL",
+        "item": {
+          "queue": {
+            "title": "customer@email.com",
+            "alias": "",
+            "description": "",
+            "call_steering_description": "",
+            "type": "email",
+            "direction": "in",
+            "options": {
+              "power": true,
+              "in_ssl": true,
+              "address": "customer@email.com",
+              "in_name": "daktela",
+              "in_type": "imap",
+              "respond": null,
+              "helpdesk": "aviationexam",
+              "out_name": "daktela",
+              "out_port": "587",
+              "reply_to": "",
+              "username": "",
+              "in_server": "mail.com",
+              "oauthToken": [],
+              "out_server": "mail.com",
+              "wrapuptime": "",
+              "npstemplate": null,
+              "ssl_trusted": true,
+              "signtemplate": null,
+              "_has_statuses": true,
+              "timecondition": "timegroups_6082cf6a2ed22171670511",
+              "exclude_emails": "",
+              "multiple_statuses": false,
+              "crm_ticket_category": "categories_618a5a3925976853354965",
+              "no_keep_on_mailserver": false,
+              "respond_outside_timecondition": "templates_624548ebf1bc3971163722"
+            },
+            "deactivated": false,
+            "name": 3001,
+            "_sys": {
+              "hash": null,
+              "model": "queues"
+            }
+          },
+          "user": null,
+          "contact": null,
+          "title": "Support issue",
+          "address": "customer@email.com",
+          "direction": "in",
+          "wait_time": null,
+          "duration": null,
+          "answered": false,
+          "text": "API test<br \/>",
+          "options": {
+            "headers": {
+              "cc": [],
+              "to": [
+                {
+                  "address": "customer@email.com",
+                  "display": ""
+                }
+              ],
+              "bcc": [],
+              "references": "<LWPWR6OE1HU4.LRXQI0XIBVUZ1@email.com>",
+              "In-reply-to": "<LWPWR6OE1HU4.LRXQI0XIBVUZ1@email.com>"
+            }
+          },
+          "time": "2022-06-07 15:18:24",
+          "state": null,
+          "name": "emails_629f5020a368b296701928",
+          "_sys": {
+            "hash": null,
+            "model": "activitiesEmail"
+          },
+          "files": [
+            {
+              "file": 660,
+              "inline": "0",
+              "cid": "",
+              "title": "device.log",
+              "type": "text\/plain",
+              "size": 93,
+              "time": "2022-06-07 15:18:24",
+              "_sys": {
+                "hash": null,
+                "model": "activitiesEmailFiles"
+              }
+            }
+          ]
+        },
+        "queue": {
+          "title": "customer@email.com",
+          "alias": "",
+          "description": "",
+          "call_steering_description": "",
+          "type": "email",
+          "direction": "in",
+          "options": {
+            "power": true,
+            "in_ssl": true,
+            "address": "customer@email.com",
+            "in_name": "daktela",
+            "in_type": "imap",
+            "respond": null,
+            "helpdesk": "aviationexam",
+            "out_name": "daktela",
+            "out_port": "587",
+            "reply_to": "",
+            "username": "",
+            "in_server": "mail.com",
+            "oauthToken": [],
+            "out_server": "mail.com",
+            "wrapuptime": "",
+            "npstemplate": null,
+            "ssl_trusted": true,
+            "signtemplate": null,
+            "_has_statuses": true,
+            "timecondition": "timegroups_6082cf6a2ed22171670511",
+            "exclude_emails": "",
+            "multiple_statuses": false,
+            "crm_ticket_category": "categories_618a5a3925976853354965",
+            "no_keep_on_mailserver": false,
+            "respond_outside_timecondition": "templates_624548ebf1bc3971163722"
+          },
+          "deactivated": false,
+          "name": 3001,
+          "_sys": {
+            "hash": null,
+            "model": "queues"
+          }
+        },
+        "user": null,
+        "contact": null,
+        "survey": null,
+        "record": null,
+        "statuses": [],
+        "priority": 0,
+        "options": null,
+        "description": "",
+        "important": false,
+        "time": "2022-06-07 15:18:24",
+        "time_wait": null,
+        "time_open": null,
+        "time_close": "2022-06-07 15:18:24",
+        "baw": 0,
+        "aaw": 0,
+        "duration": 0,
+        "ringing_time": 0,
+        "created_by": null,
+        "customFields": [],
+        "name": "activities_629f5020a5988094907980",
+        "_sys": {
+          "hash": "46212",
+          "model": "activities"
+        }
+      }
+    ],
+    "total": 2
+  },
+  "_time": "2022-06-08 14:27:15"
+}

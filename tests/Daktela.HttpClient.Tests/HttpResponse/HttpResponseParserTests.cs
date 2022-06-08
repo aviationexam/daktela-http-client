@@ -2,6 +2,7 @@ using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Responses.Errors;
 using Daktela.HttpClient.Api.Tickets;
+using Daktela.HttpClient.Api.Tickets.Activities;
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Tests.Infrastructure;
@@ -475,6 +476,46 @@ public class HttpResponseParserTests
         Assert.Equal(new DateTimeOffset(2022, 5, 4, 16, 23, 40, _dateTimeOffset), ticketActivity.TimeOpen);
         Assert.NotNull(ticketActivity.User);
         Assert.Null(ticketActivity.Contact);
+
+        var errors = Assert.IsType<PlainErrorResponse>(ticketActivityResponse.Error);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public async Task ParseTicketActivityEmailWorks()
+    {
+        var httpResponseParser = new HttpResponseParser(_httpJsonSerializerOptions);
+
+        using var httpResponseContent = new StreamContent("ticket-activity-read-email".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var ticketActivityResponse = await httpResponseParser.ParseResponseAsync<ListResponse<ReadActivity>>(httpResponseContent, cancellationToken);
+
+        Assert.NotNull(ticketActivityResponse.Error);
+        Assert.NotNull(ticketActivityResponse.Result);
+
+        Assert.Equal(2, ticketActivityResponse.Result.Data.Count);
+        var ticketActivities = ticketActivityResponse.Result.Data.ToArray();
+
+        Assert.Equal("activities_629f5020a5988094907979", ticketActivities[0].Name);
+        Assert.Equal(EAction.Close, ticketActivities[0].Action);
+        Assert.Equal(0, ticketActivities[0].Priority);
+        Assert.Equal(new DateTimeOffset(2022, 6, 7, 15, 18, 24, _dateTimeOffset), ticketActivities[0].Time);
+        Assert.Null(ticketActivities[0].User);
+        Assert.Null(ticketActivities[0].Contact);
+        var emailActivity1 = Assert.IsType<ReadActivity<EmailActivity>>(ticketActivities[0]);
+        Assert.NotNull(emailActivity1.Item?.Options?.Headers);
+        Assert.Equal("<O9ZMNQIE1HU4.8TOBNHPMYJLP2@email.com>", emailActivity1.Item?.Options?.Headers.MessageId);
+
+        Assert.Equal("activities_629f5020a5988094907980", ticketActivities[1].Name);
+        Assert.Equal(EAction.Close, ticketActivities[1].Action);
+        Assert.Equal(0, ticketActivities[1].Priority);
+        Assert.Equal(new DateTimeOffset(2022, 6, 7, 15, 18, 24, _dateTimeOffset), ticketActivities[1].Time);
+        Assert.Null(ticketActivities[1].User);
+        Assert.Null(ticketActivities[1].Contact);
+        var emailActivity2 = Assert.IsType<ReadActivity<EmailActivity>>(ticketActivities[1]);
+        Assert.NotNull(emailActivity2.Item?.Options?.Headers);
+        Assert.Equal("<LWPWR6OE1HU4.LRXQI0XIBVUZ1@email.com>", emailActivity2.Item?.Options?.Headers.References);
 
         var errors = Assert.IsType<PlainErrorResponse>(ticketActivityResponse.Error);
         Assert.Empty(errors);

@@ -18,6 +18,7 @@ public class HttpJsonSerializerOptions : IHttpJsonSerializerOptions
         Value.Converters.Add(new ReadActivityConverter());
         Value.Converters.Add(new CustomFieldsConverter());
         Value.Converters.Add(new EnumsConverterFactory());
+        Value.Converters.Add(new EmailActivityOptionsHeadersAddressConverter());
         Value.Converters.Add(new ErrorResponseConverter());
         Value.Converters.Add(new ErrorFormConverter());
     }
