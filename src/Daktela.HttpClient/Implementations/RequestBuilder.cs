@@ -16,4 +16,6 @@ public static class RequestBuilder
     public static IPagedRequest CreatePaged(Paging paging) => new PagingOnlyRequest(paging);
 
     public static IFilteringRequest CreateFiltering(IFilter filters) => new FilteringOnlyRequest(filters);
+
+    public static IFieldsRequest CreateFields(IFields fields) => new FieldsOnlyRequest(fields);
 }
