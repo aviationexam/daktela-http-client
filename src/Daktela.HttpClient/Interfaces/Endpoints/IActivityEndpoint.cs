@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Tickets;
+using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
@@ -36,6 +37,13 @@ public interface IActivityEndpoint
         CancellationToken cancellationToken = default
     );
 
+    IAsyncEnumerable<IDictionary<string, string>> GetActivitiesFieldsAsync<TRequest>(
+        TRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    ) where TRequest : IRequest, IFieldsQuery;
+
     #region External relations
 
     IAsyncEnumerable<ReadActivityAttachment> GetActivityAttachmentsAsync(
@@ -43,7 +51,7 @@ public interface IActivityEndpoint
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
-        CancellationToken cancellationToken
+        CancellationToken cancellationToken = default
     );
 
     #endregion

@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Api.Tickets;
+using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
@@ -25,7 +26,6 @@ public interface ITicketEndpoint
         CancellationToken cancellationToken = default
     );
 
-
     Task<ReadTicket> CreateTicketAsync(
         CreateTicket ticket, CancellationToken cancellationToken
     );
@@ -40,6 +40,13 @@ public interface ITicketEndpoint
         long name, CancellationToken cancellationToken = default
     );
 
+    IAsyncEnumerable<IDictionary<string, string>> GetTicketsFieldsAsync<TRequest>(
+        TRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    ) where TRequest : IRequest, IFieldsQuery;
+
     #region External relations
 
     IAsyncEnumerable<ReadActivity> GetTicketActivitiesAsync(
@@ -49,6 +56,14 @@ public interface ITicketEndpoint
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken = default
     );
+
+    IAsyncEnumerable<IDictionary<string, string>> GetTicketActivitiesFieldsAsync<TRequest>(
+        long name,
+        TRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    ) where TRequest : IRequest, IFieldsQuery;
 
     #endregion
 }

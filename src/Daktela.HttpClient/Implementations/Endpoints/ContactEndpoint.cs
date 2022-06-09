@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
+using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
@@ -113,4 +114,33 @@ public class ContactEndpoint : IContactEndpoint
             cancellationToken
         ).ConfigureAwait(false);
     }
+
+    public IAsyncEnumerable<IDictionary<string, string>> GetContactsFieldsAsync<TRequest>(
+        TRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) where TRequest : IRequest, IFieldsQuery => _pagedResponseProcessor.InvokeAsync(
+        request,
+        requestOption,
+        responseBehaviour,
+        new
+        {
+            daktelaHttpClient = _daktelaHttpClient,
+            httpResponseParser = _httpResponseParser
+        },
+        async static (
+            request,
+            _,
+            _,
+            ctx,
+            cancellationToken
+        ) => await ctx.daktelaHttpClient.GetListAsync<IDictionary<string, string>>(
+            ctx.httpResponseParser,
+            $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
+            request,
+            cancellationToken
+        ),
+        cancellationToken
+    ).IteratingConfigureAwait(cancellationToken);
 }
