@@ -11,4 +11,6 @@ internal record EmptyRequest : IEmptyRequest
     public ISortingRequest WithSortable(IReadOnlyCollection<ISorting> sorting) => new SortingOnlyRequest(sorting);
 
     public IFilteringRequest WithFilter(IFilter filter) => new FilteringOnlyRequest(filter);
+
+    public IFieldsRequest WithFields(IFields fields) => new FieldsOnlyRequest(fields);
 }

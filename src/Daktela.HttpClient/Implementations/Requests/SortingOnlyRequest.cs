@@ -12,7 +12,12 @@ internal record SortingOnlyRequest(IReadOnlyCollection<ISorting> Sorting) : ISor
     );
 
     public IPagedSortingRequest WithPaging(Paging paging) => new PagedSortingRequest(
-        Sorting,
-        paging
+        paging,
+        Sorting
+    );
+
+    public IFieldsSortingRequest WithFields(IFields fields) => new FieldsSortingRequest(
+        fields,
+        Sorting
     );
 }

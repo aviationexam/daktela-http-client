@@ -7,8 +7,14 @@ namespace Daktela.HttpClient.Implementations.Requests;
 internal record FilteringSortingRequest(IFilter Filters, IReadOnlyCollection<ISorting> Sorting) : IFilteringSortingRequest
 {
     public IPagedSortingFilteringRequest WithPaging(Paging paging) => new PagedSortingFilteringRequest(
-        Filters,
+        paging,
         Sorting,
-        paging
+        Filters
+    );
+
+    public IFieldsSortingFilteringRequest WithFields(IFields fields) => new FieldsSortingFilteringRequest(
+        fields,
+        Sorting,
+        Filters
     );
 }

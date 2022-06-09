@@ -15,4 +15,9 @@ internal record FilteringOnlyRequest(IFilter Filters) : IFilteringRequest
         Filters,
         paging
     );
+
+    public IFieldsFilteringRequest WithFields(IFields fields) => new FieldsFilteringRequest(
+        fields,
+        Filters
+    );
 }

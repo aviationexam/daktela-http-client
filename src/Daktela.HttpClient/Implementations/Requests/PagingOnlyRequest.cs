@@ -9,12 +9,17 @@ internal record PagingOnlyRequest(Paging Paging) : IPagedRequest
     public Paging Paging { get; set; } = Paging;
 
     public IPagedSortingRequest WithSortable(IReadOnlyCollection<ISorting> sorting) => new PagedSortingRequest(
-        sorting,
-        Paging
+        Paging,
+        sorting
     );
 
     public IPagedFilteringRequest WithFilter(IFilter filters) => new PagedFilteringRequest(
         filters,
+        Paging
+    );
+
+    public IFieldsPagedRequest WithFields(IFields fields) => new FieldsPagedRequest(
+        fields,
         Paging
     );
 }
