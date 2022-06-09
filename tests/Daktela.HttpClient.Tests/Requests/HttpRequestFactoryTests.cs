@@ -34,6 +34,20 @@ public class HttpRequestFactoryTests
     }
 
     [Fact]
+    public void FieldingWorks()
+    {
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+            HttpMethod.Get,
+            DaktelaContractPath,
+            request: RequestBuilder.CreateFields(new Fields(new[] { "name" }))
+        );
+
+        Assert.Equal(HttpMethod.Get, httpRequestMessage.Method);
+        Assert.NotNull(httpRequestMessage.RequestUri);
+        Assert.Equal($"{DaktelaUrl}/{DaktelaContractPath}?fields[0]=name&accessToken={AccessToken}", httpRequestMessage.RequestUri!.ToString());
+    }
+
+    [Fact]
     public void PaginationWorks()
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(

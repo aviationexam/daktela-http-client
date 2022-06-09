@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Daktela.HttpClient.Api.Requests;
 
 /// <summary>
@@ -5,4 +7,5 @@ namespace Daktela.HttpClient.Api.Requests;
 /// </summary>
 public interface IFields
 {
+    IReadOnlyCollection<string> Items { get; }
 }

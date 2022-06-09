@@ -99,11 +99,24 @@ public class HttpRequestFactory : IHttpRequestFactory
     {
         var queryDictionary = new NameValueCollection();
 
+        ApplyFields(request, queryDictionary);
         ApplySorting(request, queryDictionary);
         ApplyFilters(request, queryDictionary);
         ApplyPagination(request, queryDictionary);
 
         return CreateHttpRequestMessage(method, path, queryDictionary);
+    }
+
+    private void ApplyFields(IRequest request, NameValueCollection query)
+    {
+        if (request is IFieldsQuery { Fields.Items: { } fieldItems })
+        {
+            for (var i = 0; i < fieldItems.Count; i++)
+            {
+                var fieldItem = fieldItems.ElementAt(i);
+                query.Add($"fields[{i}]", fieldItem);
+            }
+        }
     }
 
     private void ApplySorting(IRequest request, NameValueCollection query)
