@@ -1,0 +1,36 @@
+{
+  "error": [],
+  "result": {
+    "data": [
+      {
+        "title": "Support issue"
+      },
+      {
+        "title": "Support issue"
+      },
+      {
+        "title": "Support issue"
+      },
+      {
+        "title": "Re: Support issue"
+      },
+      {
+        "title": "Support issue"
+      },
+      {
+        "title": "Support ticket #{0}"
+      },
+      {
+        "title": "Support ticket #{0}"
+      },
+      {
+        "title": "Support ticket #10401"
+      },
+      {
+        "title": "Re: Support ticket #10401"
+      }
+    ],
+    "total": 9
+  },
+  "_time": "2022-06-09 14:24:06"
+}
