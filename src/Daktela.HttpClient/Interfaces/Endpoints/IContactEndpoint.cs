@@ -45,6 +45,6 @@ public interface IContactEndpoint
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
-        CancellationToken cancellationToken= default
+        CancellationToken cancellationToken = default
     ) where TRequest : IRequest, IFieldsQuery;
 }
