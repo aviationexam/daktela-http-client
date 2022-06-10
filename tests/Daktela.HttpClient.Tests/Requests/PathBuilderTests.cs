@@ -1,5 +1,7 @@
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Implementations;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Xunit;
 
@@ -13,6 +15,12 @@ public class PathBuilderTests
     public void BuildSimpleWorks()
     {
         Assert.Equal("name", PathBuilder<BaseWithAttribute>.Build(x => x.Name));
+    }
+
+    [Fact]
+    public void BuildSimpleEditedWorks()
+    {
+        Assert.Equal("edited", PathBuilder<BaseWithAttribute>.Build(x => x.Edited));
     }
 
     [Fact]
@@ -71,6 +79,10 @@ public class PathBuilderTests
     {
         [JsonPropertyName("name")]
         public string Name { get; } = null!;
+
+        [JsonPropertyName("edited")]
+        [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty")]
+        public DateTimeOffset Edited { get; }
     }
 
     private class MiddleExtensionWithAttribute : BaseWithAttribute

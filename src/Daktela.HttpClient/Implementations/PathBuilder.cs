@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -31,6 +32,7 @@ internal static class PathBuilder<TContract>
         ParameterExpression => null, // exit condition
         MemberExpression memberExpression => ParseMemberExpression(memberExpression, path),
         MethodCallExpression methodCallExpression => ParseMethodCallExpression(methodCallExpression, path),
+        UnaryExpression unaryExpression => ParseUnaryExpression(unaryExpression, path),
         _ => throw new ArgumentOutOfRangeException(nameof(expression), expression, "Unknown type of expression"),
     };
 
@@ -84,5 +86,20 @@ internal static class PathBuilder<TContract>
         }
 
         throw new Exception($"Unknown method name {method.Name} while processing {nameof(MethodCallExpression)}");
+    }
+
+    [SuppressMessage("ReSharper", "ReturnTypeCanBeNotNullable")]
+    private static Expression? ParseUnaryExpression(
+        UnaryExpression expression,
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
+        ICollection<string> path
+    )
+    {
+        if (expression.NodeType is ExpressionType.Convert)
+        {
+            return expression.Operand;
+        }
+
+        throw new Exception($"Unknown node type {expression.NodeType} while processing {nameof(UnaryExpression)}");
     }
 }

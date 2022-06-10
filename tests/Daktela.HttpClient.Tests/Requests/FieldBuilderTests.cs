@@ -24,4 +24,19 @@ public class FieldBuilderTests
         Assert.Equal("title", items[1]);
         Assert.Equal("account.name", items[2]);
     }
+
+    [Fact]
+    public void FieldCreateWithConvertWorks()
+    {
+        var fields = FieldBuilder<ReadContact>.Create<dynamic>(
+            x => x.Name,
+            x => x.Edited
+        );
+
+        var fieldsImpl = Assert.IsType<Fields>(fields);
+        var items = fieldsImpl.Items.ToArray();
+        Assert.Equal(2, items.Length);
+        Assert.Equal("name", items[0]);
+        Assert.Equal("edited", items[1]);
+    }
 }
