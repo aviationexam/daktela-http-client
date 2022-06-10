@@ -40,12 +40,14 @@ public interface ITicketEndpoint
         long name, CancellationToken cancellationToken = default
     );
 
-    IAsyncEnumerable<IDictionary<string, string>> GetTicketsFieldsAsync<TRequest>(
+    IAsyncEnumerable<TResult> GetTicketsFieldsAsync<TRequest, TResult>(
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken = default
-    ) where TRequest : IRequest, IFieldsQuery;
+    )
+        where TRequest : IRequest, IFieldsQuery
+        where TResult : class, IFieldResult;
 
     #region External relations
 
@@ -57,13 +59,15 @@ public interface ITicketEndpoint
         CancellationToken cancellationToken = default
     );
 
-    IAsyncEnumerable<IDictionary<string, string>> GetTicketActivitiesFieldsAsync<TRequest>(
+    IAsyncEnumerable<TResult> GetTicketActivitiesFieldsAsync<TRequest, TResult>(
         long name,
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken = default
-    ) where TRequest : IRequest, IFieldsQuery;
+    )
+        where TRequest : IRequest, IFieldsQuery
+        where TResult : class, IFieldResult;
 
     #endregion
 }

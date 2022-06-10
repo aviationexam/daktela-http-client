@@ -5,11 +5,14 @@ using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
+using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -47,7 +50,7 @@ public class ActivityEndpointTests
     [Fact]
     public async Task GetActivityFieldsWorks()
     {
-        using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<IDictionary<string, string>>(
+        using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<ActivityField>(
             $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}", "fielded-activity-response"
         );
         var responseMetadata = new TotalRecordsResponseBehaviour();
@@ -56,9 +59,12 @@ public class ActivityEndpointTests
 
         var count = 0;
         await foreach (
-            var activityFields in _activityEndpoint.GetActivitiesFieldsAsync(
+            var activityFields in _activityEndpoint.GetActivitiesFieldsAsync<IFieldsRequest, ActivityField>(
                 RequestBuilder.CreateFields(
-                    FieldBuilder<ReadActivity>.Create(x => x.Name)
+                    FieldBuilder<ReadActivity>.Create<dynamic>(
+                        x => x.Name,
+                        x => x.Time!
+                    )
                 ),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(false),
                 responseMetadata,
@@ -68,12 +74,27 @@ public class ActivityEndpointTests
         {
             count++;
             Assert.NotNull(activityFields);
-            Assert.Contains("title", activityFields);
+            Assert.NotNull(activityFields.Title);
+            Assert.NotNull(activityFields.Time);
         }
 
         Assert.Equal(9, count);
         Assert.Equal(1, responseMetadata.TotalRecords.Count);
         Assert.All(responseMetadata.TotalRecords, x => Assert.Equal(9, x));
+    }
+
+    private class ActivityField : IFieldResult
+    {
+        [JsonPropertyName("title")]
+        public string Title { get; set; } = null!;
+
+        [JsonPropertyName("time")]
+        public DateTimeOffset? Time
+        {
+            get;
+            [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
+            set;
+        }
     }
 
     private class TotalRecordsResponseBehaviour : ITotalRecordsResponseBehaviour

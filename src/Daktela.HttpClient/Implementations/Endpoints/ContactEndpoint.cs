@@ -115,12 +115,14 @@ public class ContactEndpoint : IContactEndpoint
         ).ConfigureAwait(false);
     }
 
-    public IAsyncEnumerable<IDictionary<string, string>> GetContactsFieldsAsync<TRequest>(
+    public IAsyncEnumerable<TResult> GetContactsFieldsAsync<TRequest, TResult>(
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) where TRequest : IRequest, IFieldsQuery => _pagedResponseProcessor.InvokeAsync(
+    )
+        where TRequest : IRequest, IFieldsQuery
+        where TResult : class, IFieldResult => _pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
@@ -135,7 +137,7 @@ public class ContactEndpoint : IContactEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<IDictionary<string, string>>(
+        ) => await ctx.daktelaHttpClient.GetListAsync<TResult>(
             ctx.httpResponseParser,
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request,

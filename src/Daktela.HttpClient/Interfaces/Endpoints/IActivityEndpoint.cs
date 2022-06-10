@@ -37,12 +37,14 @@ public interface IActivityEndpoint
         CancellationToken cancellationToken = default
     );
 
-    IAsyncEnumerable<IDictionary<string, string>> GetActivitiesFieldsAsync<TRequest>(
+    IAsyncEnumerable<TResult> GetActivitiesFieldsAsync<TRequest, TResult>(
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken = default
-    ) where TRequest : IRequest, IFieldsQuery;
+    )
+        where TRequest : IRequest, IFieldsQuery
+        where TResult : class, IFieldResult;
 
     #region External relations
 

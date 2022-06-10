@@ -41,10 +41,12 @@ public interface IContactEndpoint
         string name, CancellationToken cancellationToken = default
     );
 
-    IAsyncEnumerable<IDictionary<string, string>> GetContactsFieldsAsync<TRequest>(
+    IAsyncEnumerable<TResult> GetContactsFieldsAsync<TRequest, TResult>(
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken = default
-    ) where TRequest : IRequest, IFieldsQuery;
+    )
+        where TRequest : IRequest, IFieldsQuery
+        where TResult : class, IFieldResult;
 }

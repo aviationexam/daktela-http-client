@@ -104,12 +104,14 @@ public class ActivityEndpoint : IActivityEndpoint
         ).ConfigureAwait(false);
     }
 
-    public IAsyncEnumerable<IDictionary<string, string>> GetActivitiesFieldsAsync<TRequest>(
+    public IAsyncEnumerable<TResult> GetActivitiesFieldsAsync<TRequest, TResult>(
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) where TRequest : IRequest, IFieldsQuery => _pagedResponseProcessor.InvokeAsync(
+    )
+        where TRequest : IRequest, IFieldsQuery
+        where TResult : class, IFieldResult => _pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
@@ -124,7 +126,7 @@ public class ActivityEndpoint : IActivityEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<IDictionary<string, string>>(
+        ) => await ctx.daktelaHttpClient.GetListAsync<TResult>(
             ctx.httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
             request,

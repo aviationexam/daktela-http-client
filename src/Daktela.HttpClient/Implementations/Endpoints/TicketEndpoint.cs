@@ -103,12 +103,14 @@ public class TicketEndpoint : ITicketEndpoint
         cancellationToken
     ).ConfigureAwait(false);
 
-    public IAsyncEnumerable<IDictionary<string, string>> GetTicketsFieldsAsync<TRequest>(
+    public IAsyncEnumerable<TResult> GetTicketsFieldsAsync<TRequest, TResult>(
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) where TRequest : IRequest, IFieldsQuery => _pagedResponseProcessor.InvokeAsync(
+    )
+        where TRequest : IRequest, IFieldsQuery
+        where TResult : class, IFieldResult => _pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
@@ -123,7 +125,7 @@ public class TicketEndpoint : ITicketEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<IDictionary<string, string>>(
+        ) => await ctx.daktelaHttpClient.GetListAsync<TResult>(
             ctx.httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}{ITicketEndpoint.UriPostfix}",
             request,
@@ -165,13 +167,15 @@ public class TicketEndpoint : ITicketEndpoint
         cancellationToken
     ).IteratingConfigureAwait(cancellationToken);
 
-    public IAsyncEnumerable<IDictionary<string, string>> GetTicketActivitiesFieldsAsync<TRequest>(
+    public IAsyncEnumerable<TResult> GetTicketActivitiesFieldsAsync<TRequest, TResult>(
         long name,
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) where TRequest : IRequest, IFieldsQuery => _pagedResponseProcessor.InvokeAsync(
+    )
+        where TRequest : IRequest, IFieldsQuery
+        where TResult : class, IFieldResult => _pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
@@ -187,7 +191,7 @@ public class TicketEndpoint : ITicketEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<IDictionary<string, string>>(
+        ) => await ctx.daktelaHttpClient.GetListAsync<TResult>(
             ctx.httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}/{ctx.name}/activities{ITicketEndpoint.UriPostfix}",
             request,
