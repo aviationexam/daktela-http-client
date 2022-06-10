@@ -2,6 +2,7 @@ using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
+using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
@@ -32,7 +33,9 @@ public class ActivityEndpointTests
                 DateTimeOffset = _dateTimeOffset,
             });
 
-        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(_daktelaOptionsMock.Object);
+        var dateTimeOffsetConverter = new DateTimeOffsetConverter(_daktelaOptionsMock.Object);
+
+        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(dateTimeOffsetConverter);
         _activityEndpoint = new ActivityEndpoint(
             _daktelaHttpClientMock.Object,
             new HttpRequestSerializer(httpJsonSerializerOptions),

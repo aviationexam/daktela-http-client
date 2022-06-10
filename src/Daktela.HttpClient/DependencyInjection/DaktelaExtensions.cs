@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
+using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Microsoft.Extensions.DependencyInjection;
@@ -74,6 +75,8 @@ public static class DaktelaExtensions
         configureHttpClientBuilder?.Invoke(httpClientBuilder);
 
         serviceCollection.TryAddSingleton(typeof(IPagedResponseProcessor<>), typeof(PagedResponseProcessor<>));
+
+        serviceCollection.TryAddSingleton<DateTimeOffsetConverter>();
 
         serviceCollection.TryAddSingleton<IHttpJsonSerializerOptions, HttpJsonSerializerOptions>();
         serviceCollection.TryAddSingleton<IHttpResponseParser, HttpResponseParser>();

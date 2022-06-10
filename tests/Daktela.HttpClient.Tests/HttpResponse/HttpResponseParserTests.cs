@@ -5,6 +5,7 @@ using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Api.Tickets.Activities;
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
+using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Tests.Infrastructure;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -34,7 +35,9 @@ public class HttpResponseParserTests
                 DateTimeOffset = _dateTimeOffset,
             });
 
-        _httpJsonSerializerOptions = new HttpJsonSerializerOptions(_daktelaOptionsMock.Object);
+        var dateTimeOffsetConverter = new DateTimeOffsetConverter(_daktelaOptionsMock.Object);
+
+        _httpJsonSerializerOptions = new HttpJsonSerializerOptions(dateTimeOffsetConverter);
     }
 
     [Fact]

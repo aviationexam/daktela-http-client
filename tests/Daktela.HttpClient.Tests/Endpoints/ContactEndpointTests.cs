@@ -6,6 +6,7 @@ using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
+using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Queries;
@@ -38,7 +39,9 @@ public class ContactEndpointTests
                 DateTimeOffset = _dateTimeOffset,
             });
 
-        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(_daktelaOptionsMock.Object);
+        var dateTimeOffsetConverter = new DateTimeOffsetConverter(_daktelaOptionsMock.Object);
+
+        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(dateTimeOffsetConverter);
         _contactEndpoint = new ContactEndpoint(
             _daktelaHttpClientMock.Object,
             new HttpRequestSerializer(httpJsonSerializerOptions),
