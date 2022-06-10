@@ -1,4 +1,5 @@
 using Daktela.HttpClient.Configuration;
+using Daktela.HttpClient.Interfaces.JsonConverters;
 using Microsoft.Extensions.Options;
 using System;
 using System.Buffers;
@@ -9,7 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Implementations.JsonConverters;
 
-public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
+public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>, IDateTimeOffsetConverter
 {
     private readonly DaktelaOptions _daktelaOptions;
 

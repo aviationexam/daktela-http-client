@@ -1,6 +1,8 @@
 using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
+using Daktela.HttpClient.Interfaces.JsonConverters;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Implementations;
 
@@ -8,10 +10,10 @@ public class HttpJsonSerializerOptions : IHttpJsonSerializerOptions
 {
     public JsonSerializerOptions Value { get; }
 
-    public HttpJsonSerializerOptions(DateTimeOffsetConverter dateTimeOffsetConverter)
+    public HttpJsonSerializerOptions(IDateTimeOffsetConverter dateTimeOffsetConverter)
     {
         Value = new JsonSerializerOptions();
-        Value.Converters.Add(dateTimeOffsetConverter);
+        Value.Converters.Add((JsonConverter) dateTimeOffsetConverter);
         Value.Converters.Add(new TimeSpanConverter());
         Value.Converters.Add(new ReadActivityConverter());
         Value.Converters.Add(new CustomFieldsConverter());
