@@ -4,6 +4,7 @@ using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Requests;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -62,9 +63,16 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         switch (httpResponse.StatusCode)
         {
             case HttpStatusCode.OK:
-                var response = await httpResponseParser.ParseResponseAsync<SingleResponse<T>>(httpResponse.Content, cancellationToken);
+                try
+                {
+                    var response = await httpResponseParser.ParseResponseAsync<SingleResponse<T>>(httpResponse.Content, cancellationToken);
 
-                return response;
+                    return response;
+                }
+                catch (JsonException e)
+                {
+                    throw new JsonDaktelaException(e, httpRequestMessage.RequestUri);
+                }
             default:
                 throw new UnexpectedHttpResponseException(
                     path, httpResponse.StatusCode,
@@ -89,9 +97,16 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         switch (httpResponse.StatusCode)
         {
             case HttpStatusCode.OK:
-                var response = await httpResponseParser.ParseResponseAsync<ListResponse<T>>(httpResponse.Content, cancellationToken);
+                try
+                {
+                    var response = await httpResponseParser.ParseResponseAsync<ListResponse<T>>(httpResponse.Content, cancellationToken);
 
-                return response;
+                    return response;
+                }
+                catch (JsonException e)
+                {
+                    throw new JsonDaktelaException(e, httpRequestMessage.RequestUri);
+                }
             default:
                 throw new UnexpectedHttpResponseException(
                     path, httpResponse.StatusCode,
@@ -119,13 +134,27 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         switch (httpResponse.StatusCode)
         {
             case HttpStatusCode.Created:
-                var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+                try
+                {
+                    var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
 
-                return response.Result;
+                    return response.Result;
+                }
+                catch (JsonException e)
+                {
+                    throw new JsonDaktelaException(e, httpRequestMessage.RequestUri);
+                }
             case HttpStatusCode.BadRequest:
-                var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+                try
+                {
+                    var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
 
-                throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
+                    throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
+                }
+                catch (JsonException e)
+                {
+                    throw new JsonDaktelaException(e, httpRequestMessage.RequestUri);
+                }
             default:
                 throw new UnexpectedHttpResponseException(
                     path, httpResponse.StatusCode,
@@ -153,13 +182,27 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         switch (httpResponse.StatusCode)
         {
             case HttpStatusCode.OK:
-                var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+                try
+                {
+                    var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
 
-                return response.Result;
+                    return response.Result;
+                }
+                catch (JsonException e)
+                {
+                    throw new JsonDaktelaException(e, httpRequestMessage.RequestUri);
+                }
             case HttpStatusCode.BadRequest:
-                var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+                try
+                {
+                    var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
 
-                throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
+                    throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
+                }
+                catch (JsonException e)
+                {
+                    throw new JsonDaktelaException(e, httpRequestMessage.RequestUri);
+                }
             default:
                 throw new UnexpectedHttpResponseException(
                     path, httpResponse.StatusCode,
