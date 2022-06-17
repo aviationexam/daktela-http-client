@@ -529,7 +529,60 @@
         "record": null,
         "statuses": [],
         "priority": 0,
-        "options": null,
+        "options": {
+          "to": [
+            "customer@email.com"
+          ],
+          "item": {
+            "name": "emails_62ac67ee4e55c736239437",
+            "model": "activitiesEmail"
+          },
+          "_isNew": true,
+          "_itemId": "2824",
+          "message": "<br \/><br \/><blockquote type=\"cite\"><p>On 17\/06\/2022 13:39:26 customer@email.com wrote:<\/p>mam problem, co s tim<br \/><\/blockquote>",
+          "replyAction": "reply",
+          "ticketAllEmails": {
+            "customer@email.com": {
+              "address": "customer@email.com",
+              "contact": {
+                "_sys": {
+                  "hash": "14333",
+                  "model": "contacts",
+                  "cfScheme": {
+                    "email": {
+                      "type": "EMAIL",
+                      "title": "Email",
+                      "hidden": false,
+                      "readonly": false
+                    }
+                  }
+                },
+                "name": "jeyre",
+                "user": null,
+                "title": "Jane Eyre",
+                "edited": "2022-03-22 13:29:40",
+                "account": null,
+                "created": "2022-03-22 12:55:03",
+                "lastname": "Eyre",
+                "firstname": "Jane",
+                "nps_score": 0,
+                "description": "",
+                "customFields": {
+                  "email": [
+                    "customer@email.com"
+                  ]
+                },
+                "duplicateContacts": null,
+                "notDuplicateContacts": null
+              },
+              "display": "Jane Eyre <customer@email.com>"
+            },
+            "daktela@email.com": {
+              "address": "daktela@email.com",
+              "display": "Support <daktela@email.com>"
+            }
+          }
+        },
         "description": "",
         "important": false,
         "time": "2022-06-07 15:18:24",

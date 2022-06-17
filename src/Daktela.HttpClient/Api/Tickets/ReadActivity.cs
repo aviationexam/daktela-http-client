@@ -99,7 +99,7 @@ public class ReadActivity
     /// Json - Undefined fields
     /// </summary>
     [JsonPropertyName("options")]
-    public string? Options { get; set; }
+    public object? Options { get; set; }
 
     /// <summary>
     /// Optional description

@@ -33,8 +33,11 @@ public class EmailActivityOptionsHeaders
     [JsonPropertyName("message-id")]
     public string? MessageId { get; set; }
 
+    /// <summary>
+    /// In early stages of activity this field may be empty
+    /// </summary>
     [JsonPropertyName("references")]
-    public string References { get; set; } = null!;
+    public string? References { get; set; } = null!;
 
     [JsonPropertyName("return-path")]
     public string? ReturnPath { get; set; }

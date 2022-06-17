@@ -67,9 +67,9 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
         throw new JsonException($"Json object {nameof(ReadActivity)} does not contain '{JsonTypeName}' type discriminator");
     }
 
-    private ReadActivity<T>? Read<T>(ref Utf8JsonReader reader, JsonSerializerOptions options)
-        where T : class
-        => JsonSerializer.Deserialize<ReadActivity<T>>(ref reader, options);
+    private ReadActivity<T>? Read<T>(
+        ref Utf8JsonReader reader, JsonSerializerOptions options
+    ) where T : class => JsonSerializer.Deserialize<ReadActivity<T>>(ref reader, options);
 
     public override void Write(
         Utf8JsonWriter writer, ReadActivity value, JsonSerializerOptions options
