@@ -119,4 +119,12 @@ public class EmailActivity
     /// </summary>
     [JsonPropertyName("activities")]
     public ICollection<ReadActivity> Activities { get; set; } = null!;
+
+    /// <summary>
+    /// File attachment(s)
+    ///
+    /// Undocumented property
+    /// </summary>
+    [JsonPropertyName("files")]
+    public ICollection<ReadActivityAttachment>? Files { get; set; }
 }

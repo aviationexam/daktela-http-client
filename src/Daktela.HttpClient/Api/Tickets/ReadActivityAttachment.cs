@@ -9,7 +9,7 @@ namespace Daktela.HttpClient.Api.Tickets;
 public class ReadActivityAttachment
 {
     /// <summary>
-    /// Activities
+    /// Activity
     /// </summary>
     [JsonPropertyName("activity")]
     public ReadActivity? Activity { get; set; }
@@ -57,4 +57,10 @@ public class ReadActivityAttachment
     /// </summary>
     [JsonPropertyName("file")]
     public long? FileId { get; set; }
+
+    /// <summary>
+    /// Undocumented property
+    /// </summary>
+    [JsonPropertyName("email")]
+    public string? Email { get; set; }
 }
