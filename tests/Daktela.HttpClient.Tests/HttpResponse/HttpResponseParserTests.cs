@@ -509,6 +509,8 @@ public class HttpResponseParserTests
         var emailActivity1 = Assert.IsType<ReadActivity<EmailActivity>>(ticketActivities[0]);
         Assert.NotNull(emailActivity1.Item?.Options?.Headers);
         Assert.Equal("<O9ZMNQIE1HU4.8TOBNHPMYJLP2@email.com>", emailActivity1.Item?.Options?.Headers.MessageId);
+        var file1 = Assert.Single(emailActivity1.Item?.Files!);
+        Assert.Equal(660, file1.FileId);
 
         Assert.Equal("activities_629f5020a5988094907980", ticketActivities[1].Name);
         Assert.Equal(EAction.Close, ticketActivities[1].Action);
@@ -519,6 +521,8 @@ public class HttpResponseParserTests
         var emailActivity2 = Assert.IsType<ReadActivity<EmailActivity>>(ticketActivities[1]);
         Assert.NotNull(emailActivity2.Item?.Options?.Headers);
         Assert.Equal("<LWPWR6OE1HU4.LRXQI0XIBVUZ1@email.com>", emailActivity2.Item?.Options?.Headers.References);
+        var file2 = Assert.Single(emailActivity2.Item?.Files!);
+        Assert.Equal(660, file2.FileId);
 
         var errors = Assert.IsType<PlainErrorResponse>(ticketActivityResponse.Error);
         Assert.Empty(errors);
