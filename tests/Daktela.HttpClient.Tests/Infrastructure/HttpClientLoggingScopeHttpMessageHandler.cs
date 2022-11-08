@@ -49,7 +49,7 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                 public static readonly EventId PipelineEnd = new(101, "RequestPipelineEnd");
             }
 
-            private static readonly Func<ILogger, HttpMethod, Uri?, string, IDisposable> BeginRequestPipelineScopeDefine = LoggerMessage.DefineScope<HttpMethod, Uri?, string>(
+            private static readonly Func<ILogger, HttpMethod, Uri?, string, IDisposable?> BeginRequestPipelineScopeDefine = LoggerMessage.DefineScope<HttpMethod, Uri?, string>(
                 "HTTP {HttpMethod} {Uri} {CorrelationId}"
             );
 
@@ -67,16 +67,16 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                 options: new LogDefineOptions { SkipEnabledCheck = true }
             );
 
-            private readonly IDisposable _loggerScope;
+            private readonly IDisposable? _loggerScope;
 
-            private Log(IDisposable loggerScope)
+            private Log(IDisposable? loggerScope)
             {
                 _loggerScope = loggerScope;
             }
 
             public void Dispose()
             {
-                _loggerScope.Dispose();
+                _loggerScope?.Dispose();
             }
 
             public static Log BeginRequestPipelineScope(ILogger logger, HttpRequestMessage request)
@@ -143,7 +143,11 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                     using var reader = new StreamReader(
                         compressionStream, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, bufferSize: -1, leaveOpen: true
                     );
-                    var content = await reader.ReadToEndAsync();
+                    var content = await reader.ReadToEndAsync(
+#if NET7_0_OR_GREATER
+                        cancellationToken
+#endif
+                    );
 
                     stream.Seek(0, SeekOrigin.Begin);
 
@@ -184,7 +188,11 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                         using var reader = new StreamReader(
                             streamContent, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, bufferSize: -1, leaveOpen: true
                         );
-                        var stringContent = await reader.ReadToEndAsync();
+                        var stringContent = await reader.ReadToEndAsync(
+#if NET7_0_OR_GREATER
+                            cancellationToken
+#endif
+                        );
 
                         streamContent.Seek(0, SeekOrigin.Begin);
 
