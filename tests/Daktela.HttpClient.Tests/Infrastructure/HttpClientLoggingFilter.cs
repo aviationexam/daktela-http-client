@@ -28,10 +28,9 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                 next(builder);
 
                 var name = builder.Name;
-                var commaAt = name.IndexOf(',');
-                if (commaAt > 0)
+                if (name?.IndexOf(',') is { } commaAt and > 0)
                 {
-                    name = name.Substring(0, commaAt);
+                    name = name[..commaAt];
                 }
 
                 var scopeLogger = _loggerFactory.CreateLogger($"System.Net.Http.HttpClient.{name}.RequestScope");
