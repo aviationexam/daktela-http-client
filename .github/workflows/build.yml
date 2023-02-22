@@ -22,7 +22,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '7.0.x'
-          dotnet-quality: 'preview'
       - uses: actions/checkout@v3
       - name: Retore
         run: dotnet restore --nologo src
@@ -49,7 +48,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '7.0.x'
-          dotnet-quality: 'preview'
       - name: Retore
         run: dotnet restore --nologo src
       - name: .Net Format
