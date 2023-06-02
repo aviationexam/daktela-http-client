@@ -30,7 +30,7 @@ public class ReadTicket
     /// A merged ticket Id
     /// </summary>
     [JsonPropertyName("id_merge")]
-    public int? MergeId { get; set; }
+    public ReadTicket? MergeId { get; set; }
 
     /// <summary>
     /// Category
