@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.CustomFields;
 using Daktela.HttpClient.Api.Files;
@@ -54,7 +55,7 @@ public class IntegrationTests
 
         var cancellationToken = CancellationToken.None;
 
-        await daktelaHttpClient.PostAsync<CreateContact, ReadContact>(
+        await daktelaHttpClient.PostAsync(
             httpRequestSerializer,
             httpResponseParser,
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
@@ -74,12 +75,14 @@ public class IntegrationTests
                 },
                 Name = name,
             },
+            DaktelaJsonSerializerContext.Default.CreateContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
         var encodedName = HttpUtility.UrlEncode(name);
 
-        var updatedContract = await daktelaHttpClient.PutAsync<UpdateContact, ReadContact>(
+        var updatedContract = await daktelaHttpClient.PutAsync(
             httpRequestSerializer,
             httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
@@ -93,6 +96,8 @@ public class IntegrationTests
                     ["email"] = new[] { "my@email.com" },
                 },
             },
+            DaktelaJsonSerializerContext.Default.UpdateContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 

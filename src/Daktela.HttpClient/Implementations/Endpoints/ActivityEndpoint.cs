@@ -1,3 +1,5 @@
+using Daktela.HttpClient.Api;
+using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
@@ -6,6 +8,7 @@ using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using System.Collections.Generic;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -39,9 +42,10 @@ public class ActivityEndpoint : IActivityEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        var contact = await _daktelaHttpClient.GetAsync<ReadActivity>(
+        var contact = await _daktelaHttpClient.GetAsync(
             _httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{encodedName}{IActivityEndpoint.UriPostfix}",
+            DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
             cancellationToken
         ).ConfigureAwait(false);
 
@@ -68,10 +72,11 @@ public class ActivityEndpoint : IActivityEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<ReadActivity>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
             request,
+            DaktelaJsonSerializerContext.Default.ListResponseReadActivity,
             cancellationToken
         ),
         cancellationToken
@@ -79,11 +84,13 @@ public class ActivityEndpoint : IActivityEndpoint
 
     public async Task<ReadActivity> CreateActivityAsync(
         CreateActivity activity, CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PostAsync<CreateActivity, ReadActivity>(
+    ) => await _daktelaHttpClient.PostAsync(
         _httpRequestSerializer,
         _httpResponseParser,
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
         activity,
+        DaktelaJsonSerializerContext.Default.CreateActivity,
+        DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -95,11 +102,13 @@ public class ActivityEndpoint : IActivityEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        return await _daktelaHttpClient.PutAsync<UpdateActivity, ReadActivity>(
+        return await _daktelaHttpClient.PutAsync(
             _httpRequestSerializer,
             _httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{encodedName}{IActivityEndpoint.UriPostfix}",
             contact,
+            DaktelaJsonSerializerContext.Default.UpdateActivity,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
             cancellationToken
         ).ConfigureAwait(false);
     }
@@ -108,6 +117,7 @@ public class ActivityEndpoint : IActivityEndpoint
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
+        JsonTypeInfo<ListResponse<TResult>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken
     )
         where TRequest : IRequest, IFieldsQuery
@@ -118,7 +128,8 @@ public class ActivityEndpoint : IActivityEndpoint
         new
         {
             daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser
+            httpResponseParser = _httpResponseParser,
+            jsonTypeInfoForResponseType,
         },
         async static (
             request,
@@ -126,10 +137,11 @@ public class ActivityEndpoint : IActivityEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<TResult>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
             request,
+            ctx.jsonTypeInfoForResponseType,
             cancellationToken
         ),
         cancellationToken
@@ -159,10 +171,11 @@ public class ActivityEndpoint : IActivityEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<ReadActivityAttachment>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{ctx.name}/attachments{IActivityEndpoint.UriPostfix}",
             request,
+            DaktelaJsonSerializerContext.Default.ListResponseReadActivityAttachment,
             cancellationToken
         ),
         cancellationToken

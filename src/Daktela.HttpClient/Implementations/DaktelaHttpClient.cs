@@ -5,6 +5,7 @@ using Daktela.HttpClient.Interfaces.Requests;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -52,12 +53,19 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         .ConfigureAwait(false);
 
     public async Task<SingleResponse<T>> GetAsync<T>(
-        IHttpResponseParser httpResponseParser, string path, CancellationToken cancellationToken
+        IHttpResponseParser httpResponseParser,
+        string path,
+        JsonTypeInfo<SingleResponse<T>> jsonTypeInfoForResponseType,
+        CancellationToken cancellationToken
     ) where T : class
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(HttpMethod.Get, path);
 
-        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        using var httpResponse = await RawSendAsync(
+            httpRequestMessage,
+            HttpCompletionOption.ResponseHeadersRead,
+            cancellationToken
+        );
 
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)
@@ -65,7 +73,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             case HttpStatusCode.OK:
                 try
                 {
-                    var response = await httpResponseParser.ParseResponseAsync<SingleResponse<T>>(httpResponse.Content, cancellationToken);
+                    var response = await httpResponseParser.ParseResponseAsync(
+                        httpResponse.Content,
+                        jsonTypeInfoForResponseType,
+                        cancellationToken
+                    );
 
                     return response;
                 }
@@ -86,12 +98,17 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         IHttpResponseParser httpResponseParser,
         string path,
         IRequest request,
+        JsonTypeInfo<ListResponse<T>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken
     ) where T : class
     {
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(HttpMethod.Get, path, request);
 
-        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        using var httpResponse = await RawSendAsync(
+            httpRequestMessage,
+            HttpCompletionOption.ResponseHeadersRead,
+            cancellationToken
+        );
 
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)
@@ -99,7 +116,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             case HttpStatusCode.OK:
                 try
                 {
-                    var response = await httpResponseParser.ParseResponseAsync<ListResponse<T>>(httpResponse.Content, cancellationToken);
+                    var response = await httpResponseParser.ParseResponseAsync(
+                        httpResponse.Content,
+                        jsonTypeInfoForResponseType,
+                        cancellationToken
+                    );
 
                     return response;
                 }
@@ -121,14 +142,19 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         IHttpResponseParser httpResponseParser,
         string path,
         TRequest request,
+        JsonTypeInfo<TRequest> jsonTypeInfoForRequestType,
+        JsonTypeInfo<SingleResponse<TResponseContract>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken
     )
         where TRequest : class
         where TResponseContract : class
     {
-        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Post, path, request);
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+            httpRequestSerializer, HttpMethod.Post, path, request, jsonTypeInfoForRequestType
+        );
 
-        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead,
+            cancellationToken);
 
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)
@@ -136,7 +162,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             case HttpStatusCode.Created:
                 try
                 {
-                    var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+                    var response = await httpResponseParser.ParseResponseAsync(
+                        httpResponse.Content,
+                        jsonTypeInfoForResponseType,
+                        cancellationToken
+                    );
 
                     return response.Result;
                 }
@@ -147,7 +177,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             case HttpStatusCode.BadRequest:
                 try
                 {
-                    var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+                    var badRequest = await httpResponseParser.ParseResponseAsync(
+                        httpResponse.Content,
+                        jsonTypeInfoForResponseType,
+                        cancellationToken
+                    );
 
                     throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
                 }
@@ -169,14 +203,19 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         IHttpResponseParser httpResponseParser,
         string path,
         TRequest request,
+        JsonTypeInfo<TRequest> jsonTypeInfoForRequestType,
+        JsonTypeInfo<SingleResponse<TResponseContract>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken
     )
         where TRequest : class
         where TResponseContract : class
     {
-        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(httpRequestSerializer, HttpMethod.Put, path, request);
+        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+            httpRequestSerializer, HttpMethod.Put, path, request, jsonTypeInfoForRequestType
+        );
 
-        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        using var httpResponse = await RawSendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead,
+            cancellationToken);
 
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)
@@ -184,7 +223,11 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             case HttpStatusCode.OK:
                 try
                 {
-                    var response = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+                    var response = await httpResponseParser.ParseResponseAsync(
+                        httpResponse.Content,
+                        jsonTypeInfoForResponseType,
+                        cancellationToken
+                    );
 
                     return response.Result;
                 }
@@ -195,7 +238,12 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             case HttpStatusCode.BadRequest:
                 try
                 {
-                    var badRequest = await httpResponseParser.ParseResponseAsync<SingleResponse<TResponseContract>>(httpResponse.Content, cancellationToken);
+                    var badRequest =
+                        await httpResponseParser.ParseResponseAsync(
+                            httpResponse.Content,
+                            jsonTypeInfoForResponseType,
+                            cancellationToken
+                        );
 
                     throw new BadRequestException<TResponseContract>(badRequest.Result, badRequest.Error);
                 }

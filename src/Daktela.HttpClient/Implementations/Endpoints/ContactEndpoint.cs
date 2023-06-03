@@ -1,4 +1,6 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Queries;
@@ -6,6 +8,7 @@ using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using System.Collections.Generic;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -38,9 +41,10 @@ public class ContactEndpoint : IContactEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        var contact = await _daktelaHttpClient.GetAsync<ReadContact>(
+        var contact = await _daktelaHttpClient.GetAsync(
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         ).ConfigureAwait(false);
 
@@ -67,10 +71,11 @@ public class ContactEndpoint : IContactEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<ReadContact>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request,
+            DaktelaJsonSerializerContext.Default.ListResponseReadContact,
             cancellationToken
         ),
         cancellationToken
@@ -78,11 +83,13 @@ public class ContactEndpoint : IContactEndpoint
 
     public async Task CreateContactAsync(
         CreateContact contact, CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PostAsync<CreateContact, ReadContact>(
+    ) => await _daktelaHttpClient.PostAsync(
         _httpRequestSerializer,
         _httpResponseParser,
         $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
         contact,
+        DaktelaJsonSerializerContext.Default.CreateContact,
+        DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -94,11 +101,13 @@ public class ContactEndpoint : IContactEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        return await _daktelaHttpClient.PutAsync<UpdateContact, ReadContact>(
+        return await _daktelaHttpClient.PutAsync(
             _httpRequestSerializer,
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             contact,
+            DaktelaJsonSerializerContext.Default.UpdateContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         ).ConfigureAwait(false);
     }
@@ -119,6 +128,7 @@ public class ContactEndpoint : IContactEndpoint
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
+        JsonTypeInfo<ListResponse<TResult>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken
     )
         where TRequest : IRequest, IFieldsQuery
@@ -129,7 +139,8 @@ public class ContactEndpoint : IContactEndpoint
         new
         {
             daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser
+            httpResponseParser = _httpResponseParser,
+            jsonTypeInfoForResponseType,
         },
         async static (
             request,
@@ -137,10 +148,11 @@ public class ContactEndpoint : IContactEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<TResult>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request,
+            ctx.jsonTypeInfoForResponseType,
             cancellationToken
         ),
         cancellationToken

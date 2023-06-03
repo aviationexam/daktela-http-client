@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
@@ -19,7 +20,7 @@ using Xunit;
 
 namespace Daktela.HttpClient.Tests.Endpoints;
 
-public class ActivityEndpointTests
+public partial class ActivityEndpointTests
 {
     private readonly TimeSpan _dateTimeOffset = TimeSpan.FromMinutes(90);
 
@@ -59,7 +60,7 @@ public class ActivityEndpointTests
 
         var count = 0;
         await foreach (
-            var activityFields in _activityEndpoint.GetActivitiesFieldsAsync<IFieldsRequest, ActivityField>(
+            var activityFields in _activityEndpoint.GetActivitiesFieldsAsync(
                 RequestBuilder.CreateFields(
                     FieldBuilder<ReadActivity>.Create<dynamic>(
                         x => x.Name,
@@ -68,6 +69,7 @@ public class ActivityEndpointTests
                 ),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(false),
                 responseMetadata,
+                DaktelaActivityFieldJsonSerializerContext.Default.ListResponseActivityField,
                 cancellationToken
             )
         )
@@ -102,5 +104,15 @@ public class ActivityEndpointTests
         public ICollection<int> TotalRecords { get; } = new List<int>();
 
         public void SetTotalRecords(int totalRecords) => TotalRecords.Add(totalRecords);
+    }
+
+    [JsonSourceGenerationOptions(
+        WriteIndented = true,
+        PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+        GenerationMode = JsonSourceGenerationMode.Serialization
+    )]
+    [JsonSerializable(typeof(ListResponse<ActivityField>))]
+    private partial class DaktelaActivityFieldJsonSerializerContext : JsonSerializerContext
+    {
     }
 }
