@@ -42,7 +42,9 @@ public class HttpRequestFactory : IHttpRequestFactory
     {
         if (string.IsNullOrEmpty(_daktelaOptions.AccessToken))
         {
-            throw new ArgumentException($"The {nameof(DaktelaOptions)}.{nameof(_daktelaOptions.AccessToken)} is required");
+            throw new ArgumentException(
+                $"The {nameof(DaktelaOptions)}.{nameof(_daktelaOptions.AccessToken)} is required"
+            );
         }
 
         var uri = CreateUri(path);
@@ -209,7 +211,10 @@ public class HttpRequestFactory : IHttpRequestFactory
             throw new ValidationException(validationResult!, null, body);
         }
 
-        httpMessage.Content = httpRequestSerializer.SerializeRequest(body);
+        httpMessage.Content = httpRequestSerializer.SerializeRequest(
+            body,
+            jsonTypeInfoForRequestType
+        );
 
         return httpMessage;
     }

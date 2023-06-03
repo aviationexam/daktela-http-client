@@ -10,13 +10,6 @@ namespace Daktela.HttpClient.Implementations;
 
 public class HttpResponseParser : IHttpResponseParser
 {
-    private readonly IHttpJsonSerializerOptions _httpJsonSerializerOptions;
-
-    public HttpResponseParser(IHttpJsonSerializerOptions httpJsonSerializerOptions)
-    {
-        _httpJsonSerializerOptions = httpJsonSerializerOptions;
-    }
-
     public async Task<T> ParseResponseAsync<T>(
         HttpContent httpResponseContent,
         JsonTypeInfo<T> jsonTypeInfoForResponseType,
@@ -25,9 +18,9 @@ public class HttpResponseParser : IHttpResponseParser
     {
         await using var responseStream = await httpResponseContent.ReadAsStreamAsync(cancellationToken);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<T>(
+        var parsedObject = await JsonSerializer.DeserializeAsync(
             responseStream,
-            _httpJsonSerializerOptions.Value,
+            jsonTypeInfoForResponseType,
             cancellationToken
         );
 
