@@ -1,9 +1,11 @@
 using Daktela.HttpClient.Api.Contacts;
+using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using System.Collections.Generic;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -45,6 +47,7 @@ public interface IContactEndpoint
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
+        JsonTypeInfo<ListResponse<TResult>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken = default
     )
         where TRequest : IRequest, IFieldsQuery

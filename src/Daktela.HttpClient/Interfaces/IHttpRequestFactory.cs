@@ -2,6 +2,7 @@ using Daktela.HttpClient.Interfaces.Requests;
 using System;
 using System.Collections.Specialized;
 using System.Net.Http;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Daktela.HttpClient.Interfaces;
 
@@ -25,6 +26,7 @@ public interface IHttpRequestFactory
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
         string path,
-        TBody body
+        TBody body,
+        JsonTypeInfo<TBody> jsonTypeInfoForRequestType
     ) where TBody : class;
 }

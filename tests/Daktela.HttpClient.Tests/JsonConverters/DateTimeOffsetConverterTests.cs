@@ -1,6 +1,5 @@
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations.JsonConverters;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,7 +37,7 @@ public class DateTimeOffsetConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(default, parsedObject!.DateTime);
+        Assert.Equal(default, parsedObject.DateTime);
         Assert.Null(parsedObject.NullableDateTime);
     }
 
@@ -68,7 +67,8 @@ public class DateTimeOffsetConverterTests
 
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}");
+        await streamWriter.WriteAsync(
+            @"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -77,7 +77,7 @@ public class DateTimeOffsetConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan), parsedObject!.DateTime);
+        Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan), parsedObject.DateTime);
         Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan), parsedObject.NullableDateTime);
     }
 
@@ -91,7 +91,9 @@ public class DateTimeOffsetConverterTests
 
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}");
+        await streamWriter.WriteAsync(
+            @"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}"
+        );
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -101,7 +103,7 @@ public class DateTimeOffsetConverterTests
 
         Assert.NotNull(parsedObject);
         var dateTimeOffset = timeZoneInstance.GetUtcOffset(DateTimeOffset.Now);
-        Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset), parsedObject!.DateTime);
+        Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset), parsedObject.DateTime);
         Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset), parsedObject.NullableDateTime);
     }
 
@@ -125,7 +127,8 @@ public class DateTimeOffsetConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}", jsonContract);
+        Assert.Equal(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}",
+            jsonContract);
     }
 
     [Theory]
@@ -151,23 +154,25 @@ public class DateTimeOffsetConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}", jsonContract);
+        Assert.Equal(
+            @"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}",
+            jsonContract
+        );
     }
 
     private void AddDateTimeOffsetConverter(TimeSpan dateTimeOffset)
     {
-        _jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter(new OptionsWrapper<DaktelaOptions>(new DaktelaOptions
-        {
-            DateTimeOffset = dateTimeOffset,
-        })));
+        _jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter(dateTimeOffset));
     }
 
     private void AddDateTimeZoneConverter(string dateTimeZone)
     {
-        _jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter(new OptionsWrapper<DaktelaOptions>(new DaktelaOptions
+        var options = new DaktelaOptions
         {
             DateTimeTimezone = dateTimeZone,
-        })));
+        };
+
+        _jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter(options.DateTimeOffset!.Value));
     }
 
     private class TimeSpans : IEnumerable<object[]>

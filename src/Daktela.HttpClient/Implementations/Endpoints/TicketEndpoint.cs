@@ -1,3 +1,5 @@
+using Daktela.HttpClient.Api;
+using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
@@ -6,6 +8,7 @@ using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using System.Collections.Generic;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,9 +39,10 @@ public class TicketEndpoint : ITicketEndpoint
         CancellationToken cancellationToken
     )
     {
-        var contact = await _daktelaHttpClient.GetAsync<ReadTicket>(
+        var contact = await _daktelaHttpClient.GetAsync(
             _httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
+            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadTicket,
             cancellationToken
         ).ConfigureAwait(false);
 
@@ -65,10 +69,11 @@ public class TicketEndpoint : ITicketEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<ReadTicket>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}{ITicketEndpoint.UriPostfix}",
             request,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadTicket,
             cancellationToken
         ),
         cancellationToken
@@ -76,11 +81,13 @@ public class TicketEndpoint : ITicketEndpoint
 
     public async Task<ReadTicket> CreateTicketAsync(
         CreateTicket ticket, CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PostAsync<CreateTicket, ReadTicket>(
+    ) => await _daktelaHttpClient.PostAsync(
         _httpRequestSerializer,
         _httpResponseParser,
         $"{ITicketEndpoint.UriPrefix}{ITicketEndpoint.UriPostfix}",
         ticket,
+        DaktelaJsonSerializerContext.CustomConverters.CreateTicket,
+        DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadTicket,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -88,11 +95,13 @@ public class TicketEndpoint : ITicketEndpoint
         long name,
         UpdateTicket ticket,
         CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PutAsync<UpdateTicket, ReadTicket>(
+    ) => await _daktelaHttpClient.PutAsync(
         _httpRequestSerializer,
         _httpResponseParser,
         $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
         ticket,
+        DaktelaJsonSerializerContext.CustomConverters.UpdateTicket,
+        DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadTicket,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -107,6 +116,7 @@ public class TicketEndpoint : ITicketEndpoint
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
+        JsonTypeInfo<ListResponse<TResult>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken
     )
         where TRequest : IRequest, IFieldsQuery
@@ -117,7 +127,8 @@ public class TicketEndpoint : ITicketEndpoint
         new
         {
             daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser
+            httpResponseParser = _httpResponseParser,
+            jsonTypeInfoForResponseType,
         },
         async static (
             request,
@@ -125,10 +136,11 @@ public class TicketEndpoint : ITicketEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<TResult>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}{ITicketEndpoint.UriPostfix}",
             request,
+            ctx.jsonTypeInfoForResponseType,
             cancellationToken
         ),
         cancellationToken
@@ -158,10 +170,11 @@ public class TicketEndpoint : ITicketEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<ReadActivity>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}/{ctx.name}/activities{ITicketEndpoint.UriPostfix}",
             request,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivity,
             cancellationToken
         ),
         cancellationToken
@@ -172,6 +185,7 @@ public class TicketEndpoint : ITicketEndpoint
         TRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
+        JsonTypeInfo<ListResponse<TResult>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken
     )
         where TRequest : IRequest, IFieldsQuery
@@ -184,6 +198,7 @@ public class TicketEndpoint : ITicketEndpoint
             daktelaHttpClient = _daktelaHttpClient,
             httpResponseParser = _httpResponseParser,
             name,
+            jsonTypeInfoForResponseType,
         },
         async static (
             request,
@@ -191,10 +206,11 @@ public class TicketEndpoint : ITicketEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<TResult>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}/{ctx.name}/activities{ITicketEndpoint.UriPostfix}",
             request,
+            ctx.jsonTypeInfoForResponseType,
             cancellationToken
         ),
         cancellationToken

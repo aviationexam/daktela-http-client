@@ -1,11 +1,9 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Tickets;
-using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
-using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Threading.Tasks;
@@ -18,25 +16,17 @@ public class TicketEndpointTests
     private readonly TimeSpan _dateTimeOffset = TimeSpan.FromMinutes(90);
 
     private readonly Mock<IDaktelaHttpClient> _daktelaHttpClientMock = new(MockBehavior.Strict);
-    private readonly Mock<IOptions<DaktelaOptions>> _daktelaOptionsMock = new(MockBehavior.Strict);
 
     private readonly ITicketEndpoint _ticketEndpoint;
 
     public TicketEndpointTests()
     {
-        _daktelaOptionsMock.Setup(x => x.Value)
-            .Returns(new DaktelaOptions
-            {
-                DateTimeOffset = _dateTimeOffset,
-            });
+        DaktelaJsonSerializerContext.SerializationDateTimeOffset = _dateTimeOffset;
 
-        var dateTimeOffsetConverter = new DateTimeOffsetConverter(_daktelaOptionsMock.Object);
-
-        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(dateTimeOffsetConverter);
         _ticketEndpoint = new TicketEndpoint(
             _daktelaHttpClientMock.Object,
-            new HttpRequestSerializer(httpJsonSerializerOptions),
-            new HttpResponseParser(httpJsonSerializerOptions),
+            new HttpRequestSerializer(),
+            new HttpResponseParser(),
             new PagedResponseProcessor<ITicketEndpoint>()
         );
     }
@@ -67,7 +57,9 @@ public class TicketEndpointTests
     {
         const int name = 1;
 
-        _daktelaHttpClientMock.MockHttpDeleteResponse($"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}");
+        _daktelaHttpClientMock.MockHttpDeleteResponse(
+            $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}"
+        );
 
         await _ticketEndpoint.DeleteTicketAsync(name);
     }

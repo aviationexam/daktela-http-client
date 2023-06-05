@@ -1,3 +1,5 @@
+using Daktela.HttpClient.Api;
+using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
@@ -5,6 +7,7 @@ using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using System.Collections.Generic;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 
 namespace Daktela.HttpClient.Implementations.Endpoints;
@@ -38,7 +41,7 @@ public class TicketsCategoryEndpoint : ITicketsCategoryEndpoint
         new
         {
             daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser
+            httpResponseParser = _httpResponseParser,
         },
         async static (
             request,
@@ -46,10 +49,11 @@ public class TicketsCategoryEndpoint : ITicketsCategoryEndpoint
             _,
             ctx,
             cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync<Category>(
+        ) => await ctx.daktelaHttpClient.GetListAsync(
             ctx.httpResponseParser,
             $"{ITicketsCategoryEndpoint.UriPrefix}{ITicketsCategoryEndpoint.UriPostfix}",
             request,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseCategory,
             cancellationToken
         ),
         cancellationToken

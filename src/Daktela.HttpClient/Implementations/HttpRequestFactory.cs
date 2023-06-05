@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json.Serialization.Metadata;
 using System.Web;
 
 namespace Daktela.HttpClient.Implementations;
@@ -41,7 +42,9 @@ public class HttpRequestFactory : IHttpRequestFactory
     {
         if (string.IsNullOrEmpty(_daktelaOptions.AccessToken))
         {
-            throw new ArgumentException($"The {nameof(DaktelaOptions)}.{nameof(_daktelaOptions.AccessToken)} is required");
+            throw new ArgumentException(
+                $"The {nameof(DaktelaOptions)}.{nameof(_daktelaOptions.AccessToken)} is required"
+            );
         }
 
         var uri = CreateUri(path);
@@ -188,7 +191,8 @@ public class HttpRequestFactory : IHttpRequestFactory
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
         string path,
-        TBody body
+        TBody body,
+        JsonTypeInfo<TBody> jsonTypeInfoForRequestType
     ) where TBody : class
     {
         var httpMessage = CreateHttpRequestMessage(method, path);
@@ -207,7 +211,10 @@ public class HttpRequestFactory : IHttpRequestFactory
             throw new ValidationException(validationResult!, null, body);
         }
 
-        httpMessage.Content = httpRequestSerializer.SerializeRequest(body);
+        httpMessage.Content = httpRequestSerializer.SerializeRequest(
+            body,
+            jsonTypeInfoForRequestType
+        );
 
         return httpMessage;
     }

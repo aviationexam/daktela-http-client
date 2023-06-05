@@ -1,5 +1,7 @@
+using Daktela.HttpClient.Api;
+using Daktela.HttpClient.Api.Responses;
+using Daktela.HttpClient.Api.Responses.Errors;
 using Daktela.HttpClient.Api.Tickets;
-using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Implementations.JsonConverters;
@@ -7,11 +9,11 @@ using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
-using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,30 +21,23 @@ using Xunit;
 
 namespace Daktela.HttpClient.Tests.Endpoints;
 
-public class ActivityEndpointTests
+public partial class ActivityEndpointTests
 {
     private readonly TimeSpan _dateTimeOffset = TimeSpan.FromMinutes(90);
 
     private readonly Mock<IDaktelaHttpClient> _daktelaHttpClientMock = new(MockBehavior.Strict);
-    private readonly Mock<IOptions<DaktelaOptions>> _daktelaOptionsMock = new(MockBehavior.Strict);
 
     private readonly IActivityEndpoint _activityEndpoint;
 
     public ActivityEndpointTests()
     {
-        _daktelaOptionsMock.Setup(x => x.Value)
-            .Returns(new DaktelaOptions
-            {
-                DateTimeOffset = _dateTimeOffset,
-            });
+        DaktelaJsonSerializerContext.SerializationDateTimeOffset = _dateTimeOffset;
+        DaktelaActivityFieldJsonSerializerContext.SerializationDateTimeOffset = _dateTimeOffset;
 
-        var dateTimeOffsetConverter = new DateTimeOffsetConverter(_daktelaOptionsMock.Object);
-
-        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(dateTimeOffsetConverter);
         _activityEndpoint = new ActivityEndpoint(
             _daktelaHttpClientMock.Object,
-            new HttpRequestSerializer(httpJsonSerializerOptions),
-            new HttpResponseParser(httpJsonSerializerOptions),
+            new HttpRequestSerializer(),
+            new HttpResponseParser(),
             new PagedResponseProcessor<IActivityEndpoint>()
         );
     }
@@ -59,7 +54,7 @@ public class ActivityEndpointTests
 
         var count = 0;
         await foreach (
-            var activityFields in _activityEndpoint.GetActivitiesFieldsAsync<IFieldsRequest, ActivityField>(
+            var activityFields in _activityEndpoint.GetActivitiesFieldsAsync(
                 RequestBuilder.CreateFields(
                     FieldBuilder<ReadActivity>.Create<dynamic>(
                         x => x.Name,
@@ -68,6 +63,7 @@ public class ActivityEndpointTests
                 ),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(false),
                 responseMetadata,
+                DaktelaActivityFieldJsonSerializerContext.CustomConverters.ListResponseActivityField,
                 cancellationToken
             )
         )
@@ -102,5 +98,62 @@ public class ActivityEndpointTests
         public ICollection<int> TotalRecords { get; } = new List<int>();
 
         public void SetTotalRecords(int totalRecords) => TotalRecords.Add(totalRecords);
+    }
+
+    [JsonSourceGenerationOptions(
+        WriteIndented = true,
+        PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+        GenerationMode = JsonSourceGenerationMode.Metadata
+    )]
+    [JsonSerializable(typeof(ComplexErrorResponse))]
+    [JsonSerializable(typeof(ErrorFormMessages))]
+    [JsonSerializable(typeof(NestedErrorForm))]
+    [JsonSerializable(typeof(PlainErrorResponse))]
+    [JsonSerializable(typeof(ListResponse<ActivityField>))]
+    [JsonSerializable(typeof(IDictionary<string, ICollection<string>>))]
+    private partial class DaktelaActivityFieldJsonSerializerContext : JsonSerializerContext
+    {
+        private static TimeSpan _serializationDateTimeOffset;
+
+        public static TimeSpan SerializationDateTimeOffset
+        {
+            get => _serializationDateTimeOffset;
+            set
+            {
+                _serializationDateTimeOffset = value;
+                _convertersContext = null;
+            }
+        }
+
+        private static JsonSerializerOptions ConvertersContextOptions => new()
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+            IgnoreReadOnlyFields = false,
+            IgnoreReadOnlyProperties = false,
+            IncludeFields = false,
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters =
+            {
+                new DateTimeOffsetConverter(SerializationDateTimeOffset),
+                new TimeSpanConverter(),
+                new ReadActivityConverter(),
+                new CustomFieldsConverter(),
+                new EnumsConverterFactory(),
+                new EmailActivityOptionsHeadersAddressConverter(),
+                new ErrorResponseConverter(),
+                new ErrorFormConverter(),
+            },
+        };
+
+        private static DaktelaActivityFieldJsonSerializerContext? _convertersContext;
+
+        /// <summary>
+        /// The default <see cref="global::System.Text.Json.Serialization.JsonSerializerContext"/> associated with a default <see cref="global::System.Text.Json.JsonSerializerOptions"/> instance.
+        /// </summary>
+        public static DaktelaActivityFieldJsonSerializerContext CustomConverters => _convertersContext
+            ??= new DaktelaActivityFieldJsonSerializerContext(
+                new JsonSerializerOptions(ConvertersContextOptions)
+            );
     }
 }
