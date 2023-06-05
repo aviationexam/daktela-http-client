@@ -75,8 +75,8 @@ public class IntegrationTests
                 },
                 Name = name,
             },
-            DaktelaJsonSerializerContext.Default.CreateContact,
-            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.CustomConverters.CreateContact,
+            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -96,8 +96,8 @@ public class IntegrationTests
                     ["email"] = new[] { "my@email.com" },
                 },
             },
-            DaktelaJsonSerializerContext.Default.UpdateContact,
-            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.CustomConverters.UpdateContact,
+            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
             cancellationToken
         );
 

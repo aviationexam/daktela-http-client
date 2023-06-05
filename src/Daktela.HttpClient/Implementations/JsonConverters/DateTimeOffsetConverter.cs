@@ -12,11 +12,11 @@ namespace Daktela.HttpClient.Implementations.JsonConverters;
 
 public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>, IDateTimeOffsetConverter
 {
-    private readonly DaktelaOptions _daktelaOptions;
+    private readonly TimeSpan _dateTimeOffset;
 
-    public DateTimeOffsetConverter(IOptions<DaktelaOptions> daktelaOptions)
+    public DateTimeOffsetConverter(TimeSpan dateTimeOffset)
     {
-        _daktelaOptions = daktelaOptions.Value;
+        _dateTimeOffset = dateTimeOffset;
     }
 
     public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -38,7 +38,7 @@ public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>, IDateTimeO
 
         if (Utf8Parser.TryParse(span, out DateTimeOffset value, out _, 'G'))
         {
-            return new DateTimeOffset(value.DateTime, _daktelaOptions.DateTimeOffset!.Value);
+            return new DateTimeOffset(value.DateTime, _dateTimeOffset);
         }
 
         throw new FormatException();

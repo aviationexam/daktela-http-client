@@ -45,7 +45,7 @@ public class ActivityEndpoint : IActivityEndpoint
         var contact = await _daktelaHttpClient.GetAsync(
             _httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{encodedName}{IActivityEndpoint.UriPostfix}",
-            DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
+            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadActivity,
             cancellationToken
         ).ConfigureAwait(false);
 
@@ -76,7 +76,7 @@ public class ActivityEndpoint : IActivityEndpoint
             ctx.httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
             request,
-            DaktelaJsonSerializerContext.Default.ListResponseReadActivity,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivity,
             cancellationToken
         ),
         cancellationToken
@@ -89,8 +89,8 @@ public class ActivityEndpoint : IActivityEndpoint
         _httpResponseParser,
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
         activity,
-        DaktelaJsonSerializerContext.Default.CreateActivity,
-        DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
+        DaktelaJsonSerializerContext.CustomConverters.CreateActivity,
+        DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadActivity,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -107,8 +107,8 @@ public class ActivityEndpoint : IActivityEndpoint
             _httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{encodedName}{IActivityEndpoint.UriPostfix}",
             contact,
-            DaktelaJsonSerializerContext.Default.UpdateActivity,
-            DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
+            DaktelaJsonSerializerContext.CustomConverters.UpdateActivity,
+            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadActivity,
             cancellationToken
         ).ConfigureAwait(false);
     }
@@ -175,7 +175,7 @@ public class ActivityEndpoint : IActivityEndpoint
             ctx.httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{ctx.name}/attachments{IActivityEndpoint.UriPostfix}",
             request,
-            DaktelaJsonSerializerContext.Default.ListResponseReadActivityAttachment,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivityAttachment,
             cancellationToken
         ),
         cancellationToken

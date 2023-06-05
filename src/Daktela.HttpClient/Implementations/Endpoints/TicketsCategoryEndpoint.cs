@@ -53,7 +53,7 @@ public class TicketsCategoryEndpoint : ITicketsCategoryEndpoint
             ctx.httpResponseParser,
             $"{ITicketsCategoryEndpoint.UriPrefix}{ITicketsCategoryEndpoint.UriPostfix}",
             request,
-            DaktelaJsonSerializerContext.Default.ListResponseCategory,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseCategory,
             cancellationToken
         ),
         cancellationToken

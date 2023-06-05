@@ -1,17 +1,15 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Requests;
 using Daktela.HttpClient.Api.Responses.Errors;
 using Daktela.HttpClient.Api.Users;
-using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
-using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -27,25 +25,17 @@ public class ContactEndpointTests
     private readonly TimeSpan _dateTimeOffset = TimeSpan.FromMinutes(90);
 
     private readonly Mock<IDaktelaHttpClient> _daktelaHttpClientMock = new(MockBehavior.Strict);
-    private readonly Mock<IOptions<DaktelaOptions>> _daktelaOptionsMock = new(MockBehavior.Strict);
 
     private readonly IContactEndpoint _contactEndpoint;
 
     public ContactEndpointTests()
     {
-        _daktelaOptionsMock.Setup(x => x.Value)
-            .Returns(new DaktelaOptions
-            {
-                DateTimeOffset = _dateTimeOffset,
-            });
+        DaktelaJsonSerializerContext.SerializationDateTimeOffset = _dateTimeOffset;
 
-        var dateTimeOffsetConverter = new DateTimeOffsetConverter(_daktelaOptionsMock.Object);
-
-        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(dateTimeOffsetConverter);
         _contactEndpoint = new ContactEndpoint(
             _daktelaHttpClientMock.Object,
-            new HttpRequestSerializer(httpJsonSerializerOptions),
-            new HttpResponseParser(httpJsonSerializerOptions),
+            new HttpRequestSerializer(),
+            new HttpResponseParser(),
             new PagedResponseProcessor<IContactEndpoint>()
         );
     }
@@ -153,13 +143,17 @@ public class ContactEndpointTests
         using var _ = _daktelaHttpClientMock.MockHttpGetListResponse<ReadContact>(
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request => ((IPagedQuery) request).Paging == new Paging(0, 2)
-                       && (Sorting) ((ISortableQuery) request).Sorting.Single() == new Sorting("edited", ESortDirection.Asc),
+                       && (Sorting) ((ISortableQuery) request).Sorting.Single() == new Sorting(
+                           "edited", ESortDirection.Asc
+                       ),
             "contacts"
         );
         using var secondResponse = _daktelaHttpClientMock.MockHttpGetListResponse<ReadContact>(
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request => ((IPagedQuery) request).Paging == new Paging(2, 2)
-                       && (Sorting) ((ISortableQuery) request).Sorting.Single() == new Sorting("edited", ESortDirection.Asc),
+                       && (Sorting) ((ISortableQuery) request).Sorting.Single() == new Sorting(
+                           "edited", ESortDirection.Asc
+                       ),
             "contacts"
         );
 
@@ -210,7 +204,9 @@ public class ContactEndpointTests
             Name = name
         };
 
-        var exception = await Assert.ThrowsAsync<BadRequestException<ReadContact>>(() => _contactEndpoint.CreateContactAsync(contract));
+        var exception = await Assert.ThrowsAsync<BadRequestException<ReadContact>>(
+            () => _contactEndpoint.CreateContactAsync(contract)
+        );
 
         Assert.NotNull(exception.Contract);
         Assert.NotNull(exception.ErrorsResponse);
@@ -240,7 +236,9 @@ public class ContactEndpointTests
     {
         const string name = "testing_user";
 
-        _daktelaHttpClientMock.MockHttpDeleteResponse($"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}");
+        _daktelaHttpClientMock.MockHttpDeleteResponse(
+            $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}"
+        );
 
         await _contactEndpoint.DeleteContactAsync(name);
     }

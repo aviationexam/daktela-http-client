@@ -1,14 +1,12 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Tickets;
-using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
-using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -25,25 +23,17 @@ public partial class ActivityEndpointTests
     private readonly TimeSpan _dateTimeOffset = TimeSpan.FromMinutes(90);
 
     private readonly Mock<IDaktelaHttpClient> _daktelaHttpClientMock = new(MockBehavior.Strict);
-    private readonly Mock<IOptions<DaktelaOptions>> _daktelaOptionsMock = new(MockBehavior.Strict);
 
     private readonly IActivityEndpoint _activityEndpoint;
 
     public ActivityEndpointTests()
     {
-        _daktelaOptionsMock.Setup(x => x.Value)
-            .Returns(new DaktelaOptions
-            {
-                DateTimeOffset = _dateTimeOffset,
-            });
+        DaktelaJsonSerializerContext.SerializationDateTimeOffset = _dateTimeOffset;
 
-        var dateTimeOffsetConverter = new DateTimeOffsetConverter(_daktelaOptionsMock.Object);
-
-        var httpJsonSerializerOptions = new HttpJsonSerializerOptions(dateTimeOffsetConverter);
         _activityEndpoint = new ActivityEndpoint(
             _daktelaHttpClientMock.Object,
-            new HttpRequestSerializer(httpJsonSerializerOptions),
-            new HttpResponseParser(httpJsonSerializerOptions),
+            new HttpRequestSerializer(),
+            new HttpResponseParser(),
             new PagedResponseProcessor<IActivityEndpoint>()
         );
     }

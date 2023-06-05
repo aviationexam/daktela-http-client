@@ -42,7 +42,7 @@ public class TicketEndpoint : ITicketEndpoint
         var contact = await _daktelaHttpClient.GetAsync(
             _httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
-            DaktelaJsonSerializerContext.Default.SingleResponseReadTicket,
+            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadTicket,
             cancellationToken
         ).ConfigureAwait(false);
 
@@ -73,7 +73,7 @@ public class TicketEndpoint : ITicketEndpoint
             ctx.httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}{ITicketEndpoint.UriPostfix}",
             request,
-            DaktelaJsonSerializerContext.Default.ListResponseReadTicket,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadTicket,
             cancellationToken
         ),
         cancellationToken
@@ -86,8 +86,8 @@ public class TicketEndpoint : ITicketEndpoint
         _httpResponseParser,
         $"{ITicketEndpoint.UriPrefix}{ITicketEndpoint.UriPostfix}",
         ticket,
-        DaktelaJsonSerializerContext.Default.CreateTicket,
-        DaktelaJsonSerializerContext.Default.SingleResponseReadTicket,
+        DaktelaJsonSerializerContext.CustomConverters.CreateTicket,
+        DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadTicket,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -100,8 +100,8 @@ public class TicketEndpoint : ITicketEndpoint
         _httpResponseParser,
         $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
         ticket,
-        DaktelaJsonSerializerContext.Default.UpdateTicket,
-        DaktelaJsonSerializerContext.Default.SingleResponseReadTicket,
+        DaktelaJsonSerializerContext.CustomConverters.UpdateTicket,
+        DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadTicket,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -174,7 +174,7 @@ public class TicketEndpoint : ITicketEndpoint
             ctx.httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}/{ctx.name}/activities{ITicketEndpoint.UriPostfix}",
             request,
-            DaktelaJsonSerializerContext.Default.ListResponseReadActivity,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivity,
             cancellationToken
         ),
         cancellationToken
