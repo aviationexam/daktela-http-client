@@ -55,12 +55,15 @@ public static class DaktelaExtensions
         Action<IHttpClientBuilder>? configureHttpClientBuilder = null
     )
     {
-        serviceCollection.AddSingleton<IValidateOptions<DaktelaOptions>>(
-            _ => new DataAnnotationValidateOptions<DaktelaOptions>(nameof(DaktelaOptions))
-        );
+        serviceCollection
+            .AddSingleton<IValidateOptions<DaktelaOptions>>(
+                new DataAnnotationValidateOptions<DaktelaOptions>(nameof(DaktelaOptions))
+            )
+            .AddSingleton<IPostConfigureOptions<DaktelaOptions>, DaktelaPostConfigureOptions>();
 
         serviceCollection.TryAddSingleton<IHttpRequestFactory, HttpRequestFactory>();
-        var httpClientBuilder = serviceCollection.AddHttpClient<IDaktelaHttpClient, DaktelaHttpClient>((serviceProvider, httpClient) =>
+        var httpClientBuilder = serviceCollection
+            .AddHttpClient<IDaktelaHttpClient, DaktelaHttpClient>((serviceProvider, httpClient) =>
             {
                 var daktelaOptions = serviceProvider.GetRequiredService<IOptions<DaktelaOptions>>().Value;
 
