@@ -1,8 +1,10 @@
 using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Responses;
+using Daktela.HttpClient.Api.Responses.Errors;
 using Daktela.HttpClient.Api.Tickets;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
+using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Requests;
@@ -11,6 +13,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +32,7 @@ public partial class ActivityEndpointTests
     public ActivityEndpointTests()
     {
         DaktelaJsonSerializerContext.SerializationDateTimeOffset = _dateTimeOffset;
+        DaktelaActivityFieldJsonSerializerContext.SerializationDateTimeOffset = _dateTimeOffset;
 
         _activityEndpoint = new ActivityEndpoint(
             _daktelaHttpClientMock.Object,
@@ -59,7 +63,7 @@ public partial class ActivityEndpointTests
                 ),
                 RequestOptionBuilder.CreateAutoPagingRequestOption(false),
                 responseMetadata,
-                DaktelaActivityFieldJsonSerializerContext.Default.ListResponseActivityField,
+                DaktelaActivityFieldJsonSerializerContext.CustomConverters.ListResponseActivityField,
                 cancellationToken
             )
         )
@@ -99,10 +103,57 @@ public partial class ActivityEndpointTests
     [JsonSourceGenerationOptions(
         WriteIndented = true,
         PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-        GenerationMode = JsonSourceGenerationMode.Serialization
+        GenerationMode = JsonSourceGenerationMode.Metadata
     )]
+    [JsonSerializable(typeof(ComplexErrorResponse))]
+    [JsonSerializable(typeof(ErrorFormMessages))]
+    [JsonSerializable(typeof(NestedErrorForm))]
+    [JsonSerializable(typeof(PlainErrorResponse))]
     [JsonSerializable(typeof(ListResponse<ActivityField>))]
+    [JsonSerializable(typeof(IDictionary<string, ICollection<string>>))]
     private partial class DaktelaActivityFieldJsonSerializerContext : JsonSerializerContext
     {
+        private static TimeSpan _serializationDateTimeOffset;
+
+        public static TimeSpan SerializationDateTimeOffset
+        {
+            get => _serializationDateTimeOffset;
+            set
+            {
+                _serializationDateTimeOffset = value;
+                _convertersContext = null;
+            }
+        }
+
+        private static JsonSerializerOptions ConvertersContextOptions => new()
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+            IgnoreReadOnlyFields = false,
+            IgnoreReadOnlyProperties = false,
+            IncludeFields = false,
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters =
+            {
+                new DateTimeOffsetConverter(SerializationDateTimeOffset),
+                new TimeSpanConverter(),
+                new ReadActivityConverter(),
+                new CustomFieldsConverter(),
+                new EnumsConverterFactory(),
+                new EmailActivityOptionsHeadersAddressConverter(),
+                new ErrorResponseConverter(),
+                new ErrorFormConverter(),
+            },
+        };
+
+        private static DaktelaActivityFieldJsonSerializerContext? _convertersContext;
+
+        /// <summary>
+        /// The default <see cref="global::System.Text.Json.Serialization.JsonSerializerContext"/> associated with a default <see cref="global::System.Text.Json.JsonSerializerOptions"/> instance.
+        /// </summary>
+        public static DaktelaActivityFieldJsonSerializerContext CustomConverters => _convertersContext
+            ??= new DaktelaActivityFieldJsonSerializerContext(
+                new JsonSerializerOptions(ConvertersContextOptions)
+            );
     }
 }

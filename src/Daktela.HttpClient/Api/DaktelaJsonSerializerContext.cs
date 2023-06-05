@@ -1,5 +1,6 @@
 using Daktela.HttpClient.Implementations.JsonConverters;
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -8,7 +9,7 @@ namespace Daktela.HttpClient.Api;
 [JsonSourceGenerationOptions(
     WriteIndented = true,
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    GenerationMode = JsonSourceGenerationMode.Serialization
+    GenerationMode = JsonSourceGenerationMode.Metadata
 )]
 [JsonSerializable(typeof(Contacts.CreateContact))]
 [JsonSerializable(typeof(Contacts.UpdateContact))]
@@ -16,14 +17,28 @@ namespace Daktela.HttpClient.Api;
 [JsonSerializable(typeof(Tickets.CreateTicket))]
 [JsonSerializable(typeof(Tickets.UpdateActivity))]
 [JsonSerializable(typeof(Tickets.UpdateTicket))]
-[JsonSerializable(typeof(Responses.SingleResponse<Contacts.ReadContact>))]
-[JsonSerializable(typeof(Responses.SingleResponse<Tickets.ReadTicket>))]
-[JsonSerializable(typeof(Responses.SingleResponse<Tickets.ReadActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.CallActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.CommentActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.CustomActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.EmailActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.MessengerActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.SmsActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.ViberActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.WebChatActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.WhatsAppActivity>))]
+[JsonSerializable(typeof(Responses.Errors.ComplexErrorResponse))]
+[JsonSerializable(typeof(Responses.Errors.ErrorFormMessages))]
+[JsonSerializable(typeof(Responses.Errors.NestedErrorForm))]
+[JsonSerializable(typeof(Responses.Errors.PlainErrorResponse))]
 [JsonSerializable(typeof(Responses.ListResponse<Contacts.ReadContact>))]
 [JsonSerializable(typeof(Responses.ListResponse<Tickets.Category>))]
 [JsonSerializable(typeof(Responses.ListResponse<Tickets.ReadActivity>))]
 [JsonSerializable(typeof(Responses.ListResponse<Tickets.ReadActivityAttachment>))]
 [JsonSerializable(typeof(Responses.ListResponse<Tickets.ReadTicket>))]
+[JsonSerializable(typeof(Responses.SingleResponse<Contacts.ReadContact>))]
+[JsonSerializable(typeof(Responses.SingleResponse<Tickets.ReadTicket>))]
+[JsonSerializable(typeof(Responses.SingleResponse<Tickets.ReadActivity>))]
+[JsonSerializable(typeof(IDictionary<string, ICollection<string>>))]
 public partial class DaktelaJsonSerializerContext : JsonSerializerContext
 {
     private static TimeSpan _serializationDateTimeOffset;
