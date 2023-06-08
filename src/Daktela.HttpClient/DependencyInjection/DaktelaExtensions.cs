@@ -82,7 +82,6 @@ public static class DaktelaExtensions
 
         serviceCollection.TryAddSingleton<IDateTimeOffsetConverter, DateTimeOffsetConverter>();
 
-        serviceCollection.TryAddSingleton<IHttpJsonSerializerOptions, HttpJsonSerializerOptions>();
         serviceCollection.TryAddSingleton<IHttpResponseParser, HttpResponseParser>();
         serviceCollection.TryAddSingleton<IHttpRequestSerializer, HttpRequestSerializer>();
 
