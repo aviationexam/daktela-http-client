@@ -9,7 +9,7 @@ namespace Daktela.HttpClient.Api;
 [JsonSourceGenerationOptions(
     WriteIndented = true,
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    GenerationMode = JsonSourceGenerationMode.Metadata
+    GenerationMode = JsonSourceGenerationMode.Default
 )]
 [JsonSerializable(typeof(Contacts.CreateContact))]
 [JsonSerializable(typeof(Contacts.UpdateContact))]
