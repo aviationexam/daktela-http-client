@@ -80,8 +80,6 @@ public static class DaktelaExtensions
 
         serviceCollection.TryAddSingleton(typeof(IPagedResponseProcessor<>), typeof(PagedResponseProcessor<>));
 
-        serviceCollection.TryAddSingleton<IDateTimeOffsetConverter, DateTimeOffsetConverter>();
-
         serviceCollection.TryAddSingleton<IHttpResponseParser, HttpResponseParser>();
         serviceCollection.TryAddSingleton<IHttpRequestSerializer, HttpRequestSerializer>();
 
