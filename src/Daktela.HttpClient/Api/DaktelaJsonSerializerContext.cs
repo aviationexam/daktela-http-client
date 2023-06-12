@@ -13,6 +13,7 @@ namespace Daktela.HttpClient.Api;
 )]
 [JsonSerializable(typeof(Contacts.CreateContact))]
 [JsonSerializable(typeof(Contacts.UpdateContact))]
+[JsonSerializable(typeof(CustomFields.CustomFields))]
 [JsonSerializable(typeof(Tickets.CreateActivity))]
 [JsonSerializable(typeof(Tickets.CreateTicket))]
 [JsonSerializable(typeof(Tickets.UpdateActivity))]
