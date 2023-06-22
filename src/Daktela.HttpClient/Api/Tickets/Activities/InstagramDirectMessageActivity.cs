@@ -1,5 +1,5 @@
 namespace Daktela.HttpClient.Api.Tickets.Activities;
 
-public class CommentActivity
+public class InstagramDirectMessageActivity
 {
 }

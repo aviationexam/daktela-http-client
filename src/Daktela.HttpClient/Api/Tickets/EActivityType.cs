@@ -38,7 +38,7 @@ public enum EActivityType : byte
     /// Facebook messenger
     /// </summary>
     [EnumMember(Value = "FBM")]
-    Messenger = 5,
+    FacebookMessenger = 5,
 
     /// <summary>
     /// WhatsApp
@@ -57,4 +57,10 @@ public enum EActivityType : byte
     /// </summary>
     [EnumMember(Value = "CUSTOM")]
     Custom = 8,
+
+    /// <summary>
+    /// Instagram DM
+    /// </summary>
+    [EnumMember(Value = "IGDM")]
+    InstagramDirectMessage = 9,
 }

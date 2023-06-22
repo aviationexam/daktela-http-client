@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Tickets;
+using Daktela.HttpClient.Api.Tickets.Activities;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Queries;
@@ -57,30 +58,14 @@ public class ActivityEndpoint : IActivityEndpoint
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) => _pagedResponseProcessor.InvokeAsync(
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivity,
         request,
         requestOption,
         responseBehaviour,
-        new
-        {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser
-        },
-        async static (
-            request,
-            _,
-            _,
-            ctx,
-            cancellationToken
-        ) => await ctx.daktelaHttpClient.GetListAsync(
-            ctx.httpResponseParser,
-            $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
-            request,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivity,
-            cancellationToken
-        ),
         cancellationToken
-    ).IteratingConfigureAwait(cancellationToken);
+    );
 
     public async Task<ReadActivity> CreateActivityAsync(
         CreateActivity activity, CancellationToken cancellationToken
@@ -176,6 +161,156 @@ public class ActivityEndpoint : IActivityEndpoint
             $"{IActivityEndpoint.UriPrefix}/{ctx.name}/attachments{IActivityEndpoint.UriPostfix}",
             request,
             DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivityAttachment,
+            cancellationToken
+        ),
+        cancellationToken
+    ).IteratingConfigureAwait(cancellationToken);
+
+    #endregion
+
+    #region Activity items
+
+    public IAsyncEnumerable<CallActivity> GetCallActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.CallSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseCallActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    public IAsyncEnumerable<EmailActivity> GetEmailActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.EmailSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseEmailActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    public IAsyncEnumerable<FacebookMessengerActivity> GetFacebookMessengerActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.FacebookMessengerSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseFacebookMessengerActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    public IAsyncEnumerable<InstagramDirectMessageActivity> GetInstagramDirectMessageActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.InstagramDirectMessageSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseInstagramDirectMessageActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    public IAsyncEnumerable<SmsActivity> GetSmsActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.SmsSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseSmsActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    public IAsyncEnumerable<ViberActivity> GetViberActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.ViberSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseViberActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    public IAsyncEnumerable<WhatsAppActivity> GetWhatsAppActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.WhatsAppSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseWhatsAppActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    public IAsyncEnumerable<WebChatActivity> GetWebChatActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.WebChatSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.CustomConverters.ListResponseWebChatActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    private IAsyncEnumerable<T> GetListAsync<T>(
+        string targetUri,
+        JsonTypeInfo<ListResponse<T>> jsonTypeInfo,
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) where T : class => _pagedResponseProcessor.InvokeAsync(
+        request,
+        requestOption,
+        responseBehaviour,
+        new
+        {
+            daktelaHttpClient = _daktelaHttpClient,
+            httpResponseParser = _httpResponseParser,
+            targetUri,
+            jsonTypeInfo,
+        },
+        async static (
+            request,
+            _,
+            _,
+            ctx,
+            cancellationToken
+        ) => await ctx.daktelaHttpClient.GetListAsync(
+            ctx.httpResponseParser,
+            ctx.targetUri,
+            request,
+            ctx.jsonTypeInfo,
             cancellationToken
         ),
         cancellationToken
