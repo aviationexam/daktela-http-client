@@ -1,5 +1,6 @@
 using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Api.Tickets;
+using Daktela.HttpClient.Api.Tickets.Activities;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
 using Daktela.HttpClient.Interfaces.Requests.Options;
@@ -14,6 +15,16 @@ namespace Daktela.HttpClient.Interfaces.Endpoints;
 public interface IActivityEndpoint
 {
     protected internal const string UriPrefix = "/api/v6/activities";
+
+    protected internal const string CallSuffix = "Call";
+    protected internal const string EmailSuffix = "Email";
+    protected internal const string FacebookMessengerSuffix = "Fbm";
+    protected internal const string InstagramDirectMessageSuffix = "Igdm";
+    protected internal const string SmsSuffix = "Sms";
+    protected internal const string ViberSuffix = "Vbr";
+    protected internal const string WhatsAppSuffix = "Wap";
+    protected internal const string WebChatSuffix = "Web";
+
     protected internal const string UriPostfix = ".json";
 
     Task<ReadActivity> GetActivityAsync(
@@ -53,6 +64,66 @@ public interface IActivityEndpoint
 
     IAsyncEnumerable<ReadActivityAttachment> GetActivityAttachmentsAsync(
         string name,
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    #endregion
+
+    #region Activity items
+
+    IAsyncEnumerable<CallActivity> GetCallActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<EmailActivity> GetEmailActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<FacebookMessengerActivity> GetFacebookMessengerActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<InstagramDirectMessageActivity> GetInstagramDirectMessageActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<SmsActivity> GetSmsActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<ViberActivity> GetViberActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<WhatsAppActivity> GetWhatsAppActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<WebChatActivity> GetWebChatActivitiesAsync(
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
