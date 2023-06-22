@@ -1,5 +1,5 @@
 namespace Daktela.HttpClient.Api.Tickets.Activities;
 
-public class MessengerActivity
+public class FacebookMessengerActivity
 {
 }

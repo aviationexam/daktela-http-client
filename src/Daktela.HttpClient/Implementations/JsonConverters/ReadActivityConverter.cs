@@ -55,10 +55,11 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
                     EActivityType.Email => Read<EmailActivity>(ref reader, options),
                     EActivityType.WebChat => Read<WebChatActivity>(ref reader, options),
                     EActivityType.Sms => Read<SmsActivity>(ref reader, options),
-                    EActivityType.Messenger => Read<MessengerActivity>(ref reader, options),
+                    EActivityType.FacebookMessenger => Read<FacebookMessengerActivity>(ref reader, options),
                     EActivityType.WhatsApp => Read<WhatsAppActivity>(ref reader, options),
                     EActivityType.Viber => Read<ViberActivity>(ref reader, options),
                     EActivityType.Custom => Read<CustomActivity>(ref reader, options),
+                    EActivityType.InstagramDirectMessage => Read<InstagramDirectMessageActivity>(ref reader, options),
                     _ => throw new ArgumentOutOfRangeException(nameof(activityType), activityType, null),
                 };
             }
