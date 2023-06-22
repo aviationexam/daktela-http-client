@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <PackageLicense>MIT</PackageLicense>
     <ProjectName>HttpClient</ProjectName>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <Import Project="..\WarningConfiguration.targets" />
@@ -15,6 +16,10 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
