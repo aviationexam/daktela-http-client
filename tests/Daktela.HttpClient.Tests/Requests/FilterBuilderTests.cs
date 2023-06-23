@@ -1,7 +1,9 @@
 using Daktela.HttpClient.Api.Contacts;
 using Daktela.HttpClient.Api.Requests;
 using Daktela.HttpClient.Api.Tickets;
+using Daktela.HttpClient.Api.Tickets.Activities;
 using Daktela.HttpClient.Implementations;
+using System.Linq;
 using Xunit;
 
 namespace Daktela.HttpClient.Tests.Requests;
@@ -55,7 +57,8 @@ public class FilterBuilderTests
     [InlineData(EFilterOperator.NotEqual)]
     public void SimpleEnumFilterInstanceWithWorks(EFilterOperator filterOperator)
     {
-        var filter = new FilterBuilderInstance<ReadActivity>().WithEnumValue(x => x.Type, filterOperator, EActivityType.Email);
+        var filter =
+            new FilterBuilderInstance<ReadActivity>().WithEnumValue(x => x.Type, filterOperator, EActivityType.Email);
 
         var filterImpl = Assert.IsType<Filter>(filter);
         Assert.Equal("type", filterImpl.Field);
@@ -119,6 +122,26 @@ public class FilterBuilderTests
         var valueFilter = Assert.IsType<Filter>(Assert.Single(filterGroup.Filters));
 
         Assert.Equal("name", valueFilter.Field);
+        Assert.Equal(EFilterOperator.Equal, valueFilter.Operator);
+        Assert.Equal("a value", valueFilter.Value);
+        Assert.Null(valueFilter.Type);
+    }
+
+    [Theory]
+    [InlineData(EFilterLogic.And)]
+    [InlineData(EFilterLogic.Or)]
+    public void FilterGroupInstanceWorks_LinqSelect(EFilterLogic filterLogic)
+    {
+        var filter = new FilterBuilderInstance<EmailActivity>().WithGroupOfValue(filterLogic, b => new[]
+        {
+            b.WithValue(x => x.Activities.Select(a => a.Ticket.Name), EFilterOperator.Equal, "a value"),
+        });
+
+        var filterGroup = Assert.IsType<FilterGroup>(filter);
+        Assert.Equal(filterLogic, filterGroup.Logic);
+        var valueFilter = Assert.IsType<Filter>(Assert.Single(filterGroup.Filters));
+
+        Assert.Equal("activities.ticket.name", valueFilter.Field);
         Assert.Equal(EFilterOperator.Equal, valueFilter.Operator);
         Assert.Equal("a value", valueFilter.Value);
         Assert.Null(valueFilter.Type);

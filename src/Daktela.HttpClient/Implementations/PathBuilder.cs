@@ -85,6 +85,20 @@ internal static class PathBuilder<TContract>
             return expression.Object;
         }
 
+        if (
+            method.Name == nameof(Enumerable.Select)
+            && expression.Arguments is [var sourceProperty, LambdaExpression selector]
+        )
+        {
+            var expr = selector.Body;
+            while (expr != null)
+            {
+                expr = Parse(expr, path);
+            }
+
+            return sourceProperty;
+        }
+
         throw new Exception($"Unknown method name {method.Name} while processing {nameof(MethodCallExpression)}");
     }
 
