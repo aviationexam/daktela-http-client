@@ -190,6 +190,15 @@ public class ReadActivity
     public ICollection<ReadActivityAttachment>? Attachments { get; set; }
 }
 
+public class ReadActivityWithNumericReference : ReadActivity
+{
+    /// <summary>
+    /// Specific item of the activity (e.g. Call, Email, Chat,..)
+    /// </summary>
+    [JsonPropertyName("item")]
+    public int Item { get; set; }
+}
+
 public class ReadActivity<TActivity> : ReadActivity
     where TActivity : class
 {

@@ -28,6 +28,7 @@ namespace Daktela.HttpClient.Api;
 [JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.ViberActivity>))]
 [JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.WebChatActivity>))]
 [JsonSerializable(typeof(Tickets.ReadActivity<Tickets.Activities.WhatsAppActivity>))]
+[JsonSerializable(typeof(Tickets.ReadActivityWithNumericReference))]
 [JsonSerializable(typeof(Responses.Errors.ComplexErrorResponse))]
 [JsonSerializable(typeof(Responses.Errors.ErrorFormMessages))]
 [JsonSerializable(typeof(Responses.Errors.NestedErrorForm))]

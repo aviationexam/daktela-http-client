@@ -1,0 +1,127 @@
+{
+  "error": [ ],
+  "result": {
+    "data": [
+      {
+        "queue": {},
+        "user": {},
+        "contact": {},
+        "title": "Re: Support ticket",
+        "address": "email@address.com",
+        "direction": "out",
+        "wait_time": null,
+        "duration": 41,
+        "answered": false,
+        "text": "A message",
+        "options": {
+          "headers": {
+            "cc": [ ],
+            "to": [
+              {
+                "address": "email@address.com",
+                "display": ""
+              }
+            ],
+            "bcc": [ ],
+            "subject": "Re: Support ticket",
+            "references": "<Reference>"
+          }
+        },
+        "time": "2023-06-23 11:27:28",
+        "state": "SENT",
+        "name": "emails_32",
+        "files": [ ],
+        "activities": [
+          {
+            "ticket": {
+              "title": "Re: Support ticket",
+              "id_merge": null,
+              "category": {
+                "title": "Customer Support - Messages",
+                "sla": {},
+                "timecondition": null,
+                "email_queue": null,
+                "call_queue": null,
+                "sms_queue": null,
+                "status_required": true,
+                "multiple_statuses": true,
+                "closeCheckChilds": true,
+                "autofocused_tab": "",
+                "auto_archive_tickets": null,
+                "name": "categories_62",
+                "_sys": {
+                  "hash": null,
+                  "model": "ticketsCategories"
+                }
+              },
+              "user": {},
+              "email": null,
+              "contact": null,
+              "parentTicket": null,
+              "description": "Description",
+              "statuses": [],
+              "followers": [ ],
+              "stage": "CLOSE",
+              "priority": "LOW",
+              "sla_overdue": 92236,
+              "sla_deadtime": "2023-06-22 09:50:17",
+              "sla_change": "2023-06-23 11:27:33",
+              "sla_duration": 121036,
+              "sla_custom": false,
+              "interaction_activity_count": 3,
+              "reopen": null,
+              "created": "2023-06-21 23:07:58",
+              "created_by": {},
+              "edited": "2023-06-23 11:27:33",
+              "edited_by": {},
+              "first_answer": "2023-06-23 08:45:05",
+              "first_answer_duration": 121027,
+              "closed": "2023-06-23 11:27:33",
+              "unread": false,
+              "has_attachment": false,
+              "isParent": false,
+              "customFields": {},
+              "last_activity": "2023-06-23 11:27:28",
+              "last_activity_operator": "2023-06-23 11:27:28",
+              "last_activity_client": "2023-06-21 23:08:08",
+              "first_answer_deadline": "2023-06-22 03:07:58",
+              "first_answer_overdue": 106627,
+              "sla_close_deadline": "2023-06-22 09:50:17",
+              "name": 15450
+            },
+            "title": "Re: Support ticket",
+            "action": "CLOSE",
+            "type": "EMAIL",
+            "item": 42,
+            "queue": {},
+            "user": {},
+            "contact": {},
+            "survey": null,
+            "record": null,
+            "statuses": [
+            ],
+            "priority": 0,
+            "options": null,
+            "description": "",
+            "important": false,
+            "time": "2023-06-23 11:26:47",
+            "time_wait": null,
+            "time_open": "2023-06-23 11:26:47",
+            "time_close": "2023-06-23 11:27:28",
+            "baw": 41,
+            "aaw": 0,
+            "duration": 41,
+            "ringing_time": 0,
+            "created_by": {},
+            "customFields": [ ],
+            "name": "activities_64"
+          }
+        ]
+      }
+    ],
+    "total": 1
+  },
+  "_serverTime": "2023-06-23 19:30:00",
+  "_time": "2023-06-23 19:30:00",
+  "_timezone": "Europe/Prague"
+}

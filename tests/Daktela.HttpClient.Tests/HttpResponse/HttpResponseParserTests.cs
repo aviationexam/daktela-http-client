@@ -600,6 +600,30 @@ public class HttpResponseParserTests
     }
 
     [Fact]
+    public async Task ParseTicketEmailActivityWorks()
+    {
+        var httpResponseParser = new HttpResponseParser();
+
+        using var httpResponseContent = new StreamContent("ticket-email-activities-read".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var ticketEmailActivitiesResponse = await httpResponseParser.ParseResponseAsync(
+            httpResponseContent,
+            DaktelaJsonSerializerContext.CustomConverters.ListResponseEmailActivity,
+            cancellationToken
+        );
+
+        Assert.NotNull(ticketEmailActivitiesResponse.Error);
+        Assert.NotNull(ticketEmailActivitiesResponse.Result);
+        Assert.NotEmpty(ticketEmailActivitiesResponse.Result.Data);
+        Assert.Equal(1, ticketEmailActivitiesResponse.Result.Total);
+        var response = Assert.Single(ticketEmailActivitiesResponse.Result.Data);
+        var activity = Assert.Single(response.Activities);
+        var activityWithNumericReference = Assert.IsType<ReadActivityWithNumericReference>(activity);
+        Assert.Equal(42, activityWithNumericReference.Item);
+    }
+
+    [Fact]
     public async Task ParseTicketActivityAttachmentWorks()
     {
         var httpResponseParser = new HttpResponseParser();
