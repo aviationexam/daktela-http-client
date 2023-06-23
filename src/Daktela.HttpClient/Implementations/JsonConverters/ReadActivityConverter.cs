@@ -9,10 +9,14 @@ namespace Daktela.HttpClient.Implementations.JsonConverters;
 
 public class ReadActivityConverter : JsonConverter<ReadActivity>
 {
-    private static readonly string PropertyName = nameof(ReadActivity.Type);
+    private static readonly string PropertyTypeName = nameof(ReadActivity.Type);
+    private static readonly string PropertyItemName = nameof(ReadActivity<object>.Item);
 
-    private static readonly string JsonTypeName = typeof(ReadActivity).GetProperty(PropertyName)!
-        .GetCustomAttribute<JsonPropertyNameAttribute>()?.Name ?? PropertyName;
+    private static readonly string JsonTypeName = typeof(ReadActivity).GetProperty(PropertyTypeName)!
+        .GetCustomAttribute<JsonPropertyNameAttribute>()?.Name ?? PropertyTypeName;
+
+    private static readonly string JsonItemName = typeof(ReadActivity<>).GetProperty(PropertyItemName)!
+        .GetCustomAttribute<JsonPropertyNameAttribute>()?.Name ?? PropertyItemName;
 
     public override ReadActivity? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -31,6 +35,8 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
         readerClone.Read();
 
         var depth = readerClone.CurrentDepth;
+        EActivityType? activityType = null;
+        JsonTokenType? itemType = null;
         while (readerClone.Read())
         {
             if (depth < readerClone.CurrentDepth)
@@ -38,31 +44,62 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
                 continue;
             }
 
-            if (
-                readerClone.TokenType == JsonTokenType.PropertyName
-                && readerClone.GetString() == JsonTypeName
-            )
+            switch (readerClone.TokenType)
             {
-                readerClone.Read();
+                case JsonTokenType.PropertyName:
+                    if (readerClone.GetString() == JsonTypeName)
+                    {
+                        readerClone.Read();
 
-                var converter = (JsonConverter<EActivityType>) options.GetConverter(typeof(EActivityType));
-                var activityType = converter.Read(ref readerClone, typeof(EActivityType), options);
+                        if (readerClone.TokenType is JsonTokenType.String)
+                        {
+                            var converter = (JsonConverter<EActivityType>) options.GetConverter(typeof(EActivityType));
+                            activityType = converter.Read(ref readerClone, typeof(EActivityType), options);
+                        }
+                    }
+                    else if (readerClone.GetString() == JsonItemName)
+                    {
+                        readerClone.Read();
 
-                return activityType switch
-                {
-                    EActivityType.Comment => Read<CommentActivity>(ref reader, options),
-                    EActivityType.Call => Read<CallActivity>(ref reader, options),
-                    EActivityType.Email => Read<EmailActivity>(ref reader, options),
-                    EActivityType.WebChat => Read<WebChatActivity>(ref reader, options),
-                    EActivityType.Sms => Read<SmsActivity>(ref reader, options),
-                    EActivityType.FacebookMessenger => Read<FacebookMessengerActivity>(ref reader, options),
-                    EActivityType.WhatsApp => Read<WhatsAppActivity>(ref reader, options),
-                    EActivityType.Viber => Read<ViberActivity>(ref reader, options),
-                    EActivityType.Custom => Read<CustomActivity>(ref reader, options),
-                    EActivityType.InstagramDirectMessage => Read<InstagramDirectMessageActivity>(ref reader, options),
-                    _ => throw new ArgumentOutOfRangeException(nameof(activityType), activityType, null),
-                };
+                        itemType = readerClone.TokenType;
+                    }
+
+                    break;
+
+                case JsonTokenType.StartArray:
+                case JsonTokenType.StartObject:
+                    readerClone.Skip();
+
+                    break;
             }
+
+            if (itemType.HasValue && activityType.HasValue)
+            {
+                break;
+            }
+        }
+
+        if (activityType.HasValue)
+        {
+            if (itemType == JsonTokenType.Number)
+            {
+                return JsonSerializer.Deserialize<ReadActivityWithNumericReference>(ref reader, options);
+            }
+
+            return activityType switch
+            {
+                EActivityType.Comment => Read<CommentActivity>(ref reader, options),
+                EActivityType.Call => Read<CallActivity>(ref reader, options),
+                EActivityType.Email => Read<EmailActivity>(ref reader, options),
+                EActivityType.WebChat => Read<WebChatActivity>(ref reader, options),
+                EActivityType.Sms => Read<SmsActivity>(ref reader, options),
+                EActivityType.FacebookMessenger => Read<FacebookMessengerActivity>(ref reader, options),
+                EActivityType.WhatsApp => Read<WhatsAppActivity>(ref reader, options),
+                EActivityType.Viber => Read<ViberActivity>(ref reader, options),
+                EActivityType.Custom => Read<CustomActivity>(ref reader, options),
+                EActivityType.InstagramDirectMessage => Read<InstagramDirectMessageActivity>(ref reader, options),
+                _ => throw new ArgumentOutOfRangeException(nameof(activityType), activityType, null),
+            };
         }
 
         throw new JsonException($"Json object {nameof(ReadActivity)} does not contain '{JsonTypeName}' type discriminator");
