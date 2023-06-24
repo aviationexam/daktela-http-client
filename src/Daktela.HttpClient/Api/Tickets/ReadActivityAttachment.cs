@@ -62,5 +62,5 @@ public class ReadActivityAttachment
     /// Undocumented property
     /// </summary>
     [JsonPropertyName("email")]
-    public string? Email { get; set; }
+    public int? Email { get; set; }
 }
