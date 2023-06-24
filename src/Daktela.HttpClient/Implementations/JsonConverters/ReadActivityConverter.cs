@@ -32,9 +32,7 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
             throw new JsonException();
         }
 
-        readerClone.Read();
-
-        var depth = readerClone.CurrentDepth;
+        var depth = readerClone.CurrentDepth + 1;
         EActivityType? activityType = null;
         JsonTokenType? itemType = null;
         while (readerClone.Read())
@@ -68,7 +66,10 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
 
                 case JsonTokenType.StartArray:
                 case JsonTokenType.StartObject:
-                    readerClone.Skip();
+                    if (!readerClone.TrySkip())
+                    {
+                        throw new JsonException($"Unknown error while skipping {readerClone.TokenType}");
+                    }
 
                     break;
             }
