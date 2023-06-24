@@ -30,7 +30,22 @@
         "time": "2023-06-23 11:27:28",
         "state": "SENT",
         "name": "emails_32",
-        "files": [ ],
+        "files": [
+          {
+            "file": 32,
+            "email": 64,
+            "inline": "0",
+            "cid": "",
+            "title": "hell-o.json",
+            "type": "application/json",
+            "size": 20,
+            "time": "2023-06-23 19:30:40",
+            "_sys": {
+              "hash": null,
+              "model": "activitiesEmailFiles"
+            }
+          }
+        ],
         "activities": [
           {
             "ticket": {
