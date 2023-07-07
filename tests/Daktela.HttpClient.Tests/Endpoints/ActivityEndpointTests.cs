@@ -75,7 +75,7 @@ public partial class ActivityEndpointTests
         }
 
         Assert.Equal(9, count);
-        Assert.Equal(1, responseMetadata.TotalRecords.Count);
+        Assert.Single(responseMetadata.TotalRecords);
         Assert.All(responseMetadata.TotalRecords, x => Assert.Equal(9, x));
     }
 
