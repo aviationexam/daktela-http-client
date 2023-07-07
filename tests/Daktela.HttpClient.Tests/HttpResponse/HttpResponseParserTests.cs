@@ -473,7 +473,7 @@ public class HttpResponseParserTests
         Assert.NotNull(error.Form);
         Assert.Null(error.Primary);
 
-        Assert.Equal(1, error.Form!.Count);
+        Assert.Single(error.Form);
         var titleError = Assert.Contains("title", error.Form);
 
         var titleErrorMessage = Assert.IsType<ErrorFormMessage>(titleError);
