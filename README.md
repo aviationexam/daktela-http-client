@@ -1,7 +1,7 @@
 [![Build Status](https://github.com/aviationexam/daktela-http-client/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/aviationexam/daktela-http-client/actions/workflows/build.yml)
 [![NuGet](https://img.shields.io/nuget/v/Daktela.HttpClient.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Daktela.HttpClient/)
 [![MyGet](https://img.shields.io/myget/daktela-http-client/vpre/Daktela.HttpClient?label=MyGet)](https://www.myget.org/feed/daktela-http-client/package/nuget/Daktela.HttpClient)
-[![feedz.io](https://img.shields.io/badge/endpoint.svg?url=https%3A%2F%2Ff.feedz.io%2Faviationexam%2Freporting-api%2Fshield%Daktela.HttpClient%2Flatest&label=ReportingApi)](https://f.feedz.io/aviationexam/daktela-http-client/packages/Daktela.HttpClient/latest/download)
+[![feedz.io](https://img.shields.io/badge/endpoint.svg?url=https%3A%2F%2Ff.feedz.io%2Faviationexam%2Fdaktela-http-client%2Fshield%2FDaktela.HttpClient%2Flatest&label=Daktela.HttpClient)](https://f.feedz.io/aviationexam/daktela-http-client/packages/Daktela.HttpClient/latest/download)
 
 # Daktela Http Client
 
