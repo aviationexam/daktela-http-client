@@ -44,4 +44,4 @@ jobs:
         run: dotnet nuget push 'nuget-packages/*.nupkg' --api-key ${{ secrets.MYGET_API_KEY }} --source https://www.myget.org/F/daktela-http-client/api/v3/index.json
       - name: Push package to Feedz
         if: ${{ vars.USE_FEEDZ == 'true' }}
-        run: dotnet nuget push 'nuget-packages/*.nupkg' --api-key ${{ secrets.FEEDZ_API_KEY }} --source https://f.feedz.io/aviationexam/apple-app-store-connect-api/nuget/index.json
+        run: dotnet nuget push 'nuget-packages/*.nupkg' --api-key ${{ secrets.FEEDZ_API_KEY }} --source https://f.feedz.io/aviationexam/daktela-http-client/nuget/index.json
