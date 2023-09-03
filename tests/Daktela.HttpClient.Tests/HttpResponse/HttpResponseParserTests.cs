@@ -33,7 +33,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactsResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadContact,
+            DaktelaJsonSerializerContext.Default.ListResponseReadContact,
             cancellationToken
         );
 
@@ -53,7 +53,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -92,7 +92,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -129,7 +129,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -156,7 +156,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -185,7 +185,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -219,7 +219,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -242,7 +242,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -265,7 +265,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -295,7 +295,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -329,7 +329,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -375,7 +375,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         );
 
@@ -415,7 +415,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var ticketResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadTicket,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadTicket,
             cancellationToken
         );
 
@@ -451,7 +451,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var ticketResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadTicket,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadTicket,
             cancellationToken
         );
 
@@ -490,7 +490,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var contactsResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadTicket,
+            DaktelaJsonSerializerContext.Default.ListResponseReadTicket,
             cancellationToken
         );
 
@@ -510,7 +510,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var ticketActivityResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadActivity,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
             cancellationToken
         );
 
@@ -541,7 +541,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var ticketActivityResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivity,
+            DaktelaJsonSerializerContext.Default.ListResponseReadActivity,
             cancellationToken
         );
 
@@ -589,7 +589,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var ticketActivitiesResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivity,
+            DaktelaJsonSerializerContext.Default.ListResponseReadActivity,
             cancellationToken
         );
 
@@ -609,7 +609,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var ticketEmailActivitiesResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseEmailActivity,
+            DaktelaJsonSerializerContext.Default.ListResponseEmailActivity,
             cancellationToken
         );
 
@@ -633,7 +633,7 @@ public class HttpResponseParserTests
         var cancellationToken = CancellationToken.None;
         var ticketActivityAttachmentResponse = await httpResponseParser.ParseResponseAsync(
             httpResponseContent,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivityAttachment,
+            DaktelaJsonSerializerContext.Default.ListResponseReadActivityAttachment,
             cancellationToken
         );
 

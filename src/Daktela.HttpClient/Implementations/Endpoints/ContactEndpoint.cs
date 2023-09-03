@@ -44,7 +44,7 @@ public class ContactEndpoint : IContactEndpoint
         var contact = await _daktelaHttpClient.GetAsync(
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         ).ConfigureAwait(false);
 
@@ -75,7 +75,7 @@ public class ContactEndpoint : IContactEndpoint
             ctx.httpResponseParser,
             $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
             request,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadContact,
+            DaktelaJsonSerializerContext.Default.ListResponseReadContact,
             cancellationToken
         ),
         cancellationToken
@@ -88,8 +88,8 @@ public class ContactEndpoint : IContactEndpoint
         _httpResponseParser,
         $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
         contact,
-        DaktelaJsonSerializerContext.CustomConverters.CreateContact,
-        DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+        DaktelaJsonSerializerContext.Default.CreateContact,
+        DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -106,8 +106,8 @@ public class ContactEndpoint : IContactEndpoint
             _httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             contact,
-            DaktelaJsonSerializerContext.CustomConverters.UpdateContact,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadContact,
+            DaktelaJsonSerializerContext.Default.UpdateContact,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
         ).ConfigureAwait(false);
     }

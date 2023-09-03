@@ -46,7 +46,7 @@ public class ActivityEndpoint : IActivityEndpoint
         var contact = await _daktelaHttpClient.GetAsync(
             _httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{encodedName}{IActivityEndpoint.UriPostfix}",
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadActivity,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
             cancellationToken
         ).ConfigureAwait(false);
 
@@ -60,7 +60,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseReadActivity,
         request,
         requestOption,
         responseBehaviour,
@@ -74,8 +74,8 @@ public class ActivityEndpoint : IActivityEndpoint
         _httpResponseParser,
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
         activity,
-        DaktelaJsonSerializerContext.CustomConverters.CreateActivity,
-        DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadActivity,
+        DaktelaJsonSerializerContext.Default.CreateActivity,
+        DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
         cancellationToken
     ).ConfigureAwait(false);
 
@@ -92,8 +92,8 @@ public class ActivityEndpoint : IActivityEndpoint
             _httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{encodedName}{IActivityEndpoint.UriPostfix}",
             contact,
-            DaktelaJsonSerializerContext.CustomConverters.UpdateActivity,
-            DaktelaJsonSerializerContext.CustomConverters.SingleResponseReadActivity,
+            DaktelaJsonSerializerContext.Default.UpdateActivity,
+            DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
             cancellationToken
         ).ConfigureAwait(false);
     }
@@ -160,7 +160,7 @@ public class ActivityEndpoint : IActivityEndpoint
             ctx.httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{ctx.name}/attachments{IActivityEndpoint.UriPostfix}",
             request,
-            DaktelaJsonSerializerContext.CustomConverters.ListResponseReadActivityAttachment,
+            DaktelaJsonSerializerContext.Default.ListResponseReadActivityAttachment,
             cancellationToken
         ),
         cancellationToken
@@ -177,7 +177,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.CallSuffix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseCallActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseCallActivity,
         request,
         requestOption,
         responseBehaviour,
@@ -191,7 +191,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.EmailSuffix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseEmailActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseEmailActivity,
         request,
         requestOption,
         responseBehaviour,
@@ -205,7 +205,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.FacebookMessengerSuffix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseFacebookMessengerActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseFacebookMessengerActivity,
         request,
         requestOption,
         responseBehaviour,
@@ -219,7 +219,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.InstagramDirectMessageSuffix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseInstagramDirectMessageActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseInstagramDirectMessageActivity,
         request,
         requestOption,
         responseBehaviour,
@@ -233,7 +233,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.SmsSuffix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseSmsActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseSmsActivity,
         request,
         requestOption,
         responseBehaviour,
@@ -247,7 +247,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.ViberSuffix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseViberActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseViberActivity,
         request,
         requestOption,
         responseBehaviour,
@@ -261,7 +261,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.WhatsAppSuffix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseWhatsAppActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseWhatsAppActivity,
         request,
         requestOption,
         responseBehaviour,
@@ -275,7 +275,7 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.WebChatSuffix}{IActivityEndpoint.UriPostfix}",
-        DaktelaJsonSerializerContext.CustomConverters.ListResponseWebChatActivity,
+        DaktelaJsonSerializerContext.Default.ListResponseWebChatActivity,
         request,
         requestOption,
         responseBehaviour,
