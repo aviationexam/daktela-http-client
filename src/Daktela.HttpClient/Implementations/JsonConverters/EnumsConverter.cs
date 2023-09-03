@@ -49,9 +49,9 @@ public class EnumsConverter<TEnum> : JsonConverter<TEnum>
 
         var value = reader.GetString();
 
-        if (value != null && Mapping.ContainsKey(value))
+        if (value != null && Mapping.TryGetValue(value, out var mappedValue))
         {
-            return Mapping[value];
+            return mappedValue;
         }
 
         throw new FormatException($"Unable to deserialize {value} into the {typeof(TEnum).Name}");
@@ -59,9 +59,9 @@ public class EnumsConverter<TEnum> : JsonConverter<TEnum>
 
     public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
     {
-        if (ReverseMapping.ContainsKey(value))
+        if (ReverseMapping.TryGetValue(value, out var reverseMappedValue))
         {
-            writer.WriteStringValue(ReverseMapping[value]);
+            writer.WriteStringValue(reverseMappedValue);
 
             return;
         }
