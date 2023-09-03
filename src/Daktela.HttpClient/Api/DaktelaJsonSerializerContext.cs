@@ -62,38 +62,26 @@ public partial class DaktelaJsonSerializerContext : JsonSerializerContext
         set
         {
             _serializationDateTimeOffset = value;
-            _convertersContext = null;
+            s_defaultContext = null;
+            SetConverters();
         }
     }
 
-    private static JsonSerializerOptions ConvertersContextOptions => new()
+    static DaktelaJsonSerializerContext()
     {
-        DefaultIgnoreCondition = JsonIgnoreCondition.Never,
-        IgnoreReadOnlyFields = false,
-        IgnoreReadOnlyProperties = false,
-        IncludeFields = false,
-        WriteIndented = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        Converters =
-        {
-            new DateTimeOffsetConverter(SerializationDateTimeOffset),
-            new TimeSpanConverter(),
-            new ReadActivityConverter(),
-            new CustomFieldsConverter(),
-            new EnumsConverterFactory(),
-            new EmailActivityOptionsHeadersAddressConverter(),
-            new ErrorResponseConverter(),
-            new ErrorFormConverter(),
-        },
-    };
+        SetConverters();
+    }
 
-    private static DaktelaJsonSerializerContext? _convertersContext;
-
-    /// <summary>
-    /// The default <see cref="global::System.Text.Json.Serialization.JsonSerializerContext"/> associated with a default <see cref="global::System.Text.Json.JsonSerializerOptions"/> instance.
-    /// </summary>
-    public static DaktelaJsonSerializerContext CustomConverters => _convertersContext
-        ??= new DaktelaJsonSerializerContext(
-            new JsonSerializerOptions(ConvertersContextOptions)
-        );
+    static void SetConverters()
+    {
+        s_defaultOptions.Converters.Clear();
+        s_defaultOptions.Converters.Add(new DateTimeOffsetConverter(SerializationDateTimeOffset));
+        s_defaultOptions.Converters.Add(new TimeSpanConverter());
+        s_defaultOptions.Converters.Add(new ReadActivityConverter());
+        s_defaultOptions.Converters.Add(new CustomFieldsConverter());
+        s_defaultOptions.Converters.Add(new EnumsConverterFactory());
+        s_defaultOptions.Converters.Add(new EmailActivityOptionsHeadersAddressConverter());
+        s_defaultOptions.Converters.Add(new ErrorResponseConverter());
+        s_defaultOptions.Converters.Add(new ErrorFormConverter());
+    }
 }
