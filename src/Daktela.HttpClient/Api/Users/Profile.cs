@@ -78,11 +78,11 @@ public class Profile
     /// Options
     /// </summary>
     [JsonPropertyName("options")]
-    public IDictionary<string, object> Options { get; set; } = null!;
+    public IReadOnlyDictionary<string, object> Options { get; set; } = null!;
 
     /// <summary>
     /// Custom Views
     /// </summary>
     [JsonPropertyName("customViews")]
-    public IDictionary<string, object> CustomViews { get; set; } = null!;
+    public IReadOnlyDictionary<string, object> CustomViews { get; set; } = null!;
 }

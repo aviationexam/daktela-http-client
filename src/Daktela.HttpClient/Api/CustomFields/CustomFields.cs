@@ -2,13 +2,15 @@ using System.Collections.Generic;
 
 namespace Daktela.HttpClient.Api.CustomFields;
 
-public class CustomFields : Dictionary<string, ICollection<string>>, ICustomFields
+public class CustomFields : Dictionary<string, IReadOnlyCollection<string>>, ICustomFields
 {
     public CustomFields()
     {
     }
 
-    public CustomFields(IDictionary<string, ICollection<string>> dictionary) : base(dictionary)
+    public CustomFields(
+        IReadOnlyDictionary<string, IReadOnlyCollection<string>> dictionary
+    ) : base(dictionary)
     {
     }
 }

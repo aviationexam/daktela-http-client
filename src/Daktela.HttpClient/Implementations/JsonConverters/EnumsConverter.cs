@@ -15,8 +15,8 @@ public class EnumsConverter<TEnum> : JsonConverter<TEnum>
 {
     private readonly Type _enumType;
 
-    public IDictionary<string, TEnum> Mapping { get; }
-    public IDictionary<TEnum, string> ReverseMapping { get; }
+    public IReadOnlyDictionary<string, TEnum> Mapping { get; }
+    public IReadOnlyDictionary<TEnum, string> ReverseMapping { get; }
 
     public EnumsConverter()
     {

@@ -181,7 +181,7 @@ public class User
     /// Additional parameters
     /// </summary>
     [JsonPropertyName("options")]
-    public IDictionary<string, object> Options { get; set; } = null!;
+    public IReadOnlyDictionary<string, object> Options { get; set; } = null!;
 
     /// <summary>
     /// Backoffice user

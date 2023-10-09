@@ -51,8 +51,8 @@ public class ErrorFormConverter : JsonConverter<IErrorForm>
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private NestedErrorForm? ReadNestedErrorForm(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var type = typeof(IDictionary<string, IErrorForm>);
-        var innerJsonConverter = (JsonConverter<IDictionary<string, IErrorForm>>) options.GetConverter(type);
+        var type = typeof(IReadOnlyDictionary<string, IErrorForm>);
+        var innerJsonConverter = (JsonConverter<IReadOnlyDictionary<string, IErrorForm>>) options.GetConverter(type);
 
         var errorDictionary = innerJsonConverter.Read(ref reader, type, options);
 
