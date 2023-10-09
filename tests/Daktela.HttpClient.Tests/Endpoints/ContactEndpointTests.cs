@@ -11,6 +11,7 @@ using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.ResponseBehaviours;
 using Moq;
+using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ public class ContactEndpointTests
 {
     private readonly TimeSpan _dateTimeOffset = TimeSpan.FromMinutes(90);
 
-    private readonly Mock<IDaktelaHttpClient> _daktelaHttpClientMock = new(MockBehavior.Strict);
+    private readonly IDaktelaHttpClient _daktelaHttpClientMock = Substitute.For<IDaktelaHttpClient>();
 
     private readonly IContactEndpoint _contactEndpoint;
 
@@ -33,7 +34,7 @@ public class ContactEndpointTests
         DaktelaJsonSerializerContext.SerializationDateTimeOffset = _dateTimeOffset;
 
         _contactEndpoint = new ContactEndpoint(
-            _daktelaHttpClientMock.Object,
+            _daktelaHttpClientMock,
             new HttpRequestSerializer(),
             new HttpResponseParser(),
             new PagedResponseProcessor<IContactEndpoint>()
