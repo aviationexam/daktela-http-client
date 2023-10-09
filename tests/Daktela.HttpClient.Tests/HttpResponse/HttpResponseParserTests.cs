@@ -5,7 +5,6 @@ using Daktela.HttpClient.Api.Tickets.Activities;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Tests.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -348,7 +347,8 @@ public class HttpResponseParserTests
         Assert.Null(contact.Account);
         Assert.NotNull(contact.CustomFields);
 
-        IDictionary<string, ICollection<string>> customFields = contact.CustomFields!;
+        var customFields = contact.CustomFields;
+        Assert.NotNull(customFields);
         var customFieldsNumber = Assert.Contains("number", customFields);
         var customFieldsAddress = Assert.Contains("address", customFields);
         var customFieldsEmail = Assert.Contains("email", customFields);
