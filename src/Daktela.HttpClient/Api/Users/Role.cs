@@ -34,11 +34,11 @@ public class Role
     /// Shortcuts
     /// </summary>
     [JsonPropertyName("shortcuts")]
-    public ICollection<object> Shortcuts { get; set; } = null!;
+    public IReadOnlyCollection<object> Shortcuts { get; set; } = null!;
 
     /// <summary>
     /// Options
     /// </summary>
     [JsonPropertyName("options")]
-    public IDictionary<string, object> Options { get; set; } = null!;
+    public IReadOnlyDictionary<string, object> Options { get; set; } = null!;
 }

@@ -1,7 +1,6 @@
 using Daktela.HttpClient.Implementations.JsonConverters;
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api;
@@ -51,7 +50,7 @@ namespace Daktela.HttpClient.Api;
 [JsonSerializable(typeof(Responses.SingleResponse<Contacts.ReadContact>))]
 [JsonSerializable(typeof(Responses.SingleResponse<Tickets.ReadTicket>))]
 [JsonSerializable(typeof(Responses.SingleResponse<Tickets.ReadActivity>))]
-[JsonSerializable(typeof(IDictionary<string, ICollection<string>>))]
+[JsonSerializable(typeof(IReadOnlyDictionary<string, IReadOnlyCollection<string>>))]
 public partial class DaktelaJsonSerializerContext : JsonSerializerContext
 {
     private static TimeSpan _serializationDateTimeOffset;

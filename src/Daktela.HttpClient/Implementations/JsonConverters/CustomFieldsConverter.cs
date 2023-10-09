@@ -47,8 +47,8 @@ public class CustomFieldsConverter : JsonConverter<ICustomFields>
         JsonSerializerOptions options
     )
     {
-        var type = typeof(IDictionary<string, ICollection<string>>);
-        var innerJsonConverter = (JsonConverter<IDictionary<string, ICollection<string>>>) options.GetConverter(type);
+        var type = typeof(IReadOnlyDictionary<string, IReadOnlyCollection<string>>);
+        var innerJsonConverter = (JsonConverter<IReadOnlyDictionary<string, IReadOnlyCollection<string>>>) options.GetConverter(type);
 
         var customFields = innerJsonConverter.Read(ref reader, type, options);
 
