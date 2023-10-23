@@ -1,5 +1,5 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Users;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,7 +15,7 @@ public class EnumsConverterTests
     public EnumsConverterTests()
     {
         _jsonSerializerOptions = new JsonSerializerOptions();
-        _jsonSerializerOptions.Converters.Add(new EnumsConverterFactory());
+        DaktelaJsonSerializerContext.UseEnumConverters(_jsonSerializerOptions.Converters);
     }
 
     [Fact]

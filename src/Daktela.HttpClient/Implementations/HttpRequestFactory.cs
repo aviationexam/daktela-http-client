@@ -1,6 +1,6 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Requests;
 using Daktela.HttpClient.Configuration;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using System.Web;
 
@@ -19,9 +20,6 @@ public class HttpRequestFactory : IHttpRequestFactory
 {
     private readonly IContractValidation _contractValidation;
     private readonly DaktelaOptions _daktelaOptions;
-
-    private readonly EnumsConverter<ESortDirection> _sortDirectionSerializer = new();
-    private readonly EnumsConverter<EFilterOperator> _filterDirectionSerializer = new();
 
     public HttpRequestFactory(
         IContractValidation contractValidation,
@@ -126,10 +124,12 @@ public class HttpRequestFactory : IHttpRequestFactory
     {
         if (request is ISortableQuery { Sorting: { } sorting })
         {
+            var jsonTypeInfo = DaktelaJsonSerializerContext.Default.ESortDirection;
+
             for (var i = 0; i < sorting.Count; i++)
             {
                 var sortItem = sorting.ElementAt(i);
-                query.Add($"sort[{i}][dir]", _sortDirectionSerializer.ReverseMapping[sortItem.Dir]);
+                query.Add($"sort[{i}][dir]", JsonSerializer.Serialize(sortItem.Dir, jsonTypeInfo));
                 query.Add($"sort[{i}][field]", sortItem.Field);
             }
         }
@@ -150,10 +150,10 @@ public class HttpRequestFactory : IHttpRequestFactory
         switch (filter)
         {
             case Filter coreFilter:
-                var operatorType = _filterDirectionSerializer.ReverseMapping[coreFilter.Operator];
-
                 query.Add($"{keyPrefix}[field]", coreFilter.Field);
-                query.Add($"{keyPrefix}[operator]", operatorType);
+                query.Add($"{keyPrefix}[operator]", JsonSerializer.Serialize(
+                    coreFilter.Operator, DaktelaJsonSerializerContext.Default.EFilterOperator
+                ));
                 query.Add($"{keyPrefix}[value]", HttpUtility.HtmlEncode(coreFilter.Value));
 
                 if (!string.IsNullOrEmpty(coreFilter.Type))
