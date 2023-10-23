@@ -1,7 +1,9 @@
+using Aviationexam.GeneratedJsonConverters.Attributes;
 using System.Runtime.Serialization;
 
 namespace Daktela.HttpClient.Api.Users;
 
+[EnumJsonConverter]
 public enum EExtensionState : byte
 {
     /// <summary>

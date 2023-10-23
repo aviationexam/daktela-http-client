@@ -25,7 +25,21 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <!-- DefaultJsonSerializerContext configuration is required to generate UseEnumConverters method -->
+    <AVI_EJC_DefaultJsonSerializerContext_ClassAccessibility>public</AVI_EJC_DefaultJsonSerializerContext_ClassAccessibility>
+    <AVI_EJC_DefaultJsonSerializerContext_Namespace>Daktela.HttpClient.Api</AVI_EJC_DefaultJsonSerializerContext_Namespace>
+    <AVI_EJC_DefaultJsonSerializerContext_ClassName>DaktelaJsonSerializerContext</AVI_EJC_DefaultJsonSerializerContext_ClassName>
+
+    <!-- Allowed options BackingType, FirstEnumName. Default value FirstEnumName -->
+    <AVI_EJC_DefaultEnumSerializationStrategy>FirstEnumName</AVI_EJC_DefaultEnumSerializationStrategy>
+
+    <!-- Allowed options UseBackingType, UseEnumName, or UseBackingType|UseEnumName (DeserializationStrategy is Flags enum). Default value UseEnumName -->
+    <AVI_EJC_DefaultEnumDeserializationStrategy>UseEnumName</AVI_EJC_DefaultEnumDeserializationStrategy>
+  </PropertyGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
+    <PackageReference Include="Aviationexam.GeneratedJsonConverters.SourceGenerator" Version="0.1.6" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />

@@ -1,8 +1,10 @@
+using Aviationexam.GeneratedJsonConverters.Attributes;
 using System;
 
 namespace Daktela.HttpClient;
 
 [Flags]
+[EnumJsonConverter]
 public enum EOperation : byte
 {
     Read = 1 << 0,
