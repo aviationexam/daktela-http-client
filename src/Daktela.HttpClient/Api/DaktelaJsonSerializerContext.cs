@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Implementations.JsonConverters;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Api;
@@ -69,18 +70,21 @@ public partial class DaktelaJsonSerializerContext : JsonSerializerContext
 
     static DaktelaJsonSerializerContext()
     {
-        SetConverters();
+        SetConverters(s_defaultOptions.Converters);
+#if NET8_0_OR_GREATER
+        Default = new DaktelaJsonSerializerContext(new JsonSerializerOptions(s_defaultOptions));
+#endif
     }
 
-    static void SetConverters()
+    public static void SetConverters(ICollection<JsonConverter> jsonConverters)
     {
-        s_defaultOptions.Converters.Add(DateTimeOffsetConverter);
-        s_defaultOptions.Converters.Add(new TimeSpanConverter());
-        s_defaultOptions.Converters.Add(new ReadActivityConverter());
-        s_defaultOptions.Converters.Add(new CustomFieldsConverter());
-        s_defaultOptions.Converters.Add(new EnumsConverterFactory());
-        s_defaultOptions.Converters.Add(new EmailActivityOptionsHeadersAddressConverter());
-        s_defaultOptions.Converters.Add(new ErrorResponseConverter());
-        s_defaultOptions.Converters.Add(new ErrorFormConverter());
+        jsonConverters.Add(DateTimeOffsetConverter);
+        jsonConverters.Add(new TimeSpanConverter());
+        jsonConverters.Add(new ReadActivityConverter());
+        jsonConverters.Add(new CustomFieldsConverter());
+        jsonConverters.Add(new EnumsConverterFactory());
+        jsonConverters.Add(new EmailActivityOptionsHeadersAddressConverter());
+        jsonConverters.Add(new ErrorResponseConverter());
+        jsonConverters.Add(new ErrorFormConverter());
     }
 }
