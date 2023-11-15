@@ -61,10 +61,11 @@ public partial class DaktelaJsonSerializerContext : JsonSerializerContext
         set
         {
             _serializationDateTimeOffset = value;
-            s_defaultContext = null;
-            SetConverters();
+            DateTimeOffsetConverter.SetDateTimeOffset(_serializationDateTimeOffset);
         }
     }
+
+    private static readonly DateTimeOffsetConverter DateTimeOffsetConverter = new(SerializationDateTimeOffset);
 
     static DaktelaJsonSerializerContext()
     {
@@ -73,8 +74,7 @@ public partial class DaktelaJsonSerializerContext : JsonSerializerContext
 
     static void SetConverters()
     {
-        s_defaultOptions.Converters.Clear();
-        s_defaultOptions.Converters.Add(new DateTimeOffsetConverter(SerializationDateTimeOffset));
+        s_defaultOptions.Converters.Add(DateTimeOffsetConverter);
         s_defaultOptions.Converters.Add(new TimeSpanConverter());
         s_defaultOptions.Converters.Add(new ReadActivityConverter());
         s_defaultOptions.Converters.Add(new CustomFieldsConverter());
