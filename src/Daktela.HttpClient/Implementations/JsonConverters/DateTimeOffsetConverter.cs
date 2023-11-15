@@ -10,9 +10,14 @@ namespace Daktela.HttpClient.Implementations.JsonConverters;
 
 public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>, IDateTimeOffsetConverter
 {
-    private readonly TimeSpan _dateTimeOffset;
+    private TimeSpan _dateTimeOffset;
 
     public DateTimeOffsetConverter(TimeSpan dateTimeOffset)
+    {
+        _dateTimeOffset = dateTimeOffset;
+    }
+
+    internal void SetDateTimeOffset(TimeSpan dateTimeOffset)
     {
         _dateTimeOffset = dateTimeOffset;
     }
