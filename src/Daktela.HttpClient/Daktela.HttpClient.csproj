@@ -39,7 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aviationexam.GeneratedJsonConverters.SourceGenerator" Version="0.1.6" PrivateAssets="all" />
+    <PackageReference Include="Aviationexam.GeneratedJsonConverters.SourceGenerator" Version="0.1.14" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
