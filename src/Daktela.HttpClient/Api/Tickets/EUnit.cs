@@ -1,7 +1,9 @@
+using Aviationexam.GeneratedJsonConverters.Attributes;
 using System.Runtime.Serialization;
 
 namespace Daktela.HttpClient.Api.Tickets;
 
+[EnumJsonConverter]
 public enum ETimeUnit : byte
 {
     /// <summary>

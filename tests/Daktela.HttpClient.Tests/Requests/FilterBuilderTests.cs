@@ -57,8 +57,7 @@ public class FilterBuilderTests
     [InlineData(EFilterOperator.NotEqual)]
     public void SimpleEnumFilterInstanceWithWorks(EFilterOperator filterOperator)
     {
-        var filter =
-            new FilterBuilderInstance<ReadActivity>().WithEnumValue(x => x.Type, filterOperator, EActivityType.Email);
+        var filter = new FilterBuilderInstance<ReadActivity>().WithEnumValue(x => x.Type, filterOperator, EActivityType.Email);
 
         var filterImpl = Assert.IsType<Filter>(filter);
         Assert.Equal("type", filterImpl.Field);

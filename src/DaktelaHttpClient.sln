@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionFiles", "_Solution
 		WarningConfiguration.targets = WarningConfiguration.targets
 		..\.github\dependabot.yml = ..\.github\dependabot.yml
 		..\.config\dotnet-tools.json = ..\.config\dotnet-tools.json
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{4012704E-C06D-433B-9B5F-D1C681ECFEE3}"

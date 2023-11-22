@@ -1,6 +1,5 @@
 using Daktela.HttpClient.Api.Files;
 using Daktela.HttpClient.Exceptions;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using System;
@@ -8,6 +7,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,8 +17,7 @@ public class FileEndpoint : IFileEndpoint
 {
     private readonly IDaktelaHttpClient _daktelaHttpClient;
     private readonly IHttpRequestFactory _httpRequestFactory;
-
-    private readonly EnumsConverter<EFileSource> _fileSourceSerializer = new();
+    private readonly EFileSourceEnumJsonConverter _fileSourceEnumJsonConverter = new();
 
     public FileEndpoint(
         IDaktelaHttpClient daktelaHttpClient,
@@ -39,12 +38,16 @@ public class FileEndpoint : IFileEndpoint
     {
         const string path = IFileEndpoint.UriDownload;
 
+        var mapper = Encoding.UTF8.GetString(
+            _fileSourceEnumJsonConverter.ToFirstEnumName(fileSource)
+        );
+
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Post,
             path,
             new NameValueCollection
             {
-                ["mapper"] = _fileSourceSerializer.ReverseMapping[fileSource],
+                ["mapper"] = mapper,
                 ["name"] = fileName.ToString(),
                 ["download"] = "1",
             }

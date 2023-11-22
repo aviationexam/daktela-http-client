@@ -125,26 +125,35 @@ public partial class ActivityEndpointTests
             }
         }
 
-        private static JsonSerializerOptions ConvertersContextOptions => new()
+        private static JsonSerializerOptions ConvertersContextOptions
         {
-            DefaultIgnoreCondition = JsonIgnoreCondition.Never,
-            IgnoreReadOnlyFields = false,
-            IgnoreReadOnlyProperties = false,
-            IncludeFields = false,
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters =
+            get
             {
-                new DateTimeOffsetConverter(SerializationDateTimeOffset),
-                new TimeSpanConverter(),
-                new ReadActivityConverter(),
-                new CustomFieldsConverter(),
-                new EnumsConverterFactory(),
-                new EmailActivityOptionsHeadersAddressConverter(),
-                new ErrorResponseConverter(),
-                new ErrorFormConverter(),
-            },
-        };
+                var jsonSerializerOptions = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+                    IgnoreReadOnlyFields = false,
+                    IgnoreReadOnlyProperties = false,
+                    IncludeFields = false,
+                    WriteIndented = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    Converters =
+                    {
+                        new DateTimeOffsetConverter(SerializationDateTimeOffset),
+                        new TimeSpanConverter(),
+                        new ReadActivityConverter(),
+                        new CustomFieldsConverter(),
+                        new EmailActivityOptionsHeadersAddressConverter(),
+                        new ErrorResponseConverter(),
+                        new ErrorFormConverter(),
+                    },
+                };
+
+                DaktelaJsonSerializerContext.UseEnumConverters(jsonSerializerOptions.Converters);
+
+                return jsonSerializerOptions;
+            }
+        }
 
         private static DaktelaActivityFieldJsonSerializerContext? _convertersContext;
 

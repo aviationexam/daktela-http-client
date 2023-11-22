@@ -1,8 +1,11 @@
+using Aviationexam.GeneratedJsonConverters;
+using Aviationexam.GeneratedJsonConverters.Attributes;
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Requests;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace Daktela.HttpClient.Implementations;
 
@@ -17,11 +20,18 @@ public class FilterBuilderInstance<TContract>
         Expression<Func<TContract, T>> propertySelector, EFilterOperator filterOperator, TEnum enumValue, string? type = null
     ) where TEnum : struct, Enum
     {
-        var enumsConverter = new EnumsConverter<TEnum>();
+        if (DaktelaJsonSerializerContext.Default.Options.GetConverter(typeof(TEnum)) is not EnumJsonConvertor<TEnum> converter)
+        {
+            throw new Exception($"Enable to serialize {typeof(TEnum)}. Decorate it with {nameof(EnumJsonConverterAttribute)} to support serialization.");
+        }
+
+        var serializedEnum = Encoding.UTF8.GetString(
+            converter.ToFirstEnumName(enumValue)
+        );
 
         return new Filter(
             PathBuilder<TContract>.Build(propertySelector), filterOperator,
-            enumsConverter.ReverseMapping[enumValue],
+            serializedEnum,
             type
         );
     }

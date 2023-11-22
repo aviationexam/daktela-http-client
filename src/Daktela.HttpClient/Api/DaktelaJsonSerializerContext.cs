@@ -78,11 +78,11 @@ public partial class DaktelaJsonSerializerContext : JsonSerializerContext
 
     public static void SetConverters(ICollection<JsonConverter> jsonConverters)
     {
+        UseEnumConverters(jsonConverters);
         jsonConverters.Add(DateTimeOffsetConverter);
         jsonConverters.Add(new TimeSpanConverter());
         jsonConverters.Add(new ReadActivityConverter());
         jsonConverters.Add(new CustomFieldsConverter());
-        jsonConverters.Add(new EnumsConverterFactory());
         jsonConverters.Add(new EmailActivityOptionsHeadersAddressConverter());
         jsonConverters.Add(new ErrorResponseConverter());
         jsonConverters.Add(new ErrorFormConverter());
