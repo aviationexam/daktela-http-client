@@ -26,8 +26,7 @@ public static class DaktelaExtensions
     )
     {
         var optionsBuilder = serviceCollection.AddOptions<DaktelaOptions>()
-            .Configure(configure)
-            .ValidateDataAnnotations();
+            .Configure(configure);
 
         serviceCollection.AddDaktelaHttpClient(configureHttpClientBuilder);
 
@@ -42,8 +41,7 @@ public static class DaktelaExtensions
         where TDependency : class
     {
         var optionsBuilder = serviceCollection.AddOptions<DaktelaOptions>()
-            .Configure(configure)
-            .ValidateDataAnnotations();
+            .Configure(configure);
 
         serviceCollection.AddDaktelaHttpClient(configureHttpClientBuilder);
 
@@ -55,11 +53,8 @@ public static class DaktelaExtensions
         Action<IHttpClientBuilder>? configureHttpClientBuilder = null
     )
     {
-        serviceCollection
-            .AddSingleton<IValidateOptions<DaktelaOptions>>(
-                new DataAnnotationValidateOptions<DaktelaOptions>(nameof(DaktelaOptions))
-            )
-            .AddSingleton<IPostConfigureOptions<DaktelaOptions>, DaktelaPostConfigureOptions>();
+        serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<DaktelaOptions>>(new ValidateDaktelaOptions(nameof(DaktelaOptions))));
+        serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<DaktelaOptions>, DaktelaPostConfigureOptions>());
 
         serviceCollection.TryAddSingleton<IHttpRequestFactory, HttpRequestFactory>();
         var httpClientBuilder = serviceCollection
