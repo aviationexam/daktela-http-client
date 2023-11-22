@@ -2,6 +2,7 @@ using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Requests;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -137,7 +138,13 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         }
     }
 
-    public async Task<TResponseContract> PostAsync<TRequest, TResponseContract>(
+    public async Task<TResponseContract> PostAsync<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicFields |
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+        TRequest, TResponseContract
+    >(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string path,
@@ -198,7 +205,13 @@ public class DaktelaHttpClient : IDaktelaHttpClient
         }
     }
 
-    public async Task<TResponseContract> PutAsync<TRequest, TResponseContract>(
+    public async Task<TResponseContract> PutAsync<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicFields |
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+        TRequest, TResponseContract
+    >(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string path,

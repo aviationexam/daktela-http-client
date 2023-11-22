@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Api.Responses;
 using Daktela.HttpClient.Interfaces.Requests;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading;
@@ -36,7 +37,13 @@ public interface IDaktelaHttpClient : IDisposable
         CancellationToken cancellationToken
     ) where T : class;
 
-    Task<TResponseContract> PostAsync<TRequest, TResponseContract>(
+    Task<TResponseContract> PostAsync<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicFields |
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+        TRequest, TResponseContract
+    >(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string uri,
@@ -48,7 +55,13 @@ public interface IDaktelaHttpClient : IDisposable
         where TRequest : class
         where TResponseContract : class;
 
-    Task<TResponseContract> PutAsync<TRequest, TResponseContract>(
+    Task<TResponseContract> PutAsync<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicFields |
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+        TRequest, TResponseContract
+    >(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
         string uri,

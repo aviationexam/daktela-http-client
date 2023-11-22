@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Interfaces.Requests;
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json.Serialization.Metadata;
 
@@ -22,7 +23,13 @@ public interface IHttpRequestFactory
         HttpMethod method, string path, IRequest request
     );
 
-    HttpRequestMessage CreateHttpRequestMessage<TBody>(
+    HttpRequestMessage CreateHttpRequestMessage<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicFields |
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+        TBody
+    >(
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
         string path,
