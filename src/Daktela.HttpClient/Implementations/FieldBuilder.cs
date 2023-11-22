@@ -15,7 +15,7 @@ public static class FieldBuilder<
     [DynamicallyAccessedMembers(
         DynamicallyAccessedMemberTypes.PublicProperties
     )]
-    TContract
+TContract
 >
     where TContract : class
 {
@@ -27,7 +27,7 @@ public static class FieldBuilder<
         [DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
-        TReturn
+    TReturn
     >() where TReturn : class, IFieldResult
     {
         var sourceType = typeof(TContract);

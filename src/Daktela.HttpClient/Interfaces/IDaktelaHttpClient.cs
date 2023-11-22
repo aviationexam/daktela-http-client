@@ -42,7 +42,7 @@ public interface IDaktelaHttpClient : IDisposable
             DynamicallyAccessedMemberTypes.PublicFields |
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
-        TRequest, TResponseContract
+    TRequest, TResponseContract
     >(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
@@ -60,7 +60,7 @@ public interface IDaktelaHttpClient : IDisposable
             DynamicallyAccessedMemberTypes.PublicFields |
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
-        TRequest, TResponseContract
+    TRequest, TResponseContract
     >(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,

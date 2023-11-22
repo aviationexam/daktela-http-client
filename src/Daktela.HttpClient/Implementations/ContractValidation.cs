@@ -16,7 +16,7 @@ public class ContractValidation : IContractValidation
             DynamicallyAccessedMemberTypes.PublicFields |
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
-        TContract
+    TContract
     >(TContract contract, EOperation operation)
         where TContract : class
     {

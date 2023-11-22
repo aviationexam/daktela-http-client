@@ -143,7 +143,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             DynamicallyAccessedMemberTypes.PublicFields |
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
-        TRequest, TResponseContract
+    TRequest, TResponseContract
     >(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,
@@ -210,7 +210,7 @@ public class DaktelaHttpClient : IDaktelaHttpClient
             DynamicallyAccessedMemberTypes.PublicFields |
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
-        TRequest, TResponseContract
+    TRequest, TResponseContract
     >(
         IHttpRequestSerializer httpRequestSerializer,
         IHttpResponseParser httpResponseParser,

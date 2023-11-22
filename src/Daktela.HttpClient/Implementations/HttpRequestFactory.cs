@@ -199,7 +199,7 @@ public class HttpRequestFactory : IHttpRequestFactory
             DynamicallyAccessedMemberTypes.PublicFields |
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
-        TBody
+    TBody
     >(
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
