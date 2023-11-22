@@ -52,7 +52,7 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
 
                         if (readerClone.TokenType is JsonTokenType.String)
                         {
-                            activityType = JsonSerializer.Deserialize(ref reader, DaktelaJsonSerializerContext.Default.EActivityType);
+                            activityType = JsonSerializer.Deserialize(ref readerClone, DaktelaJsonSerializerContext.Default.EActivityType);
                         }
                     }
                     else if (readerClone.GetString() == JsonItemName)
