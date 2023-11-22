@@ -9,6 +9,10 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0' " Label="Enable AOT">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
   <Import Project="..\WarningConfiguration.targets" />
 
   <PropertyGroup Label="SourceLink">
