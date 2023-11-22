@@ -29,12 +29,12 @@ public class EmailActivityOptionsHeadersAddressConverter : JsonConverter<ICollec
     }
 
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private ICollection<EmailActivityOptionsHeadersAddress>? ReadEmailActivityOptionsHeadersAddressArray(
+    private ICollection<EmailActivityOptionsHeadersAddress> ReadEmailActivityOptionsHeadersAddressArray(
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options
     )
     {
         var type = typeof(EmailActivityOptionsHeadersAddress);
-        var innerJsonConverter = (JsonConverter<EmailActivityOptionsHeadersAddress>) options.GetConverter(type);
+        var innerJsonConverter = (JsonConverter<EmailActivityOptionsHeadersAddress>) options.GetTypeInfo(type).Converter;
 
         if (reader.TokenType != JsonTokenType.StartArray)
         {
