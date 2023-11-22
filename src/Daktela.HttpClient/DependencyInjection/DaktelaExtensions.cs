@@ -53,7 +53,7 @@ public static class DaktelaExtensions
         Action<IHttpClientBuilder>? configureHttpClientBuilder = null
     )
     {
-        serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<DaktelaOptions>>(new ValidateDaktelaOptions(nameof(DaktelaOptions))));
+        serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<DaktelaOptions>, ValidateDaktelaOptions>());
         serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<DaktelaOptions>, DaktelaPostConfigureOptions>());
 
         serviceCollection.TryAddSingleton<IHttpRequestFactory, HttpRequestFactory>();
