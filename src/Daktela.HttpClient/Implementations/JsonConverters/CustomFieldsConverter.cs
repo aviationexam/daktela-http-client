@@ -27,7 +27,7 @@ public class CustomFieldsConverter : JsonConverter<ICustomFields>
     )
     {
         var type = typeof(IReadOnlyCollection<string>);
-        var innerJsonConverter = (JsonConverter<IReadOnlyCollection<string>>) options.GetConverter(type);
+        var innerJsonConverter = (JsonConverter<IReadOnlyCollection<string>>) options.GetTypeInfo(type).Converter;
 
         var customFields = innerJsonConverter.Read(ref reader, type, options);
 
@@ -48,7 +48,8 @@ public class CustomFieldsConverter : JsonConverter<ICustomFields>
     )
     {
         var type = typeof(IReadOnlyDictionary<string, IReadOnlyCollection<string>>);
-        var innerJsonConverter = (JsonConverter<IReadOnlyDictionary<string, IReadOnlyCollection<string>>>) options.GetConverter(type);
+
+        var innerJsonConverter = (JsonConverter<IReadOnlyDictionary<string, IReadOnlyCollection<string>>>) options.GetTypeInfo(type).Converter;
 
         var customFields = innerJsonConverter.Read(ref reader, type, options);
 
@@ -66,7 +67,7 @@ public class CustomFieldsConverter : JsonConverter<ICustomFields>
     {
         if (value is CustomFields customFields)
         {
-            var converter = (JsonConverter<CustomFields>) options.GetConverter(typeof(CustomFields));
+            var converter = (JsonConverter<CustomFields>) options.GetTypeInfo(typeof(CustomFields)).Converter;
 
             converter.Write(writer, customFields, options);
         }
