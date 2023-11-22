@@ -1,9 +1,10 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Tickets;
-using Daktela.HttpClient.Api.Tickets.Activities;
 using System;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Daktela.HttpClient.Implementations.JsonConverters;
 
@@ -51,7 +52,7 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
 
                         if (readerClone.TokenType is JsonTokenType.String)
                         {
-                            var converter = (JsonConverter<EActivityType>) options.GetConverter(typeof(EActivityType));
+                            var converter = (JsonConverter<EActivityType>) options.GetTypeInfo(typeof(EActivityType)).Converter;
                             activityType = converter.Read(ref readerClone, typeof(EActivityType), options);
                         }
                     }
@@ -84,21 +85,21 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
         {
             if (itemType == JsonTokenType.Number)
             {
-                return JsonSerializer.Deserialize<ReadActivityWithNumericReference>(ref reader, options);
+                return JsonSerializer.Deserialize(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityWithNumericReference);
             }
 
             return activityType switch
             {
-                EActivityType.Comment => Read<CommentActivity>(ref reader, options),
-                EActivityType.Call => Read<CallActivity>(ref reader, options),
-                EActivityType.Email => Read<EmailActivity>(ref reader, options),
-                EActivityType.WebChat => Read<WebChatActivity>(ref reader, options),
-                EActivityType.Sms => Read<SmsActivity>(ref reader, options),
-                EActivityType.FacebookMessenger => Read<FacebookMessengerActivity>(ref reader, options),
-                EActivityType.WhatsApp => Read<WhatsAppActivity>(ref reader, options),
-                EActivityType.Viber => Read<ViberActivity>(ref reader, options),
-                EActivityType.Custom => Read<CustomActivity>(ref reader, options),
-                EActivityType.InstagramDirectMessage => Read<InstagramDirectMessageActivity>(ref reader, options),
+                EActivityType.Comment => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityCommentActivity),
+                EActivityType.Call => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityCallActivity),
+                EActivityType.Email => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityEmailActivity),
+                EActivityType.WebChat => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityWebChatActivity),
+                EActivityType.Sms => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivitySmsActivity),
+                EActivityType.FacebookMessenger => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityFacebookMessengerActivity),
+                EActivityType.WhatsApp => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityWhatsAppActivity),
+                EActivityType.Viber => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityViberActivity),
+                EActivityType.Custom => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityCustomActivity),
+                EActivityType.InstagramDirectMessage => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityInstagramDirectMessageActivity),
                 _ => throw new ArgumentOutOfRangeException(nameof(activityType), activityType, null),
             };
         }
@@ -107,8 +108,8 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
     }
 
     private ReadActivity<T>? Read<T>(
-        ref Utf8JsonReader reader, JsonSerializerOptions options
-    ) where T : class => JsonSerializer.Deserialize<ReadActivity<T>>(ref reader, options);
+        ref Utf8JsonReader reader, JsonTypeInfo<ReadActivity<T>> jsonTypeInfo
+    ) where T : class => JsonSerializer.Deserialize(ref reader, jsonTypeInfo);
 
     public override void Write(
         Utf8JsonWriter writer, ReadActivity value, JsonSerializerOptions options
