@@ -52,8 +52,7 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
 
                         if (readerClone.TokenType is JsonTokenType.String)
                         {
-                            var converter = (JsonConverter<EActivityType>) options.GetTypeInfo(typeof(EActivityType)).Converter;
-                            activityType = converter.Read(ref readerClone, typeof(EActivityType), options);
+                            activityType = JsonSerializer.Deserialize(ref reader, DaktelaJsonSerializerContext.Default.EActivityType);
                         }
                     }
                     else if (readerClone.GetString() == JsonItemName)

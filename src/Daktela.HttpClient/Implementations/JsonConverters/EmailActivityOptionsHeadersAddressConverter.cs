@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Tickets.Activities;
 using System;
 using System.Collections.Generic;
@@ -33,20 +34,18 @@ public class EmailActivityOptionsHeadersAddressConverter : JsonConverter<ICollec
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options
     )
     {
-        var type = typeof(EmailActivityOptionsHeadersAddress);
-        var innerJsonConverter = (JsonConverter<EmailActivityOptionsHeadersAddress>) options.GetTypeInfo(type).Converter;
-
         if (reader.TokenType != JsonTokenType.StartArray)
         {
             throw new JsonException();
         }
+
         reader.Read();
 
         var elements = new List<EmailActivityOptionsHeadersAddress>();
 
         while (reader.TokenType != JsonTokenType.EndArray)
         {
-            elements.Add(innerJsonConverter.Read(ref reader, type, options)!);
+            elements.Add(JsonSerializer.Deserialize(ref reader, DaktelaJsonSerializerContext.Default.EmailActivityOptionsHeadersAddress)!);
 
             reader.Read();
         }
