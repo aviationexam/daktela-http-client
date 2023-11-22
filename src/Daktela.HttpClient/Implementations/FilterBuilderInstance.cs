@@ -20,7 +20,7 @@ public class FilterBuilderInstance<TContract>
         Expression<Func<TContract, T>> propertySelector, EFilterOperator filterOperator, TEnum enumValue, string? type = null
     ) where TEnum : struct, Enum
     {
-        if (DaktelaJsonSerializerContext.Default.Options.GetConverter(typeof(TEnum)) is not EnumJsonConvertor<TEnum> converter)
+        if (DaktelaJsonSerializerContext.Default.GetTypeInfo(typeof(TEnum))?.Converter is not EnumJsonConvertor<TEnum> converter)
         {
             throw new Exception($"Enable to serialize {typeof(TEnum)}. Decorate it with {nameof(EnumJsonConverterAttribute)} to support serialization.");
         }
