@@ -21,14 +21,14 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
 
     public override ReadActivity? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonTokenType.Null)
+        if (reader.TokenType is JsonTokenType.Null)
         {
             return null;
         }
 
         var readerClone = reader;
 
-        if (readerClone.TokenType != JsonTokenType.StartObject)
+        if (readerClone.TokenType is not JsonTokenType.StartObject)
         {
             throw new JsonException();
         }
@@ -46,7 +46,7 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
             switch (readerClone.TokenType)
             {
                 case JsonTokenType.PropertyName:
-                    if (readerClone.GetString() == JsonTypeName)
+                    if (readerClone.ValueTextEquals(JsonTypeName))
                     {
                         readerClone.Read();
 
@@ -55,7 +55,7 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
                             activityType = JsonSerializer.Deserialize(ref readerClone, DaktelaJsonSerializerContext.Default.EActivityType);
                         }
                     }
-                    else if (readerClone.GetString() == JsonItemName)
+                    else if (readerClone.ValueTextEquals(JsonItemName))
                     {
                         readerClone.Read();
 
@@ -82,7 +82,7 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
 
         if (activityType.HasValue)
         {
-            if (itemType == JsonTokenType.Number)
+            if (itemType is JsonTokenType.Number)
             {
                 return JsonSerializer.Deserialize(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityWithNumericReference);
             }
