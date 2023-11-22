@@ -3,6 +3,7 @@ using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Interfaces.Requests;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,14 +11,24 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Implementations;
 
-public static class FieldBuilder<TContract>
+public static class FieldBuilder<
+    [DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicProperties
+    )]
+TContract
+>
     where TContract : class
 {
     public static IFields Create<T>(
         params Expression<Func<TContract, T>>[] propertySelectors
     ) => new Fields(propertySelectors.Select(PathBuilder<TContract>.Build).ToArray());
 
-    public static IFields CreateFor<TReturn>() where TReturn : class, IFieldResult
+    public static IFields CreateFor<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+    TReturn
+    >() where TReturn : class, IFieldResult
     {
         var sourceType = typeof(TContract);
         var targetType = typeof(TReturn);

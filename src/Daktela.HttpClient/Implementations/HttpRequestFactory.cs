@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -193,7 +194,13 @@ public class HttpRequestFactory : IHttpRequestFactory
         }
     }
 
-    public HttpRequestMessage CreateHttpRequestMessage<TBody>(
+    public HttpRequestMessage CreateHttpRequestMessage<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicFields |
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+    TBody
+    >(
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
         string path,

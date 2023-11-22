@@ -1,6 +1,6 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Responses.Errors;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -32,10 +32,9 @@ public class ErrorFormConverter : JsonConverter<IErrorForm>
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options
     )
     {
-        var type = typeof(IReadOnlyCollection<string>);
-        var innerJsonConverter = (JsonConverter<IReadOnlyCollection<string>>) options.GetConverter(type);
+        var jsonTypeInfo = DaktelaJsonSerializerContext.Default.IReadOnlyCollectionString;
 
-        var errors = innerJsonConverter.Read(ref reader, type, options);
+        var errors = JsonSerializer.Deserialize(ref reader, jsonTypeInfo);
 
         if (errors is null)
         {
@@ -51,10 +50,9 @@ public class ErrorFormConverter : JsonConverter<IErrorForm>
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private NestedErrorForm? ReadNestedErrorForm(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var type = typeof(IReadOnlyDictionary<string, IErrorForm>);
-        var innerJsonConverter = (JsonConverter<IReadOnlyDictionary<string, IErrorForm>>) options.GetConverter(type);
+        var jsonTypeInfo = DaktelaJsonSerializerContext.Default.IReadOnlyDictionaryStringIErrorForm;
 
-        var errorDictionary = innerJsonConverter.Read(ref reader, type, options);
+        var errorDictionary = JsonSerializer.Deserialize(ref reader, jsonTypeInfo);
 
         if (errorDictionary is null)
         {

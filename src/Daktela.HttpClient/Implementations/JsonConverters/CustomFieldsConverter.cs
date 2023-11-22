@@ -1,6 +1,6 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.CustomFields;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -23,13 +23,14 @@ public class CustomFieldsConverter : JsonConverter<ICustomFields>
         ref Utf8JsonReader reader,
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         Type typeToConvert,
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         JsonSerializerOptions options
     )
     {
-        var type = typeof(IReadOnlyCollection<string>);
-        var innerJsonConverter = (JsonConverter<IReadOnlyCollection<string>>) options.GetConverter(type);
-
-        var customFields = innerJsonConverter.Read(ref reader, type, options);
+        var customFields = JsonSerializer.Deserialize(
+            ref reader,
+            DaktelaJsonSerializerContext.Default.IReadOnlyCollectionString
+        );
 
         if (customFields is null)
         {
@@ -44,13 +45,14 @@ public class CustomFieldsConverter : JsonConverter<ICustomFields>
         ref Utf8JsonReader reader,
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         Type typeToConvert,
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         JsonSerializerOptions options
     )
     {
-        var type = typeof(IReadOnlyDictionary<string, IReadOnlyCollection<string>>);
-        var innerJsonConverter = (JsonConverter<IReadOnlyDictionary<string, IReadOnlyCollection<string>>>) options.GetConverter(type);
-
-        var customFields = innerJsonConverter.Read(ref reader, type, options);
+        var customFields = JsonSerializer.Deserialize(
+            ref reader,
+            DaktelaJsonSerializerContext.Default.IReadOnlyDictionaryStringIReadOnlyCollectionString
+        );
 
         if (customFields is null)
         {
@@ -66,9 +68,7 @@ public class CustomFieldsConverter : JsonConverter<ICustomFields>
     {
         if (value is CustomFields customFields)
         {
-            var converter = (JsonConverter<CustomFields>) options.GetConverter(typeof(CustomFields));
-
-            converter.Write(writer, customFields, options);
+            JsonSerializer.Serialize(writer, customFields, DaktelaJsonSerializerContext.Default.CustomFields);
         }
         else
         {

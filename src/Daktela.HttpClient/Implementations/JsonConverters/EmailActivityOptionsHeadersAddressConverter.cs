@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Tickets.Activities;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Implementations.JsonConverters;
 
-public class EmailActivityOptionsHeadersAddressConverter : JsonConverter<ICollection<EmailActivityOptionsHeadersAddress>>
+public class EmailActivityOptionsHeadersAddressConverter : JsonConverter<IReadOnlyCollection<EmailActivityOptionsHeadersAddress>>
 {
-    public override ICollection<EmailActivityOptionsHeadersAddress>? Read(
+    public override IReadOnlyCollection<EmailActivityOptionsHeadersAddress>? Read(
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options
     ) => reader.TokenType switch
     {
@@ -19,7 +20,7 @@ public class EmailActivityOptionsHeadersAddressConverter : JsonConverter<ICollec
     };
 
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private ICollection<EmailActivityOptionsHeadersAddress>? ReadEmailActivityOptionsHeadersAddressString(
+    private IReadOnlyCollection<EmailActivityOptionsHeadersAddress>? ReadEmailActivityOptionsHeadersAddressString(
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options
     )
     {
@@ -29,24 +30,22 @@ public class EmailActivityOptionsHeadersAddressConverter : JsonConverter<ICollec
     }
 
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private ICollection<EmailActivityOptionsHeadersAddress>? ReadEmailActivityOptionsHeadersAddressArray(
+    private IReadOnlyCollection<EmailActivityOptionsHeadersAddress> ReadEmailActivityOptionsHeadersAddressArray(
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options
     )
     {
-        var type = typeof(EmailActivityOptionsHeadersAddress);
-        var innerJsonConverter = (JsonConverter<EmailActivityOptionsHeadersAddress>) options.GetConverter(type);
-
-        if (reader.TokenType != JsonTokenType.StartArray)
+        if (reader.TokenType is not JsonTokenType.StartArray)
         {
             throw new JsonException();
         }
+
         reader.Read();
 
         var elements = new List<EmailActivityOptionsHeadersAddress>();
 
-        while (reader.TokenType != JsonTokenType.EndArray)
+        while (reader.TokenType is not JsonTokenType.EndArray)
         {
-            elements.Add(innerJsonConverter.Read(ref reader, type, options)!);
+            elements.Add(JsonSerializer.Deserialize(ref reader, DaktelaJsonSerializerContext.Default.EmailActivityOptionsHeadersAddress)!);
 
             reader.Read();
         }
@@ -55,6 +54,6 @@ public class EmailActivityOptionsHeadersAddressConverter : JsonConverter<ICollec
     }
 
     public override void Write(
-        Utf8JsonWriter writer, ICollection<EmailActivityOptionsHeadersAddress> value, JsonSerializerOptions options
+        Utf8JsonWriter writer, IReadOnlyCollection<EmailActivityOptionsHeadersAddress> value, JsonSerializerOptions options
     ) => throw new NotSupportedException();
 }

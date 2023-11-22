@@ -3,6 +3,7 @@ using Daktela.HttpClient.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -10,7 +11,13 @@ namespace Daktela.HttpClient.Implementations;
 
 public class ContractValidation : IContractValidation
 {
-    public ValidationResult? Validate<TContract>(TContract contract, EOperation operation)
+    public ValidationResult? Validate<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicFields |
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+    TContract
+    >(TContract contract, EOperation operation)
         where TContract : class
     {
         var type = typeof(TContract);
@@ -85,7 +92,12 @@ public class ContractValidation : IContractValidation
         }
     }
 
-    private IEnumerable<MemberInfo> GetMembers(Type type)
+    private IEnumerable<MemberInfo> GetMembers(
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicFields |
+            DynamicallyAccessedMemberTypes.PublicProperties
+        )]
+        Type type)
     {
         foreach (var fieldInfo in type.GetFields())
         {
