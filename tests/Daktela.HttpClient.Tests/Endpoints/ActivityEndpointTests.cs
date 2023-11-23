@@ -110,7 +110,7 @@ public partial class ActivityEndpointTests
     [JsonSerializable(typeof(NestedErrorForm))]
     [JsonSerializable(typeof(PlainErrorResponse))]
     [JsonSerializable(typeof(ListResponse<ActivityField>))]
-    [JsonSerializable(typeof(IDictionary<string, ICollection<string>>))]
+    [JsonSerializable(typeof(IReadOnlyDictionary<string, IReadOnlyCollection<string>>))]
     private partial class DaktelaActivityFieldJsonSerializerContext : JsonSerializerContext
     {
         private static TimeSpan _serializationDateTimeOffset;
