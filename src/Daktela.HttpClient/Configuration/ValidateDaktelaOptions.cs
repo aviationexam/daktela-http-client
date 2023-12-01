@@ -6,5 +6,5 @@ namespace Daktela.HttpClient.Configuration;
 [OptionsValidator]
 public partial class ValidateDaktelaOptions : IValidateOptions<DaktelaOptions>;
 #else
-public class ValidateDaktelaOptions(string? name) : DataAnnotationValidateOptions<DaktelaOptions>(name);
+public class ValidateDaktelaOptions() : DataAnnotationValidateOptions<DaktelaOptions>(name: null);
 #endif
