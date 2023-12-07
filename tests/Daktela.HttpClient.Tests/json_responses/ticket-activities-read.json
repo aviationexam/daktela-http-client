@@ -202,7 +202,7 @@
                 }
               ],
               "ticket": null,
-              "reply-to": "",
+              "reply-to": [],
               "message-id": "<20220505071125.D6167111FB5@email.com>",
               "references": "",
               "return-path": "<support@aviationexam.com>",
@@ -488,7 +488,7 @@
                 }
               ],
               "ticket": null,
-              "reply-to": "",
+              "reply-to": [],
               "message-id": "<20220505071125.D6167111FB5@email.com>",
               "references": "",
               "return-path": "<support@aviationexam.com>",
