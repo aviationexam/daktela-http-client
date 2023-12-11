@@ -14,12 +14,12 @@ updates:
         patterns:
           - Microsoft\..*
           - System\..*
-      unit:
+      xunit:
         patterns:
           - xunit
           - xunit\..*
 
-  - package-ecosystem: "GitHub-actions"
+  - package-ecosystem: "gitHub-actions"
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
