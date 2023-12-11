@@ -19,7 +19,7 @@ updates:
           - xunit
           - xunit\..*
 
-  - package-ecosystem: "gitHub-actions"
+  - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
