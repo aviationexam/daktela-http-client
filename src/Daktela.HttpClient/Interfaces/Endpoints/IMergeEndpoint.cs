@@ -15,24 +15,24 @@ public interface IMergeEndpoint
     protected internal const string UriPrefix = "/api/v6/merge";
     protected internal const string UriPostfix = ".json";
 
-    Task<T> MergeAsync<T>(
+    Task<SingleResponse<T>> MergeAsync<T>(
         EMergeType type,
         IReadOnlyCollection<string> items,
         JsonTypeInfo<SingleResponse<T>> jsonTypeInfoForResponseType,
         CancellationToken cancellationToken = default
     ) where T : class;
 
-    Task<ReadContact> MergeContactsAsync(
+    Task<SingleResponse<ReadContact>> MergeContactsAsync(
         IReadOnlyCollection<string> items,
         CancellationToken cancellationToken = default
     );
 
-    Task<ReadAccount> MergeAccountsAsync(
+    Task<SingleResponse<ReadAccount>> MergeAccountsAsync(
         IReadOnlyCollection<string> items,
         CancellationToken cancellationToken = default
     );
 
-    Task<ReadTicket> MergeTicketsAsync(
+    Task<SingleResponse<ReadTicket>> MergeTicketsAsync(
         IReadOnlyCollection<string> items,
         CancellationToken cancellationToken = default
     );

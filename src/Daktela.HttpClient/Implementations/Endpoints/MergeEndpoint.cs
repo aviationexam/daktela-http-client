@@ -37,7 +37,7 @@ public class MergeEndpoint : IMergeEndpoint
         _httpResponseParser = httpResponseParser;
     }
 
-    public Task<ReadContact> MergeContactsAsync(
+    public Task<SingleResponse<ReadContact>> MergeContactsAsync(
         IReadOnlyCollection<string> items,
         CancellationToken cancellationToken
     ) => MergeAsync(
@@ -47,7 +47,7 @@ public class MergeEndpoint : IMergeEndpoint
         cancellationToken
     );
 
-    public Task<ReadAccount> MergeAccountsAsync(
+    public Task<SingleResponse<ReadAccount>> MergeAccountsAsync(
         IReadOnlyCollection<string> items,
         CancellationToken cancellationToken
     ) => MergeAsync(
@@ -57,7 +57,7 @@ public class MergeEndpoint : IMergeEndpoint
         cancellationToken
     );
 
-    public Task<ReadTicket> MergeTicketsAsync(
+    public Task<SingleResponse<ReadTicket>> MergeTicketsAsync(
         IReadOnlyCollection<string> items,
         CancellationToken cancellationToken
     ) => MergeAsync(
@@ -83,7 +83,7 @@ public class MergeEndpoint : IMergeEndpoint
         _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
     };
 
-    public async Task<T> MergeAsync<T>(
+    public async Task<SingleResponse<T>> MergeAsync<T>(
         EMergeType type,
         IReadOnlyCollection<string> items,
         JsonTypeInfo<SingleResponse<T>> jsonTypeInfoForResponseType,
@@ -121,7 +121,7 @@ public class MergeEndpoint : IMergeEndpoint
                         cancellationToken
                     ).ConfigureAwait(false);
 
-                    return response.Result;
+                    return response;
                 }
                 catch (JsonException e)
                 {
