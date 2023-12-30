@@ -1,10 +1,8 @@
 using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Implementations.Endpoints;
-using Daktela.HttpClient.Implementations.JsonConverters;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
-using Daktela.HttpClient.Interfaces.JsonConverters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
@@ -83,6 +81,7 @@ public static class DaktelaExtensions
         serviceCollection.TryAddScoped<IActivityEndpoint, ActivityEndpoint>();
         serviceCollection.TryAddScoped<IContactEndpoint, ContactEndpoint>();
         serviceCollection.TryAddScoped<IFileEndpoint, FileEndpoint>();
+        serviceCollection.TryAddScoped<IMergeEndpoint, MergeEndpoint>();
         serviceCollection.TryAddScoped<ITicketEndpoint, TicketEndpoint>();
         serviceCollection.TryAddScoped<ITicketsCategoryEndpoint, TicketsCategoryEndpoint>();
 

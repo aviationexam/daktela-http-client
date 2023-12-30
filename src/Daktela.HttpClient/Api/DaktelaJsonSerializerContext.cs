@@ -2,6 +2,7 @@ using Daktela.HttpClient.Implementations.JsonConverters;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DaktelaAccounts = Daktela.HttpClient.Api.Accounts;
 using DaktelaContacts = Daktela.HttpClient.Api.Contacts;
 using DaktelaCustomFields = Daktela.HttpClient.Api.CustomFields;
 using DaktelaResponses = Daktela.HttpClient.Api.Responses;
@@ -58,6 +59,7 @@ namespace Daktela.HttpClient.Api;
 [JsonSerializable(typeof(DaktelaResponses.ListResponse<DaktelaTickets.ReadActivity>))]
 [JsonSerializable(typeof(DaktelaResponses.ListResponse<DaktelaTickets.ReadActivityAttachment>))]
 [JsonSerializable(typeof(DaktelaResponses.ListResponse<DaktelaTickets.ReadTicket>))]
+[JsonSerializable(typeof(DaktelaResponses.SingleResponse<DaktelaAccounts.ReadAccount>))]
 [JsonSerializable(typeof(DaktelaResponses.SingleResponse<DaktelaContacts.ReadContact>))]
 [JsonSerializable(typeof(DaktelaResponses.SingleResponse<DaktelaTickets.ReadTicket>))]
 [JsonSerializable(typeof(DaktelaResponses.SingleResponse<DaktelaTickets.ReadActivity>))]
