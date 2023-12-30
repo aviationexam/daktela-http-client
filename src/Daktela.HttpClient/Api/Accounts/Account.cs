@@ -10,7 +10,7 @@ namespace Daktela.HttpClient.Api.Accounts;
 /// <summary>
 /// <a href="https://www.daktela.com/apihelp/v6/models/accounts">Object</a> represents CRM Account/Company of Contact. One account can have more contacts, one contact can have only one account.
 /// </summary>
-public class Account
+public class ReadAccount
 {
     /// <summary>
     /// Unique name
