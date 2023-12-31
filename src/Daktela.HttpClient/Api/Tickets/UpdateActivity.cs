@@ -68,7 +68,7 @@ public class UpdateActivity
     /// -Statuses\Mn_statuses_tickets
     /// </summary>
     [JsonPropertyName("statuses")]
-    public ICollection<string> Statuses { get; set; } = null!;
+    public IReadOnlyCollection<string> Statuses { get; set; } = null!;
 
     /// <summary>
     /// Custom fields
@@ -80,5 +80,11 @@ public class UpdateActivity
     /// Files
     /// </summary>
     [JsonPropertyName("add_files")]
-    public ICollection<CreateFile>? AddFiles { get; set; }
+    public IReadOnlyCollection<CreateFile>? AddFiles { get; set; }
+
+    /// <summary>
+    /// Comment files
+    /// </summary>
+    [JsonPropertyName("comment_add_files")]
+    public IReadOnlyCollection<CreateFile>? AddCommentFiles { get; set; }
 }

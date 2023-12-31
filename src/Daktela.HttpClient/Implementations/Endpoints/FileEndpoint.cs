@@ -50,6 +50,7 @@ public class FileEndpoint : IFileEndpoint
                 ["mapper"] = mapper,
                 ["name"] = fileName.ToString(),
                 ["download"] = "1",
+                ["fullsize"] = "1",
             }
         );
 
