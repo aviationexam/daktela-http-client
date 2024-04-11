@@ -95,6 +95,7 @@ public partial class DaktelaJsonSerializerContext : JsonSerializerContext
         jsonConverters.Add(new TimeSpanConverter());
         jsonConverters.Add(new ReadActivityConverter());
         jsonConverters.Add(new CustomFieldsConverter());
+        jsonConverters.Add(new ProfileCustomViewsConverter());
         jsonConverters.Add(new EmailActivityOptionsHeadersAddressConverter());
         jsonConverters.Add(new ErrorResponseConverter());
         jsonConverters.Add(new ErrorFormConverter());

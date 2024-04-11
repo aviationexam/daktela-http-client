@@ -124,7 +124,7 @@ public class Profile
     /// Custom Views
     /// </summary>
     [JsonPropertyName("customViews")]
-    public IReadOnlyDictionary<string, JsonElement> CustomViews { get; set; } = null!;
+    public ProfileCustomViews CustomViews { get; set; } = null!;
 
     /// <summary>
     /// Custom Social Media Views
@@ -138,7 +138,7 @@ public class Profile
     /// When a user's password is changed in Manage → Users, they will be required to change it the next time they log in.
     /// </summary>
     [JsonPropertyName("oneTimePassword")]
-    public bool OneTimePassword { get; set; }
+    public bool? OneTimePassword { get; set; }
 
     /// <summary>
     /// Password Reset

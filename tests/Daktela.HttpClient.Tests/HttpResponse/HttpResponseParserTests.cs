@@ -40,6 +40,33 @@ public class HttpResponseParserTests
         Assert.NotNull(contactsResponse.Result);
         Assert.NotEmpty(contactsResponse.Result.Data);
         Assert.Equal(4, contactsResponse.Result.Total);
+
+        var customViews = contactsResponse.Result.Data.First().User!.Profile.CustomViews;
+        Assert.NotEmpty(customViews);
+        Assert.Equal(2, customViews.Count);
+    }
+
+    [Fact]
+    public async Task ParseContacts2Works()
+    {
+        var httpResponseParser = new HttpResponseParser();
+
+        using var httpResponseContent = new StreamContent("contacts-2".LoadEmbeddedJson());
+
+        var cancellationToken = CancellationToken.None;
+        var contactsResponse = await httpResponseParser.ParseResponseAsync(
+            httpResponseContent,
+            DaktelaJsonSerializerContext.Default.ListResponseReadContact,
+            cancellationToken
+        );
+
+        Assert.NotNull(contactsResponse.Error);
+        Assert.NotNull(contactsResponse.Result);
+        Assert.NotEmpty(contactsResponse.Result.Data);
+        Assert.Equal(1, contactsResponse.Result.Total);
+
+        var customViews = contactsResponse.Result.Data.First().User!.Profile.CustomViews;
+        Assert.Empty(customViews);
     }
 
     [Fact]
