@@ -45,10 +45,11 @@ public class FileEndpointTests
 
         _httpRequestFactoryMock.Setup(x => x.CreateHttpRequestMessage(
                 HttpMethod.Post, "/file/download.php", It.Is<NameValueCollection>(
-                    i => i.Count == 3
+                    i => i.Count == 4
                          && i["mapper"] == "activitiesComment"
                          && i["name"] == fileId.ToString()
                          && i["download"] == "1"
+                         && i["fullsize"] == "1"
                 )
             ))
             .Returns(httpRequestMessage)
