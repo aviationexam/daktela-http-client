@@ -1,7 +1,6 @@
 using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Users;
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -47,5 +46,5 @@ public class ProfileCustomViewsConverter : JsonConverter<ProfileCustomViews>
 
     public override void Write(
         Utf8JsonWriter writer, ProfileCustomViews value, JsonSerializerOptions options
-    ) => JsonSerializer.Serialize<IReadOnlyDictionary<string, JsonElement>>(writer, value, options);
+    ) => JsonSerializer.Serialize(writer, value, DaktelaJsonSerializerContext.Default.IReadOnlyDictionaryStringJsonElement);
 }
