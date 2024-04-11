@@ -1,5 +1,6 @@
 using Daktela.HttpClient.Api.Accounts;
 using Daktela.HttpClient.Api.CustomFields;
+using Daktela.HttpClient.Api.Database;
 using Daktela.HttpClient.Api.Users;
 using Daktela.HttpClient.Attributes;
 using System;
@@ -26,6 +27,13 @@ public class ReadContact
     [JsonPropertyName("title")]
     [DaktelaRequirement(EOperation.Create | EOperation.Update)]
     public string Title { get; set; } = null!;
+
+    /// <summary>
+    /// Database
+    /// </summary>
+    [JsonPropertyName("database")]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
+    public ReadDatabase Database { get; set; } = null!;
 
     /// <summary>
     /// First name

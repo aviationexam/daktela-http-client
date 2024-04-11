@@ -143,6 +143,7 @@ public partial class ActivityEndpointTests
                         new TimeSpanConverter(),
                         new ReadActivityConverter(),
                         new CustomFieldsConverter(),
+                        new ProfileCustomViewsConverter(),
                         new EmailActivityOptionsHeadersAddressConverter(),
                         new ErrorResponseConverter(),
                         new ErrorFormConverter(),

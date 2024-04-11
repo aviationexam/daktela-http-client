@@ -16,6 +16,13 @@ public class UpdateContact
     public string? Title { get; set; }
 
     /// <summary>
+    /// Database
+    /// </summary>
+    [JsonPropertyName("database")]
+    [DaktelaRequirement(EOperation.Create | EOperation.Update)]
+    public string? Database { get; set; }
+
+    /// <summary>
     /// First name
     /// </summary>
     [JsonPropertyName("firstname")]

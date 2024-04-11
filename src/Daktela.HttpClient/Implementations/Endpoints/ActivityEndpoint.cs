@@ -198,6 +198,20 @@ public class ActivityEndpoint : IActivityEndpoint
         cancellationToken
     );
 
+    public IAsyncEnumerable<FacebookCommentActivity> GetFacebookCommentActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.FacebookCommentSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.Default.ListResponseFacebookCommentActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
     public IAsyncEnumerable<FacebookMessengerActivity> GetFacebookMessengerActivitiesAsync(
         IRequest request,
         IRequestOption requestOption,
@@ -206,6 +220,20 @@ public class ActivityEndpoint : IActivityEndpoint
     ) => GetListAsync(
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.FacebookMessengerSuffix}{IActivityEndpoint.UriPostfix}",
         DaktelaJsonSerializerContext.Default.ListResponseFacebookMessengerActivity,
+        request,
+        requestOption,
+        responseBehaviour,
+        cancellationToken
+    );
+
+    public IAsyncEnumerable<InstagramCommentActivity> GetInstagramCommentActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken
+    ) => GetListAsync(
+        $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.InstagramCommentSuffix}{IActivityEndpoint.UriPostfix}",
+        DaktelaJsonSerializerContext.Default.ListResponseInstagramCommentActivity,
         request,
         requestOption,
         responseBehaviour,

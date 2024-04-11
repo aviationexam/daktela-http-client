@@ -1,0 +1,279 @@
+{
+  "error": [],
+  "result": {
+    "data": [
+      {
+        "name": "testing_user",
+        "title": "Test user with user",
+        "firstname": "Test",
+        "lastname": "User",
+        "database": {
+          "name": "default",
+          "title": "Default",
+          "description": "",
+          "available_cp": false,
+          "autofocused_contacts_tab": "",
+          "autofocused_accounts_tab": "",
+          "default": true,
+          "contactsCFScheme": null,
+          "reverse_names": false,
+          "_sys": {
+            "hash": null,
+            "model": "crmDatabases"
+          }
+        },
+        "account": null,
+        "user": {
+          "name": "admin",
+          "title": "Administrator",
+          "type": "BO",
+          "alias": "",
+          "profile": {
+            "name": "admin",
+            "title": "BO",
+            "description": "",
+            "type": "BO",
+            "maxActivities": 5,
+            "maxOutRecords": 5,
+            "deleteMissedActivity": false,
+            "noQueueCallsAllowed": false,
+            "canTransferCall": "none",
+            "monitoringModes": 1,
+            "gptFunctions": 0,
+            "askForAssistance": false,
+            "options": {
+              "extensionRequired": false
+            },
+            "customViews": [],
+            "customSocialMediaViews": {
+              "fb": [],
+              "socialmedia": null
+            },
+            "oneTimePassword": null,
+            "passwordReset": false,
+            "_sys": {
+              "hash": "2623",
+              "model": "profiles"
+            }
+          },
+          "role": {
+            "name": "Administrator",
+            "title": "Oper\u00e1tor bez licence",
+            "description": "",
+            "options": {
+              "tabs": 2,
+              "pFbms": 0,
+              "pVbrs": 0,
+              "pWaps": 0,
+              "roles": 2,
+              "users": 18,
+              "events": 2,
+              "export": 0,
+              "groups": 2,
+              "pCalls": 112,
+              "pChats": 0,
+              "pIgdms": 0,
+              "pSmses": 0,
+              "pStats": 0,
+              "pauses": 2,
+              "queues": 2,
+              "pEmails": 0,
+              "qaforms": 2,
+              "reports": 0,
+              "tickets": 31,
+              "accounts": 23,
+              "articles": 0,
+              "contacts": 31,
+              "pTracing": 0,
+              "profiles": 2,
+              "sessions": 0,
+              "statuses": 2,
+              "analytics": 0,
+              "databases": 2,
+              "licensing": 0,
+              "pAttempts": 0,
+              "pRealtime": 0,
+              "qaReviews": 0,
+              "templates": 2,
+              "crmRecords": 23,
+              "formFields": 2,
+              "gdprPolicy": 0,
+              "pCallviews": 0,
+              "pFaxserver": 0,
+              "pGreetings": 0,
+              "pSmsserver": 0,
+              "sipDevices": 18,
+              "ticketsSla": 2,
+              "timegroups": 0,
+              "wallboards": 2,
+              "pActivities": 0,
+              "socialMedia": 0,
+              "articlesTags": 0,
+              "crmDatabases": 2,
+              "pFbmRoutings": 0,
+              "pSmsRoutings": 0,
+              "pVbrRoutings": 0,
+              "pWapRoutings": 0,
+              "ticketsRules": 0,
+              "ticketsViews": 2,
+              "formCrmFields": 2,
+              "pIgdmRoutings": 0,
+              "pIntegrations": 0,
+              "pProvisioning": 0,
+              "pSocialMedias": 0,
+              "ticketsMacros": 2,
+              "webrtcDevices": 18,
+              "campaignsTypes": 2,
+              "externalsUsers": 0,
+              "ftpsRecordings": 0,
+              "genericDevices": 0,
+              "msteamsDevices": 0,
+              "pCallsRoutings": 0,
+              "pChatsRoutings": 0,
+              "articlesFolders": 0,
+              "crmRecordsTypes": 2,
+              "externalNumbers": 0,
+              "pGlobalsettings": 0,
+              "_setDependencies": true,
+              "analyticsMetrics": 0,
+              "articlesComments": 0,
+              "blacklistnumbers": 2,
+              "campaignsRecords": 0,
+              "forwardingNumber": 0,
+              "socialMediaViews": 0,
+              "deleteAttachments": 0,
+              "ticketsCategories": 23,
+              "systemAnnouncements": 18
+            },
+            "shortcuts": [],
+            "gpt_custom_prompts": [],
+            "type": "BO",
+            "_sys": {
+              "hash": "103",
+              "model": "roles"
+            }
+          },
+          "description": "",
+          "call_steering_description": "",
+          "extension": "214",
+          "acl": null,
+          "extension_state": "online",
+          "clid": "",
+          "static": false,
+          "recordAtCallStart": "bridged",
+          "algo": null,
+          "email": "",
+          "emailAuth": "",
+          "icon": "",
+          "emoji": "",
+          "options": {
+            "sign": "Best regards,",
+            "target": "terminate|busy",
+            "who_to_record": "both_agent_and_customer",
+            "registration_ids": [
+              {
+                "type": "FCM",
+                "title": "iPhone14,4",
+                "token": "abc",
+                "created": "2023-09-08 16:40:01",
+                "platform": "ios",
+                "device_id": "76D87A47-9BB0-4D06-973B-2B79BACE7914"
+              },
+              {
+                "type": "APNS",
+                "title": "iPhone14,4",
+                "token": "def",
+                "created": "2023-09-18 16:18:20",
+                "platform": "ios",
+                "device_id": "145D8F21-7256-44F8-A892-D20F7B888A71"
+              }
+            ],
+            "ad_password_update": 1701359440,
+            "last_password_update": 1644220708
+          },
+          "fcmSettings": {
+            "notifications": true
+          },
+          "nps_score": 0,
+          "cp_access_crm": false,
+          "forwarding_number": "",
+          "timezone": "_AUTOMATIC_",
+          "deleted": false,
+          "deactivated": false,
+          "allowRecordingInterruption": false,
+          "_sys": {
+            "hash": null,
+            "model": "users"
+          }
+        },
+        "description": "Senior Procurement Agent",
+        "nps_score": 0,
+        "edited": "2024-04-11 19:10:45",
+        "created": "2022-05-16 14:42:20",
+        "customFields": {
+          "number": [
+            "123456789"
+          ],
+          "address": [],
+          "email": [
+            "user@email.com",
+            "user-2@email.com"
+          ],
+          "note": []
+        },
+        "duplicateContacts": null,
+        "notDuplicateContacts": null,
+        "_sys": {
+          "hash": "1342367",
+          "model": "contacts",
+          "cfScheme": {
+            "number": {
+              "type": "PHONE",
+              "title": "Telefon",
+              "hidden": false,
+              "readonly": false,
+              "readonly_in_activity": false,
+              "readonly_in_update": false,
+              "multiple": true,
+              "show_in_incoming": false
+            },
+            "address": {
+              "type": "ADDRESS",
+              "title": "Adresa",
+              "hidden": false,
+              "readonly": false,
+              "readonly_in_activity": false,
+              "readonly_in_update": false,
+              "multiple": false,
+              "show_in_incoming": false
+            },
+            "email": {
+              "type": "EMAIL",
+              "title": "Email",
+              "hidden": false,
+              "readonly": false,
+              "readonly_in_activity": false,
+              "readonly_in_update": false,
+              "multiple": true,
+              "show_in_incoming": false
+            },
+            "note": {
+              "type": "TEXTAREA",
+              "title": "Pozn\u00e1mka",
+              "hidden": false,
+              "readonly": false,
+              "readonly_in_activity": false,
+              "readonly_in_update": false,
+              "multiple": false,
+              "show_in_incoming": false
+            }
+          }
+        }
+      }
+    ],
+    "total": 1
+  },
+  "_serverTime": "2024-04-11 20:13:56",
+  "_time": "2024-04-11 20:13:56",
+  "_timezone": "Europe\/Prague"
+}

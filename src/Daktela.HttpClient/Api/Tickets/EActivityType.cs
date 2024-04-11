@@ -65,4 +65,16 @@ public enum EActivityType : byte
     /// </summary>
     [EnumMember(Value = "IGDM")]
     InstagramDirectMessage = 9,
+
+    /// <summary>
+    /// FB Comment
+    /// </summary>
+    [EnumMember(Value = "FBCOMMENT")]
+    FacebookComment = 10,
+
+    /// <summary>
+    /// IG Comment
+    /// </summary>
+    [EnumMember(Value = "IGCOMMENT")]
+    InstagramComment = 11,
 }
