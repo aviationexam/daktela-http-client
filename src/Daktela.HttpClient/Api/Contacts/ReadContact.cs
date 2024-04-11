@@ -113,6 +113,7 @@ public class ReadContact
     public UpdateContact ToUpdateContact() => new()
     {
         Title = Title,
+        Database = Database.Name,
         FirstName = FirstName,
         LastName = LastName,
         Account = Account?.Name,
