@@ -23,6 +23,12 @@ public class Category
     public string Title { get; set; } = null!;
 
     /// <summary>
+    /// Description
+    /// </summary>
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
+
+    /// <summary>
     /// Sla
     /// </summary>
     [JsonPropertyName("sla")]

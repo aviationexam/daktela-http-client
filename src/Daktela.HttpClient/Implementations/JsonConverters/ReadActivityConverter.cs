@@ -99,6 +99,8 @@ public class ReadActivityConverter : JsonConverter<ReadActivity>
                 EActivityType.Viber => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityViberActivity),
                 EActivityType.Custom => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityCustomActivity),
                 EActivityType.InstagramDirectMessage => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityInstagramDirectMessageActivity),
+                EActivityType.FacebookComment => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityFacebookCommentActivity),
+                EActivityType.InstagramComment => Read(ref reader, DaktelaJsonSerializerContext.Default.ReadActivityInstagramCommentActivity),
                 _ => throw new ArgumentOutOfRangeException(nameof(activityType), activityType, null),
             };
         }

@@ -18,7 +18,9 @@ public interface IActivityEndpoint
 
     protected internal const string CallSuffix = "Call";
     protected internal const string EmailSuffix = "Email";
+    protected internal const string FacebookCommentSuffix = "FbComment";
     protected internal const string FacebookMessengerSuffix = "Fbm";
+    protected internal const string InstagramCommentSuffix = "IgComment";
     protected internal const string InstagramDirectMessageSuffix = "Igdm";
     protected internal const string SmsSuffix = "Sms";
     protected internal const string ViberSuffix = "Vbr";
@@ -88,7 +90,21 @@ public interface IActivityEndpoint
         CancellationToken cancellationToken = default
     );
 
+    IAsyncEnumerable<FacebookCommentActivity> GetFacebookCommentActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
     IAsyncEnumerable<FacebookMessengerActivity> GetFacebookMessengerActivitiesAsync(
+        IRequest request,
+        IRequestOption requestOption,
+        IResponseBehaviour responseBehaviour,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<InstagramCommentActivity> GetInstagramCommentActivitiesAsync(
         IRequest request,
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
