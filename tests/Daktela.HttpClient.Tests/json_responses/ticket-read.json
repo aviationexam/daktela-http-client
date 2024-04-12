@@ -24,7 +24,7 @@
       "email_queue": null,
       "call_queue": null,
       "sms_queue": null,
-      "status_required": true,
+      "status_required": "closing_ticket",
       "multiple_statuses": false,
       "closeCheckChilds": true,
       "auto_archive_tickets": null,

@@ -1,3 +1,4 @@
+using Daktela.HttpClient.Api.Database;
 using Daktela.HttpClient.Attributes;
 using System.Text.Json.Serialization;
 
@@ -59,12 +60,22 @@ public class Category
     public Queue? SmsQueue { get; set; }
 
     /// <summary>
+    /// Default CRM Database
+    ///
+    /// Your default database is pre-selected when you create a new CRM Contact or Account. If you don’t want a database to be pre-selected, uncheck the default database. When you create a new contact from a ticket in a category with a different default CRM database, it will override this setting.
+    /// Note:
+    /// When you select a default database, it will replace any previous default database you have selected.
+    /// </summary>
+    [JsonPropertyName("default_crm_database")]
+    public ReadDatabase? Database { get; set; }
+
+    /// <summary>
     /// Status required
     ///
     /// Mark if status is required
     /// </summary>
     [JsonPropertyName("status_required")]
-    public bool? StatusRequired { get; set; }
+    public EStatusRequired? StatusRequired { get; set; }
 
     /// <summary>
     /// Multiple statuses
@@ -89,4 +100,10 @@ public class Category
     /// </summary>
     [JsonPropertyName("auto_archive_tickets")]
     public int? AutoArchiveTickets { get; set; }
+
+    /// <summary>
+    /// Autofocused tab
+    /// </summary>
+    [JsonPropertyName("autofocused_tab")]
+    public string? AutofocusedTab { get; set; }
 }

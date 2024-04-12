@@ -1,0 +1,178 @@
+{
+  "error": [],
+  "result": {
+    "data": [
+      {
+        "name": "emails_65bd248bb2838010166657",
+        "queue": {},
+        "user": null,
+        "contact": {},
+        "title": "Re: Support ticket",
+        "address": "email@address.com",
+        "direction": "in",
+        "wait_time": null,
+        "duration": null,
+        "answered": false,
+        "text": "A message",
+        "options": {
+          "headers": {
+            "cc": [],
+            "to": [
+              {
+                "address": "support@address.com",
+                "display": "support@address.com",
+                "is_group": false
+              }
+            ],
+            "date": "2024-02-02 18:20:45",
+            "from": [
+              {
+                "address": "email@address.com",
+                "display": "",
+                "is_group": false
+              }
+            ],
+            "ticket": "50423",
+            "reply-to": [],
+            "message-id": "<abcd@mail.gmail.com>",
+            "references": "<def@address.com>",
+            "return-path": "<support@address.com>",
+            "auto-submitted": false
+          }
+        },
+        "time": "2024-02-02 18:21:15",
+        "state": null,
+        "_sys": {
+          "hash": null,
+          "model": "activitiesEmail"
+        },
+        "attachments": [],
+        "activities": [
+          {
+            "name": "activities_1234",
+            "ticket": {
+              "name": 50423,
+              "title": "Support ticket",
+              "id_merge": null,
+              "category": {
+                "name": "categories_963",
+                "title": "Customer Support - Messages",
+                "description": null,
+                "sla": {
+                  "name": "sla_852",
+                  "title": "Info",
+                  "unit": "HOURS",
+                  "response_low": 4,
+                  "response_normal": 2,
+                  "response_high": 2,
+                  "solution_low": 4,
+                  "solution_normal": 4,
+                  "solution_high": 2,
+                  "_sys": {
+                    "hash": null,
+                    "model": "ticketsSla"
+                  }
+                },
+                "timecondition": null,
+                "email_queue": null,
+                "call_queue": null,
+                "sms_queue": null,
+                "status_required": "closing_ticket",
+                "multiple_statuses": true,
+                "closeCheckChilds": true,
+                "autofocused_tab": "",
+                "auto_archive_tickets": null,
+                "default_crm_database": {
+                  "name": "default",
+                  "title": "Default",
+                  "description": "",
+                  "available_cp": false,
+                  "autofocused_contacts_tab": "",
+                  "autofocused_accounts_tab": "",
+                  "default": true,
+                  "contactsCFScheme": null,
+                  "reverse_names": false,
+                  "_sys": {
+                    "hash": null,
+                    "model": "crmDatabases"
+                  }
+                },
+                "_sys": {
+                  "hash": null,
+                  "model": "ticketsCategories"
+                }
+              },
+              "user": {},
+              "email": null,
+              "contact": null,
+              "parentTicket": null,
+              "description": "Description",
+              "statuses": [],
+              "followers": [],
+              "stage": "CLOSE",
+              "priority": "LOW",
+              "sla_overdue": 0,
+              "sla_deadtime": "2024-02-02 16:24:14",
+              "sla_change": "2024-02-16 12:00:00",
+              "sla_duration": 17203,
+              "sla_custom": true,
+              "interaction_activity_count": 4,
+              "reopen": null,
+              "created": "2024-02-02 12:24:14",
+              "created_by": {},
+              "edited": "2024-02-16 12:00:00",
+              "edited_by": {},
+              "first_answer": "2024-02-02 12:57:06",
+              "first_answer_duration": 1966,
+              "closed": "2024-02-16 12:00:00",
+              "unread": false,
+              "has_attachment": false,
+              "isParent": false,
+              "customFields": {},
+              "last_activity": "2024-02-02 18:21:15",
+              "last_activity_operator": "2024-02-02 12:57:06",
+              "last_activity_client": "2024-02-02 18:21:15",
+              "first_answer_deadline": "2024-02-02 16:24:20",
+              "first_answer_overdue": 0,
+              "sla_close_deadline": "2024-02-16 15:13:17"
+            },
+            "title": "Re: Support ticket #50424",
+            "action": "CLOSE",
+            "type": "EMAIL",
+            "item": 53,
+            "queue": {},
+            "user": null,
+            "contact": {},
+            "survey": null,
+            "record": null,
+            "statuses": [],
+            "priority": 0,
+            "options": null,
+            "description": "",
+            "important": false,
+            "time": "2024-02-02 18:21:15",
+            "time_wait": null,
+            "time_open": null,
+            "time_close": "2024-02-02 18:21:15",
+            "baw": 0,
+            "aaw": 0,
+            "duration": 0,
+            "focus_time": 0,
+            "focus_disruptions": 0,
+            "ringing_time": 0,
+            "created_by": null,
+            "customFields": [],
+            "_sys": {
+              "hash": "262458",
+              "model": "activities"
+            }
+          }
+        ]
+      }
+    ],
+    "total": 1
+  },
+  "_serverTime": "2024-04-12 14:39:42",
+  "_time": "2024-04-12 14:39:42",
+  "_timezone": "Europe/Prague"
+}
