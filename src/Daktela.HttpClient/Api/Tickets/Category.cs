@@ -100,4 +100,10 @@ public class Category
     /// </summary>
     [JsonPropertyName("auto_archive_tickets")]
     public int? AutoArchiveTickets { get; set; }
+
+    /// <summary>
+    /// Autofocused tab
+    /// </summary>
+    [JsonPropertyName("autofocused_tab")]
+    public string? AutofocusedTab { get; set; }
 }
