@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Daktela.HttpClient.Api.Tickets;
 
 [EnumJsonConverter]
-public enum EAction : byte
+public enum EStatusRequired : byte
 {
     /// <summary>
     /// No action
@@ -14,20 +14,15 @@ public enum EAction : byte
     /// <summary>
     /// Waiting
     /// </summary>
-    [EnumMember(Value = "WAIT")] Wait = 1,
+    [EnumMember(Value = "never")] Never = 1,
 
     /// <summary>
-    /// Open
+    /// When closing or archiving ticket
     /// </summary>
-    [EnumMember(Value = "OPEN")] Open = 2,
+    [EnumMember(Value = "closing_ticket")] ClosingTicket = 2,
 
     /// <summary>
-    /// Postpone
+    /// On any user change
     /// </summary>
-    [EnumMember(Value = "POSTPONE")] Postpone = 3,
-
-    /// <summary>
-    /// Closed
-    /// </summary>
-    [EnumMember(Value = "CLOSE")] Close = 4,
+    [EnumMember(Value = "always")] Always = 3,
 }
