@@ -39,6 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Aviationexam.GeneratedJsonConverters.SourceGenerator" Version="0.2.0" PrivateAssets="all" />
   </ItemGroup>
 
