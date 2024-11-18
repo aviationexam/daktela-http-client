@@ -116,7 +116,7 @@ public class FileEndpointTests
 #pragma warning restore CA2000
 
 #pragma warning disable CA2000
-        Stream uploadFileStream = new MemoryStream(new byte[] { 0, 1, 2 }, false);
+        Stream uploadFileStream = new MemoryStream([0, 1, 2], false);
 #pragma warning restore CA2000
 
         const string uploadFileName = "filename.png";

@@ -35,7 +35,7 @@ public class TimeSpanConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(default, parsedObject!.TimeSpan);
+        Assert.Equal(default, parsedObject.TimeSpan);
         Assert.Null(parsedObject.NullableTimeSpan);
     }
 
@@ -74,7 +74,7 @@ public class TimeSpanConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(timeSpan, parsedObject!.TimeSpan);
+        Assert.Equal(timeSpan, parsedObject.TimeSpan);
         Assert.Equal(timeSpan, parsedObject.NullableTimeSpan);
     }
 
@@ -110,8 +110,8 @@ public class TimeSpanConverterTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { 0, TimeSpan.Zero };
-            yield return new object[] { 90, TimeSpan.FromSeconds(90) };
+            yield return [0, TimeSpan.Zero];
+            yield return [90, TimeSpan.FromSeconds(90)];
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

@@ -32,7 +32,7 @@ public class EnumsConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(default, parsedObject!.ExtensionState);
+        Assert.Equal(default, parsedObject.ExtensionState);
         Assert.Null(parsedObject.NullableExtensionState);
     }
 
@@ -66,7 +66,7 @@ public class EnumsConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(EExtensionState.Offline, parsedObject!.ExtensionState);
+        Assert.Equal(EExtensionState.Offline, parsedObject.ExtensionState);
         Assert.Equal(EExtensionState.Busy, parsedObject.NullableExtensionState);
     }
 

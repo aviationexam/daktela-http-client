@@ -39,7 +39,7 @@ public class HttpRequestFactoryTests
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Get,
             DaktelaContractPath,
-            request: RequestBuilder.CreateFields(new Fields(new[] { "name" }))
+            request: RequestBuilder.CreateFields(new Fields(["name"]))
         );
 
         Assert.Equal(HttpMethod.Get, httpRequestMessage.Method);
@@ -115,11 +115,10 @@ public class HttpRequestFactoryTests
         using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Get,
             DaktelaContractPath,
-            request: RequestBuilder.CreateFiltering(new FilterGroup(EFilterLogic.And, new[]
-            {
+            request: RequestBuilder.CreateFiltering(new FilterGroup(EFilterLogic.And, [
                 new Filter("name", EFilterOperator.Equal, "Johan"),
-                new Filter("email", EFilterOperator.EndsWith, "@gmail.com")
-            }))
+                new Filter("email", EFilterOperator.EndsWith, "@gmail.com"),
+            ]))
         );
 
         Assert.Equal(HttpMethod.Get, httpRequestMessage.Method);

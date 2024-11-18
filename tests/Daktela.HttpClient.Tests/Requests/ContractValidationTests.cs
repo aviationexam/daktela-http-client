@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Attributes;
 using Daktela.HttpClient.Implementations;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Xunit;
 
@@ -65,6 +66,7 @@ public class ContractValidationTests
         [DaktelaRequirement(EOperation.Create)]
         public string B { get; set; } = null!;
 
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
         public string C { get; set; } = null!;
     }
 }

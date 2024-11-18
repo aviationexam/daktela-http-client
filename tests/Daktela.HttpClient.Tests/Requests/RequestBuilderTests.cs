@@ -1,7 +1,6 @@
 using Daktela.HttpClient.Api.Requests;
 using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Interfaces.Queries;
-using Daktela.HttpClient.Interfaces.Requests;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;

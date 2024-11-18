@@ -179,9 +179,9 @@ public class DateTimeOffsetConverterTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { TimeSpan.FromMinutes(-90) };
-            yield return new object[] { TimeSpan.Zero };
-            yield return new object[] { TimeSpan.FromMinutes(90) };
+            yield return [TimeSpan.FromMinutes(-90)];
+            yield return [TimeSpan.Zero];
+            yield return [TimeSpan.FromMinutes(90)];
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -191,18 +191,18 @@ public class DateTimeOffsetConverterTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { "UTC" };
+            yield return ["UTC"];
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                yield return new object[] { "Central Europe Standard Time" };
-                yield return new object[] { "Eastern Standard Time" };
+                yield return ["Central Europe Standard Time"];
+                yield return ["Eastern Standard Time"];
             }
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                yield return new object[] { "America/New_York" };
-                yield return new object[] { "Europe/Prague" };
+                yield return ["America/New_York"];
+                yield return ["Europe/Prague"];
             }
         }
 

@@ -19,11 +19,8 @@ public sealed class ManualInlineDataAttribute : DataAttribute
         _data = data;
     }
 
-    public override IEnumerable<object[]> GetData(MethodInfo testMethod)
-    {
-        return new[]
-        {
-            _data
-        };
-    }
+    public override IEnumerable<object[]> GetData(MethodInfo testMethod) =>
+    [
+        _data,
+    ];
 }
