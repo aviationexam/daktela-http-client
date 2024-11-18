@@ -35,7 +35,7 @@ public class TimeSpanConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(default, parsedObject!.TimeSpan);
+        Assert.Equal(default, parsedObject.TimeSpan);
         Assert.Null(parsedObject.NullableTimeSpan);
     }
 
@@ -54,7 +54,7 @@ public class TimeSpanConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""delay"":0,""nullable-delay"":null}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"delay":0,"nullable-delay":null}""", jsonContract);
     }
 
     [Theory]
@@ -65,7 +65,7 @@ public class TimeSpanConverterTests
 
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync($@"{{""delay"":{input},""nullable-delay"":{input}}}");
+        await streamWriter.WriteAsync( /* lang=json */$$"""{"delay":{{input}},"nullable-delay":{{input}}}""");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -74,7 +74,7 @@ public class TimeSpanConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(timeSpan, parsedObject!.TimeSpan);
+        Assert.Equal(timeSpan, parsedObject.TimeSpan);
         Assert.Equal(timeSpan, parsedObject.NullableTimeSpan);
     }
 
@@ -98,7 +98,7 @@ public class TimeSpanConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal($@"{{""delay"":{input},""nullable-delay"":{input}}}", jsonContract);
+        Assert.Equal(/* lang=json */$$"""{"delay":{{input}},"nullable-delay":{{input}}}""", jsonContract);
     }
 
     private void AddTimeSpanConverter()
@@ -110,8 +110,8 @@ public class TimeSpanConverterTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { 0, TimeSpan.Zero };
-            yield return new object[] { 90, TimeSpan.FromSeconds(90) };
+            yield return [0, TimeSpan.Zero];
+            yield return [90, TimeSpan.FromSeconds(90)];
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

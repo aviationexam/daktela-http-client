@@ -32,7 +32,7 @@ public class CustomFieldsConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Null(parsedObject!.CustomFields);
+        Assert.Null(parsedObject.CustomFields);
         Assert.Null(parsedObject.NullableCustomFields);
     }
 
@@ -41,7 +41,7 @@ public class CustomFieldsConverterTests
     {
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(@"{""custom-fields"":[],""nullable-custom-fields"":[]}");
+        await streamWriter.WriteAsync( /* lang=json */"""{"custom-fields":[],"nullable-custom-fields":[]}""");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -50,7 +50,7 @@ public class CustomFieldsConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Empty(Assert.IsType<CustomFields>(parsedObject!.CustomFields));
+        Assert.Empty(Assert.IsType<CustomFields>(parsedObject.CustomFields));
         Assert.Empty(Assert.IsType<CustomFields>(parsedObject.NullableCustomFields));
     }
 
@@ -67,7 +67,7 @@ public class CustomFieldsConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""custom-fields"":null,""nullable-custom-fields"":null}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"custom-fields":null,"nullable-custom-fields":null}""", jsonContract);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class CustomFieldsConverterTests
     {
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(@"{""custom-fields"":{""A"":[""b""]},""nullable-custom-fields"":{""C"":[""d""]}}");
+        await streamWriter.WriteAsync( /* lang=json */"""{"custom-fields":{"A":["b"]},"nullable-custom-fields":{"C":["d"]}}""");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -84,7 +84,7 @@ public class CustomFieldsConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        var customFields = Assert.IsType<CustomFields>(parsedObject!.CustomFields);
+        var customFields = Assert.IsType<CustomFields>(parsedObject.CustomFields);
         var nullableCustomFields = Assert.IsType<CustomFields>(parsedObject.NullableCustomFields);
         Assert.Equal("b", Assert.Single(Assert.Single(customFields, x => x.Key == "A").Value));
         Assert.Equal("d", Assert.Single(Assert.Single(nullableCustomFields, x => x.Key == "C").Value));
@@ -97,8 +97,8 @@ public class CustomFieldsConverterTests
 
         await JsonSerializer.SerializeAsync(memoryStream, new Contract
         {
-            CustomFields = new CustomFields { ["A"] = new[] { "b" } },
-            NullableCustomFields = new CustomFields { ["C"] = new[] { "d" } },
+            CustomFields = new CustomFields { ["A"] = ["b"] },
+            NullableCustomFields = new CustomFields { ["C"] = ["d"] },
         }, _jsonSerializerOptions);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
@@ -107,7 +107,7 @@ public class CustomFieldsConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""custom-fields"":{""A"":[""b""]},""nullable-custom-fields"":{""C"":[""d""]}}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"custom-fields":{"A":["b"]},"nullable-custom-fields":{"C":["d"]}}""", jsonContract);
     }
 
     private class Contract

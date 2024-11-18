@@ -1,5 +1,3 @@
 namespace Daktela.HttpClient.Api.Responses.Errors;
 
-public interface IErrorForm
-{
-}
+public interface IErrorForm;

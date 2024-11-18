@@ -140,7 +140,7 @@ public class PagedResponseProcessorTests
             Assert.All(processRequestHooksResponseBehaviour.BeforePages, paging =>
             {
                 Assert.NotNull(paging);
-                Assert.Equal(take, paging!.Take);
+                Assert.Equal(take, paging.Take);
 
                 pageSkips.Add(paging.Skip);
             });

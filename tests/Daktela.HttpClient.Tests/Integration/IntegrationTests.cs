@@ -69,9 +69,9 @@ public class IntegrationTests
                 Description = null,
                 CustomFields = new CustomFields
                 {
-                    ["number"] = new[] { "123456789" },
-                    ["pps_id"] = new[] { "123", "124" },
-                    ["freshdesk_id"] = new[] { "12" },
+                    ["number"] = ["123456789"],
+                    ["pps_id"] = ["123", "124"],
+                    ["freshdesk_id"] = ["12"],
                 },
                 Name = name,
             },
@@ -93,7 +93,7 @@ public class IntegrationTests
                 User = "administrator",
                 CustomFields = new CustomFields
                 {
-                    ["email"] = new[] { "my@email.com" },
+                    ["email"] = ["my@email.com"],
                 },
             },
             DaktelaJsonSerializerContext.Default.UpdateContact,
@@ -124,7 +124,7 @@ public class IntegrationTests
             RequestOptionBuilder.CreateAutoPagingRequestOption(false),
             ResponseBehaviourBuilder.CreateEmpty(),
             cancellationToken
-        ).WithCancellation(cancellationToken).ConfigureAwait(false);
+        ).ConfigureAwait(false);
 
         await foreach (var category in categories)
         {
@@ -155,7 +155,7 @@ public class IntegrationTests
             Statuses = new List<string> { "statuses_62726da982f92110000280" },
             CustomFields = new CustomFields
             {
-                ["pps_conversation_id"] = new[] { "123" },
+                ["pps_conversation_id"] = ["123"],
             }
         };
 
@@ -217,8 +217,8 @@ public class IntegrationTests
             Description = "Text komentáře",
             Action = EAction.Open,
             User = user,
-            AddFiles = new[]
-            {
+            AddFiles =
+            [
                 // this part does not work for comments...
                 new CreateFile
                 {
@@ -226,8 +226,8 @@ public class IntegrationTests
                     FileName = fileName,
                     Size = streamLength,
                     Type = null,
-                }
-            }
+                },
+            ]
         };
 
         var activity = await activityEndpoint.CreateActivityAsync(createActivity, cancellationToken);
@@ -268,16 +268,16 @@ public class IntegrationTests
 
         var updateTicket = originalTicket.ToUpdateTicket();
         updateTicket.Comment = $"Text komentáře {DateTime.Now.Date}";
-        updateTicket.AddFiles = new[]
-        {
+        updateTicket.AddFiles =
+        [
             new CreateFile
             {
                 FileIdentifier = fileIdentifier,
                 FileName = fileName,
                 Size = streamLength,
                 Type = null,
-            }
-        };
+            },
+        ];
 
         var updatedTicket = await ticketEndpoint.UpdateTicketAsync(ticketId, updateTicket, cancellationToken);
         Assert.NotNull(updatedTicket);

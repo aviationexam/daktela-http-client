@@ -32,7 +32,7 @@ public class EnumsConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(default, parsedObject!.ExtensionState);
+        Assert.Equal(default, parsedObject.ExtensionState);
         Assert.Null(parsedObject.NullableExtensionState);
     }
 
@@ -49,7 +49,7 @@ public class EnumsConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""extension-state"":""online"",""nullable-extension-state"":null}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"extension-state":"online","nullable-extension-state":null}""", jsonContract);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class EnumsConverterTests
     {
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(@"{""extension-state"":""offline"",""nullable-extension-state"":""busy""}");
+        await streamWriter.WriteAsync( /* lang=json */"""{"extension-state":"offline","nullable-extension-state":"busy"}""");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -66,7 +66,7 @@ public class EnumsConverterTests
         var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(EExtensionState.Offline, parsedObject!.ExtensionState);
+        Assert.Equal(EExtensionState.Offline, parsedObject.ExtensionState);
         Assert.Equal(EExtensionState.Busy, parsedObject.NullableExtensionState);
     }
 
@@ -87,7 +87,7 @@ public class EnumsConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""extension-state"":""offline"",""nullable-extension-state"":""busy""}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"extension-state":"offline","nullable-extension-state":"busy"}""", jsonContract);
     }
 
     private class Contract

@@ -3,7 +3,7 @@ using Daktela.HttpClient.Exceptions;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -13,20 +13,12 @@ using System.Threading.Tasks;
 
 namespace Daktela.HttpClient.Implementations.Endpoints;
 
-public class FileEndpoint : IFileEndpoint
+public class FileEndpoint(
+    IDaktelaHttpClient daktelaHttpClient,
+    IHttpRequestFactory httpRequestFactory
+) : IFileEndpoint
 {
-    private readonly IDaktelaHttpClient _daktelaHttpClient;
-    private readonly IHttpRequestFactory _httpRequestFactory;
     private readonly EFileSourceEnumJsonConverter _fileSourceEnumJsonConverter = new();
-
-    public FileEndpoint(
-        IDaktelaHttpClient daktelaHttpClient,
-        IHttpRequestFactory httpRequestFactory
-    )
-    {
-        _daktelaHttpClient = daktelaHttpClient;
-        _httpRequestFactory = httpRequestFactory;
-    }
 
     public async Task<TResponse> DownloadFileAsync<TCtx, TResponse>(
         EFileSource fileSource,
@@ -42,19 +34,18 @@ public class FileEndpoint : IFileEndpoint
             _fileSourceEnumJsonConverter.ToFirstEnumName(fileSource)
         );
 
-        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+        using var httpRequestMessage = httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Post,
             path,
-            new NameValueCollection
-            {
-                ["mapper"] = mapper,
-                ["name"] = fileName.ToString(),
-                ["download"] = "1",
-                ["fullsize"] = "1",
-            }
+            [
+                KeyValuePair.Create<string, string?>("mapper", mapper),
+                KeyValuePair.Create<string, string?>("name", fileName.ToString()),
+                KeyValuePair.Create<string, string?>("download", "1"),
+                KeyValuePair.Create<string, string?>("fullsize", "1"),
+            ]
         );
 
-        using var httpResponse = await _daktelaHttpClient.RawSendAsync(
+        using var httpResponse = await daktelaHttpClient.RawSendAsync(
             httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken
         );
 
@@ -83,13 +74,12 @@ public class FileEndpoint : IFileEndpoint
     {
         const string path = IFileEndpoint.UriUpload;
 
-        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+        using var httpRequestMessage = httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Post,
             path,
-            new NameValueCollection
-            {
-                ["type"] = "save",
-            }
+            [
+                KeyValuePair.Create<string, string?>("type", "save"),
+            ]
         );
 
         using var content = new MultipartFormDataContent();
@@ -101,7 +91,7 @@ public class FileEndpoint : IFileEndpoint
 
         httpRequestMessage.Content = content;
 
-        using var httpResponse = await _daktelaHttpClient.RawSendAsync(httpRequestMessage, cancellationToken);
+        using var httpResponse = await daktelaHttpClient.RawSendAsync(httpRequestMessage, cancellationToken);
 
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)
@@ -129,13 +119,12 @@ public class FileEndpoint : IFileEndpoint
     {
         const string path = IFileEndpoint.UriUpload;
 
-        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+        using var httpRequestMessage = httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Post,
             path,
-            new NameValueCollection
-            {
-                ["type"] = "remove",
-            }
+            [
+                KeyValuePair.Create<string, string?>("type", "remove"),
+            ]
         );
 
         using var content = new MultipartFormDataContent();
@@ -146,7 +135,7 @@ public class FileEndpoint : IFileEndpoint
 
         httpRequestMessage.Content = content;
 
-        using var httpResponse = await _daktelaHttpClient.RawSendAsync(httpRequestMessage, cancellationToken);
+        using var httpResponse = await daktelaHttpClient.RawSendAsync(httpRequestMessage, cancellationToken);
 
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (httpResponse.StatusCode)

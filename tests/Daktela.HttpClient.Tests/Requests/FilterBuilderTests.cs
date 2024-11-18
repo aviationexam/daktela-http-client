@@ -71,10 +71,9 @@ public class FilterBuilderTests
     [InlineData(EFilterLogic.Or)]
     public void FilterGroupWorks(EFilterLogic filterLogic)
     {
-        var filter = FilterBuilder<ReadContact>.WithGroupOfValue(filterLogic, new[]
-        {
+        var filter = FilterBuilder<ReadContact>.WithGroupOfValue(filterLogic, [
             FilterBuilder<ReadContact>.WithValue(x => x.Name, EFilterOperator.Equal, "a value"),
-        });
+        ]);
 
         var filterGroup = Assert.IsType<FilterGroup>(filter);
         Assert.Equal(filterLogic, filterGroup.Logic);
@@ -91,10 +90,10 @@ public class FilterBuilderTests
     [InlineData(EFilterLogic.Or)]
     public void FilterGroupHybridInstanceWorks(EFilterLogic filterLogic)
     {
-        var filter = FilterBuilder<ReadContact>.WithGroupOfValue(filterLogic, b => new[]
-        {
+        var filter = FilterBuilder<ReadContact>.WithGroupOfValue(filterLogic, b =>
+        [
             b.WithValue(x => x.Name, EFilterOperator.Equal, "a value"),
-        });
+        ]);
 
         var filterGroup = Assert.IsType<FilterGroup>(filter);
         Assert.Equal(filterLogic, filterGroup.Logic);
@@ -111,10 +110,10 @@ public class FilterBuilderTests
     [InlineData(EFilterLogic.Or)]
     public void FilterGroupInstanceWorks(EFilterLogic filterLogic)
     {
-        var filter = new FilterBuilderInstance<ReadContact>().WithGroupOfValue(filterLogic, b => new[]
-        {
+        var filter = new FilterBuilderInstance<ReadContact>().WithGroupOfValue(filterLogic, b =>
+        [
             b.WithValue(x => x.Name, EFilterOperator.Equal, "a value"),
-        });
+        ]);
 
         var filterGroup = Assert.IsType<FilterGroup>(filter);
         Assert.Equal(filterLogic, filterGroup.Logic);
@@ -131,10 +130,10 @@ public class FilterBuilderTests
     [InlineData(EFilterLogic.Or)]
     public void FilterGroupInstanceWorks_LinqSelect(EFilterLogic filterLogic)
     {
-        var filter = new FilterBuilderInstance<EmailActivity>().WithGroupOfValue(filterLogic, b => new[]
-        {
+        var filter = new FilterBuilderInstance<EmailActivity>().WithGroupOfValue(filterLogic, b =>
+        [
             b.WithValue(x => x.Activities.Select(a => a.Ticket.Name), EFilterOperator.Equal, "a value"),
-        });
+        ]);
 
         var filterGroup = Assert.IsType<FilterGroup>(filter);
         Assert.Equal(filterLogic, filterGroup.Logic);

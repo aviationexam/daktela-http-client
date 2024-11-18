@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Users;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -18,6 +19,7 @@ public class ProfileCustomViewsConverter : JsonConverter<ProfileCustomViews>
         _ => throw new JsonException(),
     };
 
+    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private ProfileCustomViews ReadProfileCustomArray(
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options
     )
@@ -32,6 +34,7 @@ public class ProfileCustomViewsConverter : JsonConverter<ProfileCustomViews>
         throw new JsonException();
     }
 
+    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private ProfileCustomViews ReadProfileCustomDictionary(
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options
     )

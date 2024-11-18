@@ -14,33 +14,20 @@ using System.Threading.Tasks;
 
 namespace Daktela.HttpClient.Implementations.Endpoints;
 
-public class TicketEndpoint : ITicketEndpoint
+public class TicketEndpoint(
+    IDaktelaHttpClient daktelaHttpClient,
+    IHttpRequestSerializer httpRequestSerializer,
+    IHttpResponseParser httpResponseParser,
+    IPagedResponseProcessor<ITicketEndpoint> pagedResponseProcessor
+) : ITicketEndpoint
 {
-    private readonly IDaktelaHttpClient _daktelaHttpClient;
-    private readonly IHttpRequestSerializer _httpRequestSerializer;
-    private readonly IHttpResponseParser _httpResponseParser;
-    private readonly IPagedResponseProcessor<ITicketEndpoint> _pagedResponseProcessor;
-
-    public TicketEndpoint(
-        IDaktelaHttpClient daktelaHttpClient,
-        IHttpRequestSerializer httpRequestSerializer,
-        IHttpResponseParser httpResponseParser,
-        IPagedResponseProcessor<ITicketEndpoint> pagedResponseProcessor
-    )
-    {
-        _daktelaHttpClient = daktelaHttpClient;
-        _httpRequestSerializer = httpRequestSerializer;
-        _httpResponseParser = httpResponseParser;
-        _pagedResponseProcessor = pagedResponseProcessor;
-    }
-
     public async Task<ReadTicket> GetTicketAsync(
         long name,
         CancellationToken cancellationToken
     )
     {
-        var contact = await _daktelaHttpClient.GetAsync(
-            _httpResponseParser,
+        var contact = await daktelaHttpClient.GetAsync(
+            httpResponseParser,
             $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
             DaktelaJsonSerializerContext.Default.SingleResponseReadTicket,
             cancellationToken
@@ -54,14 +41,14 @@ public class TicketEndpoint : ITicketEndpoint
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) => _pagedResponseProcessor.InvokeAsync(
+    ) => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser
+            daktelaHttpClient,
+            httpResponseParser,
         },
         async static (
             request,
@@ -81,9 +68,9 @@ public class TicketEndpoint : ITicketEndpoint
 
     public async Task<ReadTicket> CreateTicketAsync(
         CreateTicket ticket, CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PostAsync(
-        _httpRequestSerializer,
-        _httpResponseParser,
+    ) => await daktelaHttpClient.PostAsync(
+        httpRequestSerializer,
+        httpResponseParser,
         $"{ITicketEndpoint.UriPrefix}{ITicketEndpoint.UriPostfix}",
         ticket,
         DaktelaJsonSerializerContext.Default.CreateTicket,
@@ -95,9 +82,9 @@ public class TicketEndpoint : ITicketEndpoint
         long name,
         UpdateTicket ticket,
         CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PutAsync(
-        _httpRequestSerializer,
-        _httpResponseParser,
+    ) => await daktelaHttpClient.PutAsync(
+        httpRequestSerializer,
+        httpResponseParser,
         $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
         ticket,
         DaktelaJsonSerializerContext.Default.UpdateTicket,
@@ -107,7 +94,7 @@ public class TicketEndpoint : ITicketEndpoint
 
     public async Task DeleteTicketAsync(
         long name, CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.DeleteAsync(
+    ) => await daktelaHttpClient.DeleteAsync(
         $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}",
         cancellationToken
     ).ConfigureAwait(false);
@@ -120,14 +107,14 @@ public class TicketEndpoint : ITicketEndpoint
         CancellationToken cancellationToken
     )
         where TRequest : IRequest, IFieldsQuery
-        where TResult : class, IFieldResult => _pagedResponseProcessor.InvokeAsync(
+        where TResult : class, IFieldResult => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser,
+            daktelaHttpClient,
+            httpResponseParser,
             jsonTypeInfoForResponseType,
         },
         async static (
@@ -154,14 +141,14 @@ public class TicketEndpoint : ITicketEndpoint
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) => _pagedResponseProcessor.InvokeAsync(
+    ) => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser,
+            daktelaHttpClient,
+            httpResponseParser,
             name,
         },
         async static (
@@ -189,14 +176,14 @@ public class TicketEndpoint : ITicketEndpoint
         CancellationToken cancellationToken
     )
         where TRequest : IRequest, IFieldsQuery
-        where TResult : class, IFieldResult => _pagedResponseProcessor.InvokeAsync(
+        where TResult : class, IFieldResult => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser,
+            daktelaHttpClient,
+            httpResponseParser,
             name,
             jsonTypeInfoForResponseType,
         },
