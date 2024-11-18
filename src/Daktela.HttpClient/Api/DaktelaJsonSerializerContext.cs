@@ -1,6 +1,7 @@
 using Daktela.HttpClient.Implementations.JsonConverters;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using DaktelaAccounts = Daktela.HttpClient.Api.Accounts;
 using DaktelaContacts = Daktela.HttpClient.Api.Contacts;
@@ -9,10 +10,6 @@ using DaktelaResponses = Daktela.HttpClient.Api.Responses;
 using DaktelaResponsesErrors = Daktela.HttpClient.Api.Responses.Errors;
 using DaktelaTickets = Daktela.HttpClient.Api.Tickets;
 using DaktelaTicketsActivities = Daktela.HttpClient.Api.Tickets.Activities;
-
-#if NET8_0_OR_GREATER
-using System.Text.Json;
-#endif
 
 namespace Daktela.HttpClient.Api;
 
@@ -87,9 +84,8 @@ public partial class DaktelaJsonSerializerContext : JsonSerializerContext
     static DaktelaJsonSerializerContext()
     {
         SetConverters(s_defaultOptions.Converters);
-#if NET8_0_OR_GREATER
+
         Default = new DaktelaJsonSerializerContext(new JsonSerializerOptions(s_defaultOptions));
-#endif
     }
 
     public static void SetConverters(ICollection<JsonConverter> jsonConverters)
