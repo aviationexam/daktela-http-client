@@ -1,5 +1,3 @@
 namespace Daktela.HttpClient.Api.Tickets.Activities;
 
-public class WebChatActivity
-{
-}
+public class WebChatActivity;

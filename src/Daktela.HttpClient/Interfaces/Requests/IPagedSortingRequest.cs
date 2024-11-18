@@ -3,6 +3,4 @@ using Daktela.HttpClient.Interfaces.Requests.Builder;
 
 namespace Daktela.HttpClient.Interfaces.Requests;
 
-public interface IPagedSortingRequest : ISortableQuery, IPagedQuery, IWithFilterable<IPagedSortingFilteringRequest>, IWithFields<IFieldsPagedSortingRequest>
-{
-}
+public interface IPagedSortingRequest : ISortableQuery, IPagedQuery, IWithFilterable<IPagedSortingFilteringRequest>, IWithFields<IFieldsPagedSortingRequest>;
