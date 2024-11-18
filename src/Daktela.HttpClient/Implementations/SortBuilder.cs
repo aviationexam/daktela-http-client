@@ -1,9 +1,11 @@
 using Daktela.HttpClient.Api.Requests;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Daktela.HttpClient.Implementations;
 
+[RequiresDynamicCode("Not fully supported for AOT")]
 public static class SortBuilder<TContract>
     where TContract : class
 {

@@ -4,6 +4,7 @@ using Daktela.HttpClient.Api;
 using Daktela.HttpClient.Api.Requests;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -12,10 +13,12 @@ namespace Daktela.HttpClient.Implementations;
 public class FilterBuilderInstance<TContract>
     where TContract : class
 {
+    [RequiresDynamicCode("Not fully supported for AOT")]
     public IFilter WithValue<T>(
         Expression<Func<TContract, T>> propertySelector, EFilterOperator filterOperator, string value, string? type = null
     ) => new Filter(PathBuilder<TContract>.Build(propertySelector), filterOperator, value, type);
 
+    [RequiresDynamicCode("Not fully supported for AOT")]
     public IFilter WithEnumValue<T, TEnum>(
         Expression<Func<TContract, T>> propertySelector, EFilterOperator filterOperator, TEnum enumValue, string? type = null
     ) where TEnum : struct, Enum

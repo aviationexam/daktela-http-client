@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace Daktela.HttpClient.Implementations;
 
+[RequiresDynamicCode("Not fully supported for AOT")]
 internal static class PathBuilder<TContract>
     where TContract : class
 {

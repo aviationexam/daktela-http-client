@@ -19,6 +19,7 @@ TContract
 >
     where TContract : class
 {
+    [RequiresDynamicCode("Not fully supported for AOT")]
     public static IFields Create<T>(
         params Expression<Func<TContract, T>>[] propertySelectors
     ) => new Fields(propertySelectors.Select(PathBuilder<TContract>.Build).ToArray());
