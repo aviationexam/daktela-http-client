@@ -16,26 +16,13 @@ using System.Web;
 
 namespace Daktela.HttpClient.Implementations.Endpoints;
 
-public class ActivityEndpoint : IActivityEndpoint
+public class ActivityEndpoint(
+    IDaktelaHttpClient daktelaHttpClient,
+    IHttpRequestSerializer httpRequestSerializer,
+    IHttpResponseParser httpResponseParser,
+    IPagedResponseProcessor<IActivityEndpoint> pagedResponseProcessor
+) : IActivityEndpoint
 {
-    private readonly IDaktelaHttpClient _daktelaHttpClient;
-    private readonly IHttpRequestSerializer _httpRequestSerializer;
-    private readonly IHttpResponseParser _httpResponseParser;
-    private readonly IPagedResponseProcessor<IActivityEndpoint> _pagedResponseProcessor;
-
-    public ActivityEndpoint(
-        IDaktelaHttpClient daktelaHttpClient,
-        IHttpRequestSerializer httpRequestSerializer,
-        IHttpResponseParser httpResponseParser,
-        IPagedResponseProcessor<IActivityEndpoint> pagedResponseProcessor
-    )
-    {
-        _daktelaHttpClient = daktelaHttpClient;
-        _httpRequestSerializer = httpRequestSerializer;
-        _httpResponseParser = httpResponseParser;
-        _pagedResponseProcessor = pagedResponseProcessor;
-    }
-
     public async Task<ReadActivity> GetActivityAsync(
         string name,
         CancellationToken cancellationToken
@@ -43,8 +30,8 @@ public class ActivityEndpoint : IActivityEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        var contact = await _daktelaHttpClient.GetAsync(
-            _httpResponseParser,
+        var contact = await daktelaHttpClient.GetAsync(
+            httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{encodedName}{IActivityEndpoint.UriPostfix}",
             DaktelaJsonSerializerContext.Default.SingleResponseReadActivity,
             cancellationToken
@@ -69,9 +56,9 @@ public class ActivityEndpoint : IActivityEndpoint
 
     public async Task<ReadActivity> CreateActivityAsync(
         CreateActivity activity, CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PostAsync(
-        _httpRequestSerializer,
-        _httpResponseParser,
+    ) => await daktelaHttpClient.PostAsync(
+        httpRequestSerializer,
+        httpResponseParser,
         $"{IActivityEndpoint.UriPrefix}{IActivityEndpoint.UriPostfix}",
         activity,
         DaktelaJsonSerializerContext.Default.CreateActivity,
@@ -87,9 +74,9 @@ public class ActivityEndpoint : IActivityEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        return await _daktelaHttpClient.PutAsync(
-            _httpRequestSerializer,
-            _httpResponseParser,
+        return await daktelaHttpClient.PutAsync(
+            httpRequestSerializer,
+            httpResponseParser,
             $"{IActivityEndpoint.UriPrefix}/{encodedName}{IActivityEndpoint.UriPostfix}",
             contact,
             DaktelaJsonSerializerContext.Default.UpdateActivity,
@@ -106,14 +93,14 @@ public class ActivityEndpoint : IActivityEndpoint
         CancellationToken cancellationToken
     )
         where TRequest : IRequest, IFieldsQuery
-        where TResult : class, IFieldResult => _pagedResponseProcessor.InvokeAsync(
+        where TResult : class, IFieldResult => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser,
+            daktelaHttpClient,
+            httpResponseParser,
             jsonTypeInfoForResponseType,
         },
         async static (
@@ -140,14 +127,14 @@ public class ActivityEndpoint : IActivityEndpoint
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) => _pagedResponseProcessor.InvokeAsync(
+    ) => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser,
+            daktelaHttpClient,
+            httpResponseParser,
             name,
         },
         async static (
@@ -317,14 +304,14 @@ public class ActivityEndpoint : IActivityEndpoint
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) where T : class => _pagedResponseProcessor.InvokeAsync(
+    ) where T : class => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser,
+            daktelaHttpClient,
+            httpResponseParser,
             targetUri,
             jsonTypeInfo,
         },

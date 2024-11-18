@@ -1,6 +1,6 @@
 using Daktela.HttpClient.Interfaces.Requests;
 using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json.Serialization.Metadata;
@@ -16,7 +16,7 @@ public interface IHttpRequestFactory
     );
 
     HttpRequestMessage CreateHttpRequestMessage(
-        HttpMethod method, string path, NameValueCollection queryParameters
+        HttpMethod method, string path, ICollection<KeyValuePair<string, string?>> queryParameters
     );
 
     HttpRequestMessage CreateHttpRequestMessage(

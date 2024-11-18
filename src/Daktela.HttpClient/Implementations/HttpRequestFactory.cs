@@ -3,9 +3,10 @@ using Daktela.HttpClient.Configuration;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Queries;
 using Daktela.HttpClient.Interfaces.Requests;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -16,21 +17,14 @@ using System.Web;
 
 namespace Daktela.HttpClient.Implementations;
 
-public class HttpRequestFactory : IHttpRequestFactory
+public class HttpRequestFactory(
+    IContractValidation contractValidation,
+    IOptions<DaktelaOptions> daktelaOptions
+) : IHttpRequestFactory
 {
-    private readonly IContractValidation _contractValidation;
-    private readonly DaktelaOptions _daktelaOptions;
+    private readonly DaktelaOptions _daktelaOptions = daktelaOptions.Value;
     private readonly ESortDirectionEnumJsonConverter _sortDirectionEnumJsonConverter = new();
     private readonly EFilterOperatorEnumJsonConverter _filterOperatorEnumJsonConverter = new();
-
-    public HttpRequestFactory(
-        IContractValidation contractValidation,
-        IOptions<DaktelaOptions> daktelaOptions
-    )
-    {
-        _contractValidation = contractValidation;
-        _daktelaOptions = daktelaOptions.Value;
-    }
 
     public Uri CreateUri(
         string path
@@ -71,23 +65,19 @@ public class HttpRequestFactory : IHttpRequestFactory
     }
 
     public HttpRequestMessage CreateHttpRequestMessage(
-        HttpMethod method, string path, NameValueCollection queryParameters
+        HttpMethod method, string path, ICollection<KeyValuePair<string, string?>> queryParameters
     )
     {
         var uri = CreateUri(path);
 
-        if (queryParameters.HasKeys())
+        if (queryParameters.Count > 0)
         {
-            var parsedQuery = HttpUtility.ParseQueryString(uri.Query);
-
-            foreach (string key in queryParameters.Keys)
-            {
-                parsedQuery[key] = queryParameters[key];
-            }
+            var query = new QueryString(uri.Query);
+            query = query.Add(QueryString.Create(queryParameters));
 
             var uriBuilder = new UriBuilder(uri)
             {
-                Query = parsedQuery.ToString()
+                Query = query.ToString(),
             };
 
             uri = uriBuilder.Uri;
@@ -100,7 +90,7 @@ public class HttpRequestFactory : IHttpRequestFactory
         HttpMethod method, string path, IRequest request
     )
     {
-        var queryDictionary = new NameValueCollection();
+        ICollection<KeyValuePair<string, string?>> queryDictionary = [];
 
         ApplyFields(request, queryDictionary);
         ApplySorting(request, queryDictionary);
@@ -110,19 +100,19 @@ public class HttpRequestFactory : IHttpRequestFactory
         return CreateHttpRequestMessage(method, path, queryDictionary);
     }
 
-    private void ApplyFields(IRequest request, NameValueCollection query)
+    private void ApplyFields(IRequest request, ICollection<KeyValuePair<string, string?>> query)
     {
         if (request is IFieldsQuery { Fields.Items: { } fieldItems })
         {
             for (var i = 0; i < fieldItems.Count; i++)
             {
                 var fieldItem = fieldItems.ElementAt(i);
-                query.Add($"fields[{i}]", fieldItem);
+                query.Add(KeyValuePair.Create<string, string?>($"fields[{i}]", fieldItem));
             }
         }
     }
 
-    private void ApplySorting(IRequest request, NameValueCollection query)
+    private void ApplySorting(IRequest request, ICollection<KeyValuePair<string, string?>> query)
     {
         if (request is ISortableQuery { Sorting: { } sorting })
         {
@@ -134,13 +124,13 @@ public class HttpRequestFactory : IHttpRequestFactory
                     _sortDirectionEnumJsonConverter.ToFirstEnumName(sortItem.Dir)
                 );
 
-                query.Add($"sort[{i}][dir]", sortDir);
-                query.Add($"sort[{i}][field]", sortItem.Field);
+                query.Add(KeyValuePair.Create<string, string?>($"sort[{i}][dir]", sortDir));
+                query.Add(KeyValuePair.Create<string, string?>($"sort[{i}][field]", sortItem.Field));
             }
         }
     }
 
-    private void ApplyFilters(IRequest request, NameValueCollection query)
+    private void ApplyFilters(IRequest request, ICollection<KeyValuePair<string, string?>> query)
     {
         if (request is IFilteringQuery { Filters: { } filters })
         {
@@ -150,7 +140,7 @@ public class HttpRequestFactory : IHttpRequestFactory
         }
     }
 
-    private void SerializeFilters(IFilter filter, NameValueCollection query, string keyPrefix)
+    private void SerializeFilters(IFilter filter, ICollection<KeyValuePair<string, string?>> query, string keyPrefix)
     {
         switch (filter)
         {
@@ -159,18 +149,18 @@ public class HttpRequestFactory : IHttpRequestFactory
                     _filterOperatorEnumJsonConverter.ToFirstEnumName(coreFilter.Operator)
                 );
 
-                query.Add($"{keyPrefix}[field]", coreFilter.Field);
-                query.Add($"{keyPrefix}[operator]", filterOperator);
-                query.Add($"{keyPrefix}[value]", HttpUtility.HtmlEncode(coreFilter.Value));
+                query.Add(KeyValuePair.Create<string, string?>($"{keyPrefix}[field]", coreFilter.Field));
+                query.Add(KeyValuePair.Create<string, string?>($"{keyPrefix}[operator]", filterOperator));
+                query.Add(KeyValuePair.Create<string, string?>($"{keyPrefix}[value]", HttpUtility.HtmlEncode(coreFilter.Value)));
 
                 if (!string.IsNullOrEmpty(coreFilter.Type))
                 {
-                    query.Add($"{keyPrefix}[type]", coreFilter.Type);
+                    query.Add(KeyValuePair.Create<string, string?>($"{keyPrefix}[type]", coreFilter.Type));
                 }
 
                 break;
             case FilterGroup groupFilter:
-                query.Add($"{keyPrefix}[logic]", groupFilter.Logic == EFilterLogic.Or ? "or" : "and");
+                query.Add(KeyValuePair.Create<string, string?>($"{keyPrefix}[logic]", groupFilter.Logic == EFilterLogic.Or ? "or" : "and"));
 
                 for (var i = 0; i < groupFilter.Filters.Count; i++)
                 {
@@ -185,12 +175,12 @@ public class HttpRequestFactory : IHttpRequestFactory
         }
     }
 
-    private void ApplyPagination(IRequest request, NameValueCollection query)
+    private void ApplyPagination(IRequest request, ICollection<KeyValuePair<string, string?>> query)
     {
         if (request is IPagedQuery { Paging: { } paging })
         {
-            query.Add("skip", paging.Skip.ToString());
-            query.Add("take", paging.Take.ToString());
+            query.Add(KeyValuePair.Create<string, string?>("skip", paging.Skip.ToString()));
+            query.Add(KeyValuePair.Create<string, string?>("take", paging.Take.ToString()));
         }
     }
 
@@ -199,7 +189,7 @@ public class HttpRequestFactory : IHttpRequestFactory
             DynamicallyAccessedMemberTypes.PublicFields |
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
-    TBody
+        TBody
     >(
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
@@ -210,7 +200,7 @@ public class HttpRequestFactory : IHttpRequestFactory
     {
         var httpMessage = CreateHttpRequestMessage(method, path);
 
-        var validationResult = _contractValidation.Validate(body, method.Method switch
+        var validationResult = contractValidation.Validate(body, method.Method switch
         {
             "GET" => EOperation.Read,
             "POST" => EOperation.Create,

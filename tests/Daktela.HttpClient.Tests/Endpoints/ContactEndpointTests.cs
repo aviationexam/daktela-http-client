@@ -101,7 +101,7 @@ public class ContactEndpointTests
                 RequestOptionBuilder.CreateAutoPagingRequestOption(false),
                 responseMetadata,
                 cancellationToken
-            ).WithCancellation(cancellationToken)
+            )
         )
         {
             count++;
@@ -168,7 +168,7 @@ public class ContactEndpointTests
                 RequestOptionBuilder.CreateAutoPagingRequestOption(true),
                 responseMetadata,
                 cancellationToken
-            ).WithCancellation(cancellationToken)
+            )
         )
         {
             count++;

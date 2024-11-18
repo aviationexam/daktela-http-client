@@ -3,7 +3,7 @@ using Daktela.HttpClient.Implementations.Endpoints;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Moq;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -44,12 +44,12 @@ public class FileEndpointTests
         const int fileId = 42;
 
         _httpRequestFactoryMock.Setup(x => x.CreateHttpRequestMessage(
-                HttpMethod.Post, "/file/download.php", It.Is<NameValueCollection>(
+                HttpMethod.Post, "/file/download.php", It.Is<ICollection<KeyValuePair<string, string?>>>(
                     i => i.Count == 4
-                         && i["mapper"] == "activitiesComment"
-                         && i["name"] == fileId.ToString()
-                         && i["download"] == "1"
-                         && i["fullsize"] == "1"
+                         && i.Single(q => q.Key == "mapper").Value == "activitiesComment"
+                         && i.Single(q => q.Key == "name").Value == fileId.ToString()
+                         && i.Single(q => q.Key == "download").Value == "1"
+                         && i.Single(q => q.Key == "fullsize").Value == "1"
                 )
             ))
             .Returns(httpRequestMessage)
@@ -124,8 +124,8 @@ public class FileEndpointTests
         const string remoteFileIdentifier = "fileIdentifier";
 
         _httpRequestFactoryMock.Setup(x => x.CreateHttpRequestMessage(
-                HttpMethod.Post, "/file/upload.php", It.Is<NameValueCollection>(
-                    i => i.Count == 1 && i["type"] == "save"
+                HttpMethod.Post, "/file/upload.php", It.Is<ICollection<KeyValuePair<string, string?>>>(
+                    i => i.Count == 1 && i.Single(q => q.Key == "type").Value == "save"
                 )
             ))
             .Returns(httpRequestMessage)

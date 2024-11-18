@@ -9,7 +9,6 @@ using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -20,23 +19,12 @@ using System.Threading.Tasks;
 
 namespace Daktela.HttpClient.Implementations.Endpoints;
 
-public class MergeEndpoint : IMergeEndpoint
+public class MergeEndpoint(
+    IDaktelaHttpClient daktelaHttpClient,
+    IHttpRequestFactory httpRequestFactory,
+    IHttpResponseParser httpResponseParser
+) : IMergeEndpoint
 {
-    private readonly IDaktelaHttpClient _daktelaHttpClient;
-    private readonly IHttpRequestFactory _httpRequestFactory;
-    private readonly IHttpResponseParser _httpResponseParser;
-
-    public MergeEndpoint(
-        IDaktelaHttpClient daktelaHttpClient,
-        IHttpRequestFactory httpRequestFactory,
-        IHttpResponseParser httpResponseParser
-    )
-    {
-        _daktelaHttpClient = daktelaHttpClient;
-        _httpRequestFactory = httpRequestFactory;
-        _httpResponseParser = httpResponseParser;
-    }
-
     public Task<SingleResponse<ReadContact>> MergeContactsAsync(
         IReadOnlyCollection<string> items,
         CancellationToken cancellationToken
@@ -93,19 +81,19 @@ public class MergeEndpoint : IMergeEndpoint
         var path = GePath(type);
         var typeAsQueryString = GetTypeAsQueryString(type);
 
-        var queryParameters = new NameValueCollection();
+        ICollection<KeyValuePair<string, string?>> queryParameters = [];
         for (var i = 0; i < items.Count; i++)
         {
-            queryParameters.Add($"{typeAsQueryString}[{i}]", items.ElementAt(i));
+            queryParameters.Add(KeyValuePair.Create<string, string?>($"{typeAsQueryString}[{i}]", items.ElementAt(i)));
         }
 
-        using var httpRequestMessage = _httpRequestFactory.CreateHttpRequestMessage(
+        using var httpRequestMessage = httpRequestFactory.CreateHttpRequestMessage(
             HttpMethod.Post,
             path,
             queryParameters
         );
 
-        using var httpResponse = await _daktelaHttpClient.RawSendAsync(
+        using var httpResponse = await daktelaHttpClient.RawSendAsync(
             httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken
         ).ConfigureAwait(false);
 
@@ -115,7 +103,7 @@ public class MergeEndpoint : IMergeEndpoint
             case HttpStatusCode.OK:
                 try
                 {
-                    var response = await _httpResponseParser.ParseResponseAsync(
+                    var response = await httpResponseParser.ParseResponseAsync(
                         httpResponse.Content,
                         jsonTypeInfoForResponseType,
                         cancellationToken

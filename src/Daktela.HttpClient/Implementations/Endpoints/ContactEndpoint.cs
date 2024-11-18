@@ -15,34 +15,21 @@ using System.Web;
 
 namespace Daktela.HttpClient.Implementations.Endpoints;
 
-public class ContactEndpoint : IContactEndpoint
+public class ContactEndpoint(
+    IDaktelaHttpClient daktelaHttpClient,
+    IHttpRequestSerializer httpRequestSerializer,
+    IHttpResponseParser httpResponseParser,
+    IPagedResponseProcessor<IContactEndpoint> pagedResponseProcessor
+) : IContactEndpoint
 {
-    private readonly IDaktelaHttpClient _daktelaHttpClient;
-    private readonly IHttpRequestSerializer _httpRequestSerializer;
-    private readonly IHttpResponseParser _httpResponseParser;
-    private readonly IPagedResponseProcessor<IContactEndpoint> _pagedResponseProcessor;
-
-    public ContactEndpoint(
-        IDaktelaHttpClient daktelaHttpClient,
-        IHttpRequestSerializer httpRequestSerializer,
-        IHttpResponseParser httpResponseParser,
-        IPagedResponseProcessor<IContactEndpoint> pagedResponseProcessor
-    )
-    {
-        _daktelaHttpClient = daktelaHttpClient;
-        _httpRequestSerializer = httpRequestSerializer;
-        _httpResponseParser = httpResponseParser;
-        _pagedResponseProcessor = pagedResponseProcessor;
-    }
-
     public async Task<ReadContact> GetContactAsync(
         string name, CancellationToken cancellationToken
     )
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        var contact = await _daktelaHttpClient.GetAsync(
-            _httpResponseParser,
+        var contact = await daktelaHttpClient.GetAsync(
+            httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             DaktelaJsonSerializerContext.Default.SingleResponseReadContact,
             cancellationToken
@@ -56,14 +43,14 @@ public class ContactEndpoint : IContactEndpoint
         IRequestOption requestOption,
         IResponseBehaviour responseBehaviour,
         CancellationToken cancellationToken
-    ) => _pagedResponseProcessor.InvokeAsync(
+    ) => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser
+            daktelaHttpClient,
+            httpResponseParser,
         },
         async static (
             request,
@@ -83,9 +70,9 @@ public class ContactEndpoint : IContactEndpoint
 
     public async Task CreateContactAsync(
         CreateContact contact, CancellationToken cancellationToken
-    ) => await _daktelaHttpClient.PostAsync(
-        _httpRequestSerializer,
-        _httpResponseParser,
+    ) => await daktelaHttpClient.PostAsync(
+        httpRequestSerializer,
+        httpResponseParser,
         $"{IContactEndpoint.UriPrefix}{IContactEndpoint.UriPostfix}",
         contact,
         DaktelaJsonSerializerContext.Default.CreateContact,
@@ -101,9 +88,9 @@ public class ContactEndpoint : IContactEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        return await _daktelaHttpClient.PutAsync(
-            _httpRequestSerializer,
-            _httpResponseParser,
+        return await daktelaHttpClient.PutAsync(
+            httpRequestSerializer,
+            httpResponseParser,
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             contact,
             DaktelaJsonSerializerContext.Default.UpdateContact,
@@ -118,7 +105,7 @@ public class ContactEndpoint : IContactEndpoint
     {
         var encodedName = HttpUtility.UrlEncode(name);
 
-        await _daktelaHttpClient.DeleteAsync(
+        await daktelaHttpClient.DeleteAsync(
             $"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}",
             cancellationToken
         ).ConfigureAwait(false);
@@ -132,14 +119,14 @@ public class ContactEndpoint : IContactEndpoint
         CancellationToken cancellationToken
     )
         where TRequest : IRequest, IFieldsQuery
-        where TResult : class, IFieldResult => _pagedResponseProcessor.InvokeAsync(
+        where TResult : class, IFieldResult => pagedResponseProcessor.InvokeAsync(
         request,
         requestOption,
         responseBehaviour,
         new
         {
-            daktelaHttpClient = _daktelaHttpClient,
-            httpResponseParser = _httpResponseParser,
+            daktelaHttpClient,
+            httpResponseParser,
             jsonTypeInfoForResponseType,
         },
         async static (
