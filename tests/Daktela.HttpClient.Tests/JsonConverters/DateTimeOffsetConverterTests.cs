@@ -56,7 +56,7 @@ public class DateTimeOffsetConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""date-time"":""0001-01-01 00:00:00"",""nullable-date-time"":null}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"date-time":"0001-01-01 00:00:00","nullable-date-time":null}""", jsonContract);
     }
 
     [Theory]
@@ -68,7 +68,7 @@ public class DateTimeOffsetConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync(
-            @"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}");
+            /* lang=json */"""{"date-time":"2022-03-04 00:00:00","nullable-date-time":"2022-03-04 00:00:00"}""");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -92,7 +92,7 @@ public class DateTimeOffsetConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync(
-            @"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}"
+            /* lang=json */"""{"date-time":"2022-03-04 00:00:00","nullable-date-time":"2022-03-04 00:00:00"}"""
         );
         await streamWriter.FlushAsync();
         streamWriter.Close();
@@ -127,7 +127,7 @@ public class DateTimeOffsetConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}",
+        Assert.Equal( /* lang=json */"""{"date-time":"2022-03-04 00:00:00","nullable-date-time":"2022-03-04 00:00:00"}""",
             jsonContract);
     }
 
@@ -155,7 +155,7 @@ public class DateTimeOffsetConverterTests
 
         Assert.NotNull(jsonContract);
         Assert.Equal(
-            @"{""date-time"":""2022-03-04 00:00:00"",""nullable-date-time"":""2022-03-04 00:00:00""}",
+            /* lang=json */ """{"date-time":"2022-03-04 00:00:00","nullable-date-time":"2022-03-04 00:00:00"}""",
             jsonContract
         );
     }

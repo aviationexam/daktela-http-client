@@ -54,7 +54,7 @@ public class TimeSpanConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""delay"":0,""nullable-delay"":null}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"delay":0,"nullable-delay":null}""", jsonContract);
     }
 
     [Theory]
@@ -65,7 +65,7 @@ public class TimeSpanConverterTests
 
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync($@"{{""delay"":{input},""nullable-delay"":{input}}}");
+        await streamWriter.WriteAsync( /* lang=json */$$"""{"delay":{{input}},"nullable-delay":{{input}}}""");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -98,7 +98,7 @@ public class TimeSpanConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal($@"{{""delay"":{input},""nullable-delay"":{input}}}", jsonContract);
+        Assert.Equal(/* lang=json */$$"""{"delay":{{input}},"nullable-delay":{{input}}}""", jsonContract);
     }
 
     private void AddTimeSpanConverter()

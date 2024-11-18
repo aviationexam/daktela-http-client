@@ -41,7 +41,7 @@ public class CustomFieldsConverterTests
     {
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(@"{""custom-fields"":[],""nullable-custom-fields"":[]}");
+        await streamWriter.WriteAsync( /* lang=json */"""{"custom-fields":[],"nullable-custom-fields":[]}""");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -67,7 +67,7 @@ public class CustomFieldsConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""custom-fields"":null,""nullable-custom-fields"":null}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"custom-fields":null,"nullable-custom-fields":null}""", jsonContract);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class CustomFieldsConverterTests
     {
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
-        await streamWriter.WriteAsync(@"{""custom-fields"":{""A"":[""b""]},""nullable-custom-fields"":{""C"":[""d""]}}");
+        await streamWriter.WriteAsync( /* lang=json */"""{"custom-fields":{"A":["b"]},"nullable-custom-fields":{"C":["d"]}}""");
         await streamWriter.FlushAsync();
         streamWriter.Close();
 
@@ -107,7 +107,7 @@ public class CustomFieldsConverterTests
         var jsonContract = await streamReader.ReadToEndAsync();
 
         Assert.NotNull(jsonContract);
-        Assert.Equal(@"{""custom-fields"":{""A"":[""b""]},""nullable-custom-fields"":{""C"":[""d""]}}", jsonContract);
+        Assert.Equal( /* lang=json */"""{"custom-fields":{"A":["b"]},"nullable-custom-fields":{"C":["d"]}}""", jsonContract);
     }
 
     private class Contract
