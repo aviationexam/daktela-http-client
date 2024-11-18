@@ -185,11 +185,13 @@ public class HttpRequestFactory(
     }
 
     public HttpRequestMessage CreateHttpRequestMessage<
+#pragma warning disable format
         [DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.PublicFields |
             DynamicallyAccessedMemberTypes.PublicProperties
         )]
         TBody
+#pragma warning restore format
     >(
         IHttpRequestSerializer httpRequestSerializer,
         HttpMethod method,
