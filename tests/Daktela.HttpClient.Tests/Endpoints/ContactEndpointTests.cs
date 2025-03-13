@@ -49,7 +49,7 @@ public class ContactEndpointTests
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}", "simple-contact"
         );
 
-        var contact = await _contactEndpoint.GetContactAsync(name);
+        var contact = await _contactEndpoint.GetContactAsync(name, TestContext.Current.CancellationToken);
 
         Assert.NotNull(contact);
         Assert.Equal(name, contact.Name);
@@ -68,7 +68,7 @@ public class ContactEndpointTests
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}", "simple-contact-with-user"
         );
 
-        var contact = await _contactEndpoint.GetContactAsync(name);
+        var contact = await _contactEndpoint.GetContactAsync(name, TestContext.Current.CancellationToken);
 
         Assert.NotNull(contact);
         Assert.Equal(name, contact.Name);
@@ -204,8 +204,8 @@ public class ContactEndpointTests
             Name = name
         };
 
-        var exception = await Assert.ThrowsAsync<BadRequestException<ReadContact>>(
-            () => _contactEndpoint.CreateContactAsync(contract)
+        var exception = await Assert.ThrowsAsync<BadRequestException<ReadContact>>(() =>
+            _contactEndpoint.CreateContactAsync(contract, TestContext.Current.CancellationToken)
         );
 
         Assert.NotNull(exception.Contract);
@@ -240,7 +240,7 @@ public class ContactEndpointTests
             $"{IContactEndpoint.UriPrefix}/{name}{IContactEndpoint.UriPostfix}"
         );
 
-        await _contactEndpoint.DeleteContactAsync(name);
+        await _contactEndpoint.DeleteContactAsync(name, TestContext.Current.CancellationToken);
     }
 
     private class TotalRecordsResponseBehaviour : ITotalRecordsResponseBehaviour

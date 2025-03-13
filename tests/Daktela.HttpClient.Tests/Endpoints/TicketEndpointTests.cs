@@ -39,7 +39,7 @@ public class TicketEndpointTests
         using var _ = _daktelaHttpClientMock.MockHttpGetResponse<ReadTicket>(
             $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}", "simple-ticket-response"
         );
-        var ticket = await _ticketEndpoint.GetTicketAsync(name);
+        var ticket = await _ticketEndpoint.GetTicketAsync(name, TestContext.Current.CancellationToken);
 
         Assert.NotNull(ticket);
         Assert.NotNull(ticket.User);
@@ -61,6 +61,6 @@ public class TicketEndpointTests
             $"{ITicketEndpoint.UriPrefix}/{name}{ITicketEndpoint.UriPostfix}"
         );
 
-        await _ticketEndpoint.DeleteTicketAsync(name);
+        await _ticketEndpoint.DeleteTicketAsync(name, TestContext.Current.CancellationToken);
     }
 }

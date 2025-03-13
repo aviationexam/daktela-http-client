@@ -17,7 +17,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Daktela.HttpClient.Tests.Integration;
 
