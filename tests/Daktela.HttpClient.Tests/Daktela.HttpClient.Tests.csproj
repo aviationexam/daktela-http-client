@@ -10,6 +10,11 @@
     <ProjectName>Tests.HttpClient</ProjectName>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
+
   <Import Project="..\..\src\WarningConfiguration.targets" />
 
   <ItemGroup>
