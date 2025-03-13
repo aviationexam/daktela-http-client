@@ -14,12 +14,7 @@ namespace Daktela.HttpClient.Tests.JsonConverters;
 
 public class DateTimeOffsetConverterTests
 {
-    private readonly JsonSerializerOptions _jsonSerializerOptions;
-
-    public DateTimeOffsetConverterTests()
-    {
-        _jsonSerializerOptions = new JsonSerializerOptions();
-    }
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new();
 
     [Fact]
     public async Task DeserializeEmptyWorks()
@@ -29,12 +24,12 @@ public class DateTimeOffsetConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync("{}");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         Assert.Equal(default, parsedObject.DateTime);
@@ -48,12 +43,12 @@ public class DateTimeOffsetConverterTests
 
         await using var memoryStream = new MemoryStream();
 
-        await JsonSerializer.SerializeAsync(memoryStream, new Contract(), _jsonSerializerOptions);
+        await JsonSerializer.SerializeAsync(memoryStream, new Contract(), _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal( /* lang=json */"""{"date-time":"0001-01-01 00:00:00","nullable-date-time":null}""", jsonContract);
@@ -69,12 +64,12 @@ public class DateTimeOffsetConverterTests
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync(
             /* lang=json */"""{"date-time":"2022-03-04 00:00:00","nullable-date-time":"2022-03-04 00:00:00"}""");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         Assert.Equal(new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan), parsedObject.DateTime);
@@ -94,12 +89,12 @@ public class DateTimeOffsetConverterTests
         await streamWriter.WriteAsync(
             /* lang=json */"""{"date-time":"2022-03-04 00:00:00","nullable-date-time":"2022-03-04 00:00:00"}"""
         );
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         var dateTimeOffset = timeZoneInstance.GetUtcOffset(DateTimeOffset.Now);
@@ -119,12 +114,12 @@ public class DateTimeOffsetConverterTests
         {
             DateTime = new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan),
             NullableDateTime = new DateTimeOffset(2022, 3, 4, 0, 0, 0, timeSpan),
-        }, _jsonSerializerOptions);
+        }, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal( /* lang=json */"""{"date-time":"2022-03-04 00:00:00","nullable-date-time":"2022-03-04 00:00:00"}""",
@@ -146,12 +141,12 @@ public class DateTimeOffsetConverterTests
         {
             DateTime = new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset),
             NullableDateTime = new DateTimeOffset(2022, 3, 4, 0, 0, 0, dateTimeOffset),
-        }, _jsonSerializerOptions);
+        }, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal(

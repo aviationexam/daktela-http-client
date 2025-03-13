@@ -24,12 +24,12 @@ public class CustomFieldsConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync("{}");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         Assert.Null(parsedObject.CustomFields);
@@ -42,12 +42,12 @@ public class CustomFieldsConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync( /* lang=json */"""{"custom-fields":[],"nullable-custom-fields":[]}""");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         Assert.Empty(Assert.IsType<CustomFields>(parsedObject.CustomFields));
@@ -59,12 +59,12 @@ public class CustomFieldsConverterTests
     {
         await using var memoryStream = new MemoryStream();
 
-        await JsonSerializer.SerializeAsync(memoryStream, new Contract(), _jsonSerializerOptions);
+        await JsonSerializer.SerializeAsync(memoryStream, new Contract(), _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal( /* lang=json */"""{"custom-fields":null,"nullable-custom-fields":null}""", jsonContract);
@@ -76,12 +76,12 @@ public class CustomFieldsConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync( /* lang=json */"""{"custom-fields":{"A":["b"]},"nullable-custom-fields":{"C":["d"]}}""");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         var customFields = Assert.IsType<CustomFields>(parsedObject.CustomFields);
@@ -99,12 +99,12 @@ public class CustomFieldsConverterTests
         {
             CustomFields = new CustomFields { ["A"] = ["b"] },
             NullableCustomFields = new CustomFields { ["C"] = ["d"] },
-        }, _jsonSerializerOptions);
+        }, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal( /* lang=json */"""{"custom-fields":{"A":["b"]},"nullable-custom-fields":{"C":["d"]}}""", jsonContract);

@@ -44,21 +44,21 @@ public class FileEndpointTests
         const int fileId = 42;
 
         _httpRequestFactoryMock.Setup(x => x.CreateHttpRequestMessage(
-                HttpMethod.Post, "/file/download.php", It.Is<ICollection<KeyValuePair<string, string?>>>(
-                    i => i.Count == 4
-                         && i.Single(q => q.Key == "mapper").Value == "activitiesComment"
-                         && i.Single(q => q.Key == "name").Value == fileId.ToString()
-                         && i.Single(q => q.Key == "download").Value == "1"
-                         && i.Single(q => q.Key == "fullsize").Value == "1"
+                HttpMethod.Post, "/file/download.php", It.Is<ICollection<KeyValuePair<string, string?>>>(i =>
+                    i.Count == 4
+                    && i.Single(q => q.Key == "mapper").Value == "activitiesComment"
+                    && i.Single(q => q.Key == "name").Value == fileId.ToString()
+                    && i.Single(q => q.Key == "download").Value == "1"
+                    && i.Single(q => q.Key == "fullsize").Value == "1"
                 )
             ))
             .Returns(httpRequestMessage)
             .Verifiable();
 
         _daktelaHttpClientMock.Setup(x => x.RawSendAsync(
-                It.Is<HttpRequestMessage>(
-                    i => i == httpRequestMessage
-                         && i.Content == null
+                It.Is<HttpRequestMessage>(i =>
+                    i == httpRequestMessage
+                    && i.Content == null
                 ),
                 HttpCompletionOption.ResponseHeadersRead,
                 It.IsAny<CancellationToken>()
@@ -124,17 +124,17 @@ public class FileEndpointTests
         const string remoteFileIdentifier = "fileIdentifier";
 
         _httpRequestFactoryMock.Setup(x => x.CreateHttpRequestMessage(
-                HttpMethod.Post, "/file/upload.php", It.Is<ICollection<KeyValuePair<string, string?>>>(
-                    i => i.Count == 1 && i.Single(q => q.Key == "type").Value == "save"
+                HttpMethod.Post, "/file/upload.php", It.Is<ICollection<KeyValuePair<string, string?>>>(i =>
+                    i.Count == 1 && i.Single(q => q.Key == "type").Value == "save"
                 )
             ))
             .Returns(httpRequestMessage)
             .Verifiable();
 
         _daktelaHttpClientMock.Setup(x => x.RawSendAsync(
-                It.Is<HttpRequestMessage>(
-                    i => i == httpRequestMessage
-                         && i.Content is MultipartFormDataContent
+                It.Is<HttpRequestMessage>(i =>
+                    i == httpRequestMessage
+                    && i.Content is MultipartFormDataContent
                 ), It.IsAny<CancellationToken>()
             ))
             .ReturnsAsync(static (HttpRequestMessage httpRequestMessage, CancellationToken _) =>
@@ -151,8 +151,7 @@ public class FileEndpointTests
             .Verifiable();
 
         var fileIdentifier = await _fileEndpoint.UploadFileAsync(
-            uploadFileStream,
-            uploadFileName
+            uploadFileStream, uploadFileName, TestContext.Current.CancellationToken
         );
 
         _httpRequestFactoryMock.Verify();

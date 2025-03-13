@@ -24,12 +24,12 @@ public class EnumsConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync("{}");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         Assert.Equal(default, parsedObject.ExtensionState);
@@ -41,12 +41,12 @@ public class EnumsConverterTests
     {
         await using var memoryStream = new MemoryStream();
 
-        await JsonSerializer.SerializeAsync(memoryStream, new Contract(), _jsonSerializerOptions);
+        await JsonSerializer.SerializeAsync(memoryStream, new Contract(), _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal( /* lang=json */"""{"extension-state":"online","nullable-extension-state":null}""", jsonContract);
@@ -58,12 +58,12 @@ public class EnumsConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync( /* lang=json */"""{"extension-state":"offline","nullable-extension-state":"busy"}""");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         Assert.Equal(EExtensionState.Offline, parsedObject.ExtensionState);
@@ -79,12 +79,12 @@ public class EnumsConverterTests
         {
             ExtensionState = EExtensionState.Offline,
             NullableExtensionState = EExtensionState.Busy,
-        }, _jsonSerializerOptions);
+        }, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal( /* lang=json */"""{"extension-state":"offline","nullable-extension-state":"busy"}""", jsonContract);

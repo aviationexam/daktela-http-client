@@ -12,12 +12,7 @@ namespace Daktela.HttpClient.Tests.JsonConverters;
 
 public class TimeSpanConverterTests
 {
-    private readonly JsonSerializerOptions _jsonSerializerOptions;
-
-    public TimeSpanConverterTests()
-    {
-        _jsonSerializerOptions = new JsonSerializerOptions();
-    }
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new();
 
     [Fact]
     public async Task DeserializeEmptyWorks()
@@ -27,15 +22,15 @@ public class TimeSpanConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync("{}");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
-        Assert.Equal(default, parsedObject.TimeSpan);
+        Assert.Equal(TimeSpan.Zero, parsedObject.TimeSpan);
         Assert.Null(parsedObject.NullableTimeSpan);
     }
 
@@ -46,12 +41,12 @@ public class TimeSpanConverterTests
 
         await using var memoryStream = new MemoryStream();
 
-        await JsonSerializer.SerializeAsync(memoryStream, new Contract(), _jsonSerializerOptions);
+        await JsonSerializer.SerializeAsync(memoryStream, new Contract(), _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal( /* lang=json */"""{"delay":0,"nullable-delay":null}""", jsonContract);
@@ -66,12 +61,12 @@ public class TimeSpanConverterTests
         await using var memoryStream = new MemoryStream();
         await using var streamWriter = new StreamWriter(memoryStream, leaveOpen: true);
         await streamWriter.WriteAsync( /* lang=json */$$"""{"delay":{{input}},"nullable-delay":{{input}}}""");
-        await streamWriter.FlushAsync();
+        await streamWriter.FlushAsync(TestContext.Current.CancellationToken);
         streamWriter.Close();
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
-        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions);
+        var parsedObject = await JsonSerializer.DeserializeAsync<Contract>(memoryStream, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         Assert.NotNull(parsedObject);
         Assert.Equal(timeSpan, parsedObject.TimeSpan);
@@ -90,12 +85,12 @@ public class TimeSpanConverterTests
         {
             TimeSpan = timeSpan,
             NullableTimeSpan = timeSpan,
-        }, _jsonSerializerOptions);
+        }, _jsonSerializerOptions, TestContext.Current.CancellationToken);
 
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         using var streamReader = new StreamReader(memoryStream);
-        var jsonContract = await streamReader.ReadToEndAsync();
+        var jsonContract = await streamReader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         Assert.NotNull(jsonContract);
         Assert.Equal(/* lang=json */$$"""{"delay":{{input}},"nullable-delay":{{input}}}""", jsonContract);
