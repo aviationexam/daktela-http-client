@@ -11,20 +11,11 @@ using System.Threading.Tasks;
 
 namespace Daktela.HttpClient.Tests.Infrastructure
 {
-    public class HttpClientLoggingScopeHttpMessageHandler : DelegatingHandler
+    public class HttpClientLoggingScopeHttpMessageHandler(
+        ILogger scopeLogger,
+        ILogger requestLogger
+    ) : DelegatingHandler
     {
-        private readonly ILogger _scopeLogger;
-        private readonly ILogger _requestLogger;
-
-        public HttpClientLoggingScopeHttpMessageHandler(
-            ILogger scopeLogger,
-            ILogger requestLogger
-        )
-        {
-            _scopeLogger = scopeLogger ?? throw new ArgumentNullException(nameof(scopeLogger));
-            _requestLogger = requestLogger ?? throw new ArgumentNullException(nameof(requestLogger));
-        }
-
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (request == null)
@@ -32,11 +23,11 @@ namespace Daktela.HttpClient.Tests.Infrastructure
                 throw new ArgumentNullException(nameof(request));
             }
 
-            using var log = Log.BeginRequestPipelineScope(_scopeLogger, request);
+            using var log = Log.BeginRequestPipelineScope(scopeLogger, request);
 
-            await log.RequestPipelineStart(_requestLogger, request, cancellationToken);
+            await log.RequestPipelineStart(requestLogger, request, cancellationToken);
             var response = await base.SendAsync(request, cancellationToken);
-            await log.RequestPipelineEnd(_requestLogger, response, cancellationToken);
+            await log.RequestPipelineEnd(requestLogger, response, cancellationToken);
 
             return response;
         }
