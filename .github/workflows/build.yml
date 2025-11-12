@@ -23,15 +23,18 @@ jobs:
             10.0.x
       - uses: actions/checkout@v5
       - name: Restore
-        run: dotnet restore --nologo src
+        run: dotnet restore --nologo
+        working-directory: src
       - name: Build
-        run: dotnet build --no-restore --nologo --configuration Release src
+        run: dotnet build --no-restore --nologo --configuration Release
+        working-directory: src
       - name: Test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DAKTELA_ApiKey: ${{ secrets.DAKTELA_API_KEY }}
           DAKTELA_BaseUrl: ${{ secrets.DAKTELA_BASE_URL }}
-        run: dotnet test --no-build --configuration Release src
+        run: dotnet test --no-build --configuration Release
+        working-directory: src
 
   code-style:
     runs-on: ubuntu-latest
