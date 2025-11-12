@@ -7,7 +7,6 @@ using Daktela.HttpClient.Implementations;
 using Daktela.HttpClient.Interfaces;
 using Daktela.HttpClient.Interfaces.Endpoints;
 using Daktela.HttpClient.Tests.Infrastructure;
-using Daktela.HttpClient.Tests.Infrastructure.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,16 +19,11 @@ using Xunit;
 
 namespace Daktela.HttpClient.Tests.Integration;
 
-public class IntegrationTests
+public class IntegrationTests(
+    ITestOutputHelper testOutputHelper
+)
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public IntegrationTests(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-    }
-
-    [ManualFact]
+    [Fact(Explicit = true)]
     public void EmptyInfrastructureTest()
     {
         using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
@@ -40,11 +34,11 @@ public class IntegrationTests
     }
 
     [Theory]
-    [ManualInlineData("testing_user")]
+    [InlineData("testing_user", Explicit = true)]
     public async Task CreateContact(string name)
     {
         name = $"{name}_{DateTime.Now.Ticks}";
-        _testOutputHelper.WriteLine($"Create user {name}");
+        testOutputHelper.WriteLine($"Create user {name}");
 
         await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
 
@@ -106,7 +100,7 @@ public class IntegrationTests
         await daktelaHttpClient.DeleteAsync($"{IContactEndpoint.UriPrefix}/{encodedName}{IContactEndpoint.UriPostfix}", cancellationToken);
     }
 
-    [ManualFact]
+    [Fact(Explicit = true)]
     public async Task GetTicketsCategories()
     {
         await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
@@ -134,7 +128,7 @@ public class IntegrationTests
     }
 
     [Theory]
-    [ManualInlineData("testing_user_637872717018821366", null!)]
+    [InlineData("testing_user_637872717018821366", null, Explicit = true)]
     public async Task CreateTicket(string contact, string? user)
     {
         await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
@@ -179,7 +173,7 @@ public class IntegrationTests
     }
 
     [Theory]
-    [ManualInlineData(9673, null!, "https://www.daktela.com/wp-content/uploads/2020/04/cropped-512x512-32x32.png", "favicon.png")]
+    [InlineData(9673, null!, "https://www.daktela.com/wp-content/uploads/2020/04/cropped-512x512-32x32.png", "favicon.png", Explicit = true)]
     public async Task CreateTicketActivity(int ticketId, string? user, string fileUrl, string fileName)
     {
         await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
@@ -234,7 +228,7 @@ public class IntegrationTests
     }
 
     [Theory]
-    [ManualInlineData(9673, "https://www.daktela.com/wp-content/uploads/2020/04/cropped-512x512-32x32.png", "favicon.png")]
+    [InlineData(9673, "https://www.daktela.com/wp-content/uploads/2020/04/cropped-512x512-32x32.png", "favicon.png", Explicit = true)]
     public async Task CreateTicketActivityThroughTicket(int ticketId, string fileUrl, string fileName)
     {
         await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
@@ -283,7 +277,7 @@ public class IntegrationTests
     }
 
     [Theory]
-    [ManualInlineData("https://www.daktela.com/wp-content/uploads/2020/04/cropped-512x512-32x32.png", ".png")]
+    [InlineData("https://www.daktela.com/wp-content/uploads/2020/04/cropped-512x512-32x32.png", ".png", Explicit = true)]
     public async Task UploadFileWorks(string fileUrl, string fileExtension)
     {
         await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
@@ -318,7 +312,7 @@ public class IntegrationTests
     }
 
     [Theory]
-    [ManualInlineData(EFileSource.ActivitiesComment, 3)]
+    [InlineData(EFileSource.ActivitiesComment, 3, Explicit = true)]
     public async Task DownloadFileWorks(EFileSource fileSource, long fileName)
     {
         await using var serviceProvider = TestHttpClientFactory.CreateServiceProvider();
