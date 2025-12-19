@@ -28,6 +28,11 @@ updates:
     registries:
       - nuget
       - json-converter-source-generator
+    ignore:
+      - dependency-name: "Microsoft.*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "System.*"
+        update-types: ["version-update:semver-major"]
     groups:
       microsoft:
         patterns:
