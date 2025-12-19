@@ -1,0 +1,39 @@
+# Configuration file for Aviationexam.DependencyUpdater
+# Documentation: https://github.com/aviationexam/Aviationexam.DependencyUpdater
+
+version: 2
+
+registries:
+  nuget:
+    type: nuget-feed
+    url: https://api.nuget.org/v3/index.json
+    nuget-feed-version: V3
+  
+  json-converter-source-generator:
+    type: nuget-feed
+    url: https://f.feedz.io/aviationexam/json-converter-source-generator/nuget/index.json
+    nuget-feed-version: V3
+
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    targetFramework: net10.0
+    execute-restore: true
+    target-branch: main
+    reviewers:
+      - "trejjam" # Jan Trejbal
+    commit-message:
+      prefix: "chore"
+      include: "scope" # Adds the dependency name to the commit message
+    registries:
+      - nuget
+      - json-converter-source-generator
+    groups:
+      microsoft:
+        patterns:
+          - Microsoft.*
+          - System.*
+      xunit:
+        patterns:
+          - xunit
+          - xunit.*
