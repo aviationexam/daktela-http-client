@@ -38,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DAKTELA_ApiKey: ${{ secrets.DAKTELA_API_KEY }}
           DAKTELA_BaseUrl: ${{ secrets.DAKTELA_BASE_URL }}
-        run: dotnet test --no-build --configuration Release --results-directory TestResults --report-trx
+        run: dotnet test --no-build --configuration Release --results-directory ../TestResults --report-trx
         working-directory: src
 
       - name: 📄 Publish test results
@@ -46,7 +46,7 @@ jobs:
         if: always()
         with:
           name: 'xUnit Test Results'
-          path: 'src/TestResults/*.trx'
+          path: 'TestResults/*.trx'
           reporter: dotnet-trx
 
   code-style:
