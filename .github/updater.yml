@@ -8,7 +8,7 @@ registries:
     type: nuget-feed
     url: https://api.nuget.org/v3/index.json
     nuget-feed-version: V3
-  
+
   json-converter-source-generator:
     type: nuget-feed
     url: https://f.feedz.io/aviationexam/json-converter-source-generator/nuget/index.json
@@ -17,6 +17,7 @@ registries:
 updates:
   - package-ecosystem: "nuget"
     directory: "/"
+    restore-directory: "src"
     targetFramework: net10.0
     execute-restore: true
     target-branch: main
