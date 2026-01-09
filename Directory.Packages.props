@@ -52,7 +52,7 @@
 
   <!-- Transitive dependencies - Framework-independent -->
   <ItemGroup>
-    <PackageVersion Include="Castle.Core" Version="5.1.1" />
+    <PackageVersion Include="Castle.Core" Version="5.2.1" />
     <PackageVersion Include="Microsoft.ApplicationInsights" Version="2.23.0" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
     <PackageVersion Include="Microsoft.DiaSymReader" Version="2.0.0" />
