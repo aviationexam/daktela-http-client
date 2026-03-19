@@ -4,9 +4,9 @@
     "net10.0": {
       "Aviationexam.GeneratedJsonConverters.SourceGenerator": {
         "type": "Direct",
-        "requested": "[0.6.0, )",
-        "resolved": "0.6.0",
-        "contentHash": "lJkTpxcF3iwTs1Ie5oEmL44s1WKJt4XYXZ1Tm5il/pbxV/3dsVhbDwyzsspaoEcsaDAAgXeErKn33OmHfxb9ow=="
+        "requested": "[0.6.3, )",
+        "resolved": "0.6.3",
+        "contentHash": "uXMPurvQxvqPuGs8/88pd+wcTWuLBm4kwI4OqkVfu45vpZsZrrR+mnx5CVf0zvA9wFpWW8XWW7Slkfen9Z6WBQ=="
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
@@ -18,9 +18,9 @@
     "net8.0": {
       "Aviationexam.GeneratedJsonConverters.SourceGenerator": {
         "type": "Direct",
-        "requested": "[0.6.0, )",
-        "resolved": "0.6.0",
-        "contentHash": "lJkTpxcF3iwTs1Ie5oEmL44s1WKJt4XYXZ1Tm5il/pbxV/3dsVhbDwyzsspaoEcsaDAAgXeErKn33OmHfxb9ow=="
+        "requested": "[0.6.3, )",
+        "resolved": "0.6.3",
+        "contentHash": "uXMPurvQxvqPuGs8/88pd+wcTWuLBm4kwI4OqkVfu45vpZsZrrR+mnx5CVf0zvA9wFpWW8XWW7Slkfen9Z6WBQ=="
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
@@ -32,9 +32,9 @@
     "net9.0": {
       "Aviationexam.GeneratedJsonConverters.SourceGenerator": {
         "type": "Direct",
-        "requested": "[0.6.0, )",
-        "resolved": "0.6.0",
-        "contentHash": "lJkTpxcF3iwTs1Ie5oEmL44s1WKJt4XYXZ1Tm5il/pbxV/3dsVhbDwyzsspaoEcsaDAAgXeErKn33OmHfxb9ow=="
+        "requested": "[0.6.3, )",
+        "resolved": "0.6.3",
+        "contentHash": "uXMPurvQxvqPuGs8/88pd+wcTWuLBm4kwI4OqkVfu45vpZsZrrR+mnx5CVf0zvA9wFpWW8XWW7Slkfen9Z6WBQ=="
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
