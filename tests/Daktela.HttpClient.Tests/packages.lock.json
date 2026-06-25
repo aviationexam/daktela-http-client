@@ -819,13 +819,13 @@
       },
       "Microsoft.Extensions.Logging": {
         "type": "Direct",
-        "requested": "[9.0.16, )",
-        "resolved": "9.0.16",
-        "contentHash": "EDI3wGfdlvcOSfYC00NaqW60JibBN7iHlJrrlQwL2cjW+ajDWC+ajGd0oX8iSGNfQRdM8/YMTw4Dk/9xPmpubA==",
+        "requested": "[9.0.17, )",
+        "resolved": "9.0.17",
+        "contentHash": "AVSl8TzLNiNA2CbDAdVH3qGIwY3SB3XCw7MebMnFRTF4L/BQTdvcknLTiRlJaJULMKaf3JecYiUjB6LbWAtt+g==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "9.0.16",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.16",
-          "Microsoft.Extensions.Options": "9.0.16"
+          "Microsoft.Extensions.DependencyInjection": "9.0.17",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.17",
+          "Microsoft.Extensions.Options": "9.0.17"
         }
       },
       "Microsoft.Extensions.Logging.Console": {
