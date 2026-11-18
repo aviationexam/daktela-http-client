@@ -39,6 +39,9 @@ updates:
         patterns:
           - Microsoft.*
           - System.*
+      generated-json-converters:
+        patterns:
+          - Aviationexam.GeneratedJsonConverters.*
       xunit:
         patterns:
           - xunit
