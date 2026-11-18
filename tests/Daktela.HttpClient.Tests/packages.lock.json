@@ -135,7 +135,16 @@
         "contentHash": "IQ4NXP/B3Ayzvw0rDQzVTYsCKyy0Jp9KI6aYcK7UnGVlR9+Awz++TIPCQtPYfLJfOpm8ajowMR09V7quD3sEHw=="
       },
       "daktela.httpclient": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Aviationexam.GeneratedJsonConverters.Abstractions": "[0.7.3, )"
+        }
+      },
+      "Aviationexam.GeneratedJsonConverters.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[0.7.3, )",
+        "resolved": "0.7.3",
+        "contentHash": "zDHFB17/7ifpAj/qZQPxvFMPfTZVuhfxxQyr3fi0SDKMRwMa/liz6i1H1Vutag1DMTUi7ZjJtpCcHl79kWE1og=="
       },
       "Castle.Core": {
         "type": "CentralTransitive",
@@ -506,7 +515,16 @@
         "contentHash": "IQ4NXP/B3Ayzvw0rDQzVTYsCKyy0Jp9KI6aYcK7UnGVlR9+Awz++TIPCQtPYfLJfOpm8ajowMR09V7quD3sEHw=="
       },
       "daktela.httpclient": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Aviationexam.GeneratedJsonConverters.Abstractions": "[0.7.3, )"
+        }
+      },
+      "Aviationexam.GeneratedJsonConverters.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[0.7.3, )",
+        "resolved": "0.7.3",
+        "contentHash": "zDHFB17/7ifpAj/qZQPxvFMPfTZVuhfxxQyr3fi0SDKMRwMa/liz6i1H1Vutag1DMTUi7ZjJtpCcHl79kWE1og=="
       },
       "Castle.Core": {
         "type": "CentralTransitive",
@@ -832,7 +850,16 @@
         "contentHash": "IQ4NXP/B3Ayzvw0rDQzVTYsCKyy0Jp9KI6aYcK7UnGVlR9+Awz++TIPCQtPYfLJfOpm8ajowMR09V7quD3sEHw=="
       },
       "daktela.httpclient": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Aviationexam.GeneratedJsonConverters.Abstractions": "[0.7.3, )"
+        }
+      },
+      "Aviationexam.GeneratedJsonConverters.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[0.7.3, )",
+        "resolved": "0.7.3",
+        "contentHash": "zDHFB17/7ifpAj/qZQPxvFMPfTZVuhfxxQyr3fi0SDKMRwMa/liz6i1H1Vutag1DMTUi7ZjJtpCcHl79kWE1og=="
       },
       "Castle.Core": {
         "type": "CentralTransitive",
@@ -1220,7 +1247,16 @@
         "contentHash": "IQ4NXP/B3Ayzvw0rDQzVTYsCKyy0Jp9KI6aYcK7UnGVlR9+Awz++TIPCQtPYfLJfOpm8ajowMR09V7quD3sEHw=="
       },
       "daktela.httpclient": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Aviationexam.GeneratedJsonConverters.Abstractions": "[0.7.3, )"
+        }
+      },
+      "Aviationexam.GeneratedJsonConverters.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[0.7.3, )",
+        "resolved": "0.7.3",
+        "contentHash": "zDHFB17/7ifpAj/qZQPxvFMPfTZVuhfxxQyr3fi0SDKMRwMa/liz6i1H1Vutag1DMTUi7ZjJtpCcHl79kWE1og=="
       },
       "Castle.Core": {
         "type": "CentralTransitive",
