@@ -36,6 +36,9 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --nologo --configuration Release
         working-directory: src
+      - name: Test
+        run: dotnet test --no-build --configuration Release
+        working-directory: src
 
   code-style:
     runs-on: ubuntu-latest
