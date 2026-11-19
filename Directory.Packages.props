@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="Aviationexam.GeneratedJsonConverters.Abstractions" Version="0.7.3" />
-    <PackageVersion Include="Aviationexam.GeneratedJsonConverters.SourceGenerator" Version="0.7.3" />
+    <PackageVersion Include="Aviationexam.GeneratedJsonConverters.Abstractions" Version="0.8.0" />
+    <PackageVersion Include="Aviationexam.GeneratedJsonConverters.SourceGenerator" Version="0.8.0" />
   </ItemGroup>
 
   <ItemGroup>
